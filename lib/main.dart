@@ -29,18 +29,20 @@ class MainScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(context.read<KeyboardModel>().formulaGroopWidgets);
     return Scaffold(
       body: Column(
         children: [
           SizedBox(height: 50,),
           Divider(color: Colors.black,),
-          SizedBox(
+          Container(
+            color: Colors.grey,
             height: 300,
             width: double.infinity,
             child: SingleChildScrollView(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: context.select((KeyboardModel model) => model.formulaGroopWidgets),
+                children: context.watch<KeyboardModel>().formulaGroopWidgets,
                 // children: context.watch<KeyboardModel>().formulaGroopWidgets
               ),
             ),
@@ -55,3 +57,4 @@ class MainScreenWidget extends StatelessWidget {
     );
   }
 }
+

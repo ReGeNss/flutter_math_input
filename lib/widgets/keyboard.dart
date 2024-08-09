@@ -206,6 +206,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // fracButtonTap(context);
+                      model.onFracButtonTap(); 
                     },
                     style: _buttonStyle,
                     child: const Text('frac'))),

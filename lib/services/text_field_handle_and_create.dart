@@ -9,49 +9,103 @@ class TextFieldHandleAndCreateService{
   final List<FocusNode> _focusNodes = []; 
   final List<TextEditingController> _textFieldControllers = [];
   late TextEditingController activeTextFieldController;  
-  late int selectedTextFieldIndex; 
+  late int selectedFieldIndex=0; 
 
 
-  Widget createTextField() {
-    final controller = createTextFieldController();
-    final focusNode = createFocusNode(); 
+  List<Widget> createTextField(int amountOfField,bool isReplaceOperation) {
+    final List<Widget> textFields=[]; 
+    final List<TextEditingController> controllersList=[];
+    final List<FocusNode> focusNodes =[]; 
+    for(int index= 0; amountOfField>index; index+=1){
+      focusNodes.add(_createFocusNode());
+      controllersList.add(_createTextFieldController());
+    }
+    if(isReplaceOperation){
+      _addAndRemoveInList(selectedFieldIndex,_focusNodes, focusNodes); 
+      _addAndRemoveInList(selectedFieldIndex,_textFieldControllers, controllersList); 
+    }else{
+      _addToList(selectedFieldIndex, _focusNodes, focusNodes);
+      _addAndRemoveInList(selectedFieldIndex, _textFieldControllers, controllersList); 
+    }
 
-    final textFieldWidget = SizedBox(
+    for(int index= 0; amountOfField>index; index+=1){
+      final textFieldWidget = SizedBox(
         width: 60,
         height: 50,
         child: TextField(
           textAlign: TextAlign.center,
-          focusNode: focusNode,
+          focusNode: focusNodes[index],
           keyboardType: TextInputType.none,
           decoration: textFieldDecoration,
-          controller: controller,
+          controller: controllersList[index],
           onTap: () {
-            selectedTextFieldIndex = _focusNodes.indexOf(focusNode);
-            activeTextFieldController = controller;
+            selectedFieldIndex = _focusNodes.indexOf(focusNodes[index]);
+            activeTextFieldController = controllersList[index];
           },
         ));
-    focusNode.requestFocus(); 
-    activeTextFieldController = controller; 
-    selectedTextFieldIndex = _focusNodes.indexOf(focusNode);
-    return textFieldWidget; 
+      textFields.add(textFieldWidget); 
+    }
+    if(isReplaceOperation){
+      _createFocusNode(); 
+    }
+
+    focusNodes[0].requestFocus(); 
+    activeTextFieldController = controllersList[0]; 
+    selectedFieldIndex = _focusNodes.indexOf(focusNodes[0]);
+    return  textFields; 
   }
 
-  TextEditingController createTextFieldController(){
+  
+
+
+
+
+
+
+
+  TextEditingController _createTextFieldController(){
     final controller = TextEditingController(); 
+    // controller.text = '123'; 
     _textFieldControllers.add(controller);
     return controller; 
   }
 
-  FocusNode createFocusNode(){
+  
+  FocusNode _createFocusNode(){
     final focusNode = FocusNode();
     _focusNodes.add(focusNode);
     return focusNode;
   }
 
+
   void clearAllData(){
     _focusNodes.clear();
     _textFieldControllers.clear();
     // TODO: видали фокусноди
+  }
+
+  List<T> _addAndRemoveInList<T>(
+      int addIndex, List<T> list, List<T> replaceData) {
+    final newList = <T>[];
+    for (int index = 0; list.length > index; index += 1) {
+      if (index != addIndex) {
+        newList.add(list[index]);
+      } else {
+        newList.addAll(replaceData);
+      }
+    }
+    return newList;
+  }
+  List<T> _addToList<T>(int addIndex, List<T> list, T replaceData){
+    final newList = <T>[];
+    for(int index= 0; list.length > index; index+=1){
+      if(index != addIndex){
+        newList.add(list[index]);
+      }else{
+        newList.addAll([list[index] ,replaceData]);
+      }
+    }
+    return newList; 
   }
 
 
