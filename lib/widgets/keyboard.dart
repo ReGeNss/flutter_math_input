@@ -38,7 +38,8 @@ class KeyboardBottomSheet{
                         height: 50,
                         child: IconButton(
                           onPressed: () {
-                            // context.read<KeyboardModel>().selectBackNewFocus();
+                            context.read<KeyboardModel>().selectBackFocus();
+                        
                           },
                           icon: const Icon(Icons.arrow_back),
                           style: _buttonStyle,
@@ -49,9 +50,7 @@ class KeyboardBottomSheet{
                         height: 50,
                         child: IconButton(
                           onPressed: () {
-                            // context
-                                // .read<KeyboardModel>()
-                                // .selectNextNewFocus(context);
+                            context.read<KeyboardModel>().selectNextFocus(); 
                           },
                           icon: const Icon(Icons.arrow_forward),
                           style: _buttonStyle,

@@ -165,54 +165,6 @@ class FormulasTreeParsersService {
     return null;
   }
 
-  // ReturnData? textControllerWidgetParser(Widget widget,
-  //     TextEditingController activeTextFieldController, BuildContext context,
-  //     {GlobalKey? globalKey = null}) {
-  //   ReturnData? data;
-  //   final widgetRunType = widget.runtimeType;
-    // if (widgetRunType == TextField) {
-    //   final textFieldWidget = widget as TextField;
-    //   if (textFieldWidget.controller == activeTextFieldController) {
-    //     return ReturnData(widget: textFieldWidget, globalKey: globalKey);
-    //   }
-    // } else if (widgetRunType == Column) {
-    //   final column = widget as Column;
-    //   data = textControllerArrayParser(
-    //       column.children, activeTextFieldController, context,
-    //       globalKey: globalKey);
-    //   return data;
-    // } else if (widgetRunType == Row) {
-    //   final row = widget as Row;
-    //   if (row.key != null &&
-    //       row.key.runtimeType == LabeledGlobalKey<State<StatefulWidget>>) {
-    //     final key = row.key as GlobalKey<State<StatefulWidget>>;
-    //     globalKey = key;
-    //   }
-      // data = textControllerArrayParser(
-      //     row.children, activeTextFieldController, context,
-      //     globalKey: globalKey);
-      // return data;
-    // } else if (widgetRunType == Positioned) {
-    //   final positioned = widget as Positioned;
-    //   data = textControllerWidgetParser(
-    //       positioned.child, activeTextFieldController, context,
-    //       globalKey: globalKey);
-    //   return data;
-    // } else if (widgetRunType == SizedBox) {
-    //   final sizedBox = widget as SizedBox;
-    //   data = textControllerWidgetParser(
-    //       sizedBox.child!, activeTextFieldController, context,
-    //       globalKey: globalKey);
-    //   return data;
-    // } else if (widgetRunType == Stack) {
-    //   final stack = widget as Stack;
-    //   data = textControllerArrayParser(
-    //       stack.children, activeTextFieldController, context,
-    //       globalKey: globalKey);
-    //   return data;
-    // }
-  // }
-// }
 
 
 }

@@ -32,6 +32,13 @@ class KeyboardModel extends ChangeNotifier{
     }
   }
 
+  void selectNextFocus(){
+    textFieldHadler.selectNextFocus(); 
+  }
+  void selectBackFocus(){
+    textFieldHadler.selectBackFocus(); 
+  }
+
   void deleteAllButtonTap(){
     formulaGroopWidgets.clear();
     textFieldHadler.clearAllData(); 

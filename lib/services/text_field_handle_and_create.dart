@@ -1,13 +1,18 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 const textFieldDecoration = InputDecoration(focusedBorder: OutlineInputBorder(),border: InputBorder.none);
 // за активний контроллер поля вважається останнє створене поле
+// extension FocusNodeHasListeners on FocusNode {
+//   bool get hasListeners => hasListeners;
+// }
 
-class TextFieldHandleAndCreateService{
-  final List<FocusNode> _focusNodes = []; 
-  final List<TextEditingController> _textFieldControllers = [];
+class TextFieldHandleAndCreateService extends ChangeNotifier{
+  List<FocusNode> _focusNodes = []; 
+  List<TextEditingController> _textFieldControllers = [];
   late TextEditingController activeTextFieldController;  
   late int selectedFieldIndex=0; 
 
@@ -20,12 +25,17 @@ class TextFieldHandleAndCreateService{
       focusNodes.add(_createFocusNode());
       controllersList.add(_createTextFieldController());
     }
-    if(isReplaceOperation){
-      _addAndRemoveInList(selectedFieldIndex,_focusNodes, focusNodes); 
-      _addAndRemoveInList(selectedFieldIndex,_textFieldControllers, controllersList); 
+    if(isReplaceOperation && _focusNodes.isNotEmpty ){
+      _focusNodes[selectedFieldIndex].dispose();
+      _textFieldControllers[selectedFieldIndex].dispose(); 
+      _focusNodes =_addAndRemoveInList(selectedFieldIndex,_focusNodes, focusNodes); 
+      _textFieldControllers =_addAndRemoveInList(selectedFieldIndex,_textFieldControllers, controllersList); 
+    }else if(_focusNodes.isNotEmpty){
+      _focusNodes= _addToList(selectedFieldIndex, _focusNodes, focusNodes);
+      _textFieldControllers = _addToList(selectedFieldIndex, _textFieldControllers, controllersList); 
     }else{
-      _addToList(selectedFieldIndex, _focusNodes, focusNodes);
-      _addAndRemoveInList(selectedFieldIndex, _textFieldControllers, controllersList); 
+      _focusNodes = focusNodes.toList();
+      _textFieldControllers = controllersList.toList(); 
     }
 
     for(int index= 0; amountOfField>index; index+=1){
@@ -55,7 +65,34 @@ class TextFieldHandleAndCreateService{
     return  textFields; 
   }
 
-  
+  void selectNextFocus(){
+    final currentIndex = selectedFieldIndex;
+    selectedFieldIndex = currentIndex + 1;
+    if( _focusNodes.length > selectedFieldIndex){
+      if(_focusNodes[selectedFieldIndex].hasListeners == true){
+        _focusNodes[selectedFieldIndex].requestFocus(); 
+      }
+      else{
+        
+      }
+    }
+    else{
+      selectedFieldIndex = currentIndex; 
+    }
+
+  }
+
+
+  void selectBackFocus() {
+    final currentIndex = selectedFieldIndex;
+    selectedFieldIndex = currentIndex - 1;
+    if (_focusNodes.length > selectedFieldIndex && selectedFieldIndex >= 0) {
+      _focusNodes[selectedFieldIndex].requestFocus();
+      activeTextFieldController = _textFieldControllers[selectedFieldIndex];
+    } else {
+      selectedFieldIndex = currentIndex;
+    }
+  }
 
 
 
@@ -65,20 +102,19 @@ class TextFieldHandleAndCreateService{
 
   TextEditingController _createTextFieldController(){
     final controller = TextEditingController(); 
-    // controller.text = '123'; 
-    _textFieldControllers.add(controller);
     return controller; 
   }
 
   
   FocusNode _createFocusNode(){
     final focusNode = FocusNode();
-    _focusNodes.add(focusNode);
     return focusNode;
   }
 
 
   void clearAllData(){
+    _focusNodes.forEach((e) =>e.dispose());
+    _textFieldControllers.forEach((e) => e.dispose());
     _focusNodes.clear();
     _textFieldControllers.clear();
     // TODO: видали фокусноди
@@ -96,13 +132,14 @@ class TextFieldHandleAndCreateService{
     }
     return newList;
   }
-  List<T> _addToList<T>(int addIndex, List<T> list, T replaceData){
+  List<T> _addToList<T>(int addIndex, List<T> list, List<T> replaceData){
     final newList = <T>[];
     for(int index= 0; list.length > index; index+=1){
       if(index != addIndex){
         newList.add(list[index]);
       }else{
-        newList.addAll([list[index] ,replaceData]);
+        newList.add(list[index]);
+        newList.addAll(replaceData); 
       }
     }
     return newList; 
