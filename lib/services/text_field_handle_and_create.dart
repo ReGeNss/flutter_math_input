@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:math_keyboard/services/formulas_tree_parsers_and_handler.dart';
+import 'package:math_keyboard/services/widgets_data_handler.dart';
 
 const textFieldDecoration = InputDecoration(focusedBorder: OutlineInputBorder(),border: InputBorder.none);
 // за активний контроллер поля вважається останнє створене поле
@@ -15,9 +17,10 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
   List<TextEditingController> _textFieldControllers = [];
   late TextEditingController activeTextFieldController;  
   late int selectedFieldIndex=0; 
+  final parsingService = FormulasTreeParsersService(); 
 
 
-  List<Widget> createTextField(int amountOfField,bool isReplaceOperation) {
+  List<Widget> createTextField({ required int amountOfField, required isReplaceOperation,addAdictionalFocusNode = false}) {
     final List<Widget> textFields=[]; 
     final List<TextEditingController> controllersList=[];
     final List<FocusNode> focusNodes =[]; 
@@ -37,7 +40,6 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
       _focusNodes = focusNodes.toList();
       _textFieldControllers = controllersList.toList(); 
     }
-
     for(int index= 0; amountOfField>index; index+=1){
       final textFieldWidget = SizedBox(
         width: 60,
@@ -55,17 +57,21 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
         ));
       textFields.add(textFieldWidget); 
     }
-    if(isReplaceOperation){
-      _createFocusNode(); 
+    // if(isReplaceOperation){
+    //   _createFocusNode(); 
+    // }
+    if(addAdictionalFocusNode){
+      _focusNodes = _addToList(selectedFieldIndex+1,_focusNodes,[FocusNode()]);
+      _textFieldControllers = _addToList(selectedFieldIndex+1, _textFieldControllers, [TextEditingController()]); 
+      // _textFieldControllers.add(TextEditingController()); 
     }
-
     focusNodes[0].requestFocus(); 
     activeTextFieldController = controllersList[0]; 
     selectedFieldIndex = _focusNodes.indexOf(focusNodes[0]);
     return  textFields; 
   }
 
-  void selectNextFocus(){
+  bool selectNextFocus(){
     final currentIndex = selectedFieldIndex;
     selectedFieldIndex = currentIndex + 1;
     if( _focusNodes.length > selectedFieldIndex){
@@ -73,13 +79,15 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
         _focusNodes[selectedFieldIndex].requestFocus(); 
       }
       else{
-        
+        // _focusNodes.removeLast(); 
+        // проблема, що треба видаляти створені контролери, а не використовувати їх. 
+        return true; 
       }
     }
     else{
       selectedFieldIndex = currentIndex; 
     }
-
+    return false; 
   }
 
 

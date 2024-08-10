@@ -7,13 +7,13 @@ class MathConstructionsBuilding{
   final TextFieldHandleAndCreateService textFiledService;
   
   MathConstructionsBuilding({required this.textFiledService}); 
-  void createTextField(){
-    final textField = textFiledService.createTextField(1,true);
-
+  Widget createTextField(){
+    final textField = textFiledService.createTextField(amountOfField:  1,isReplaceOperation: true);
+    return textField.first;
   }
 
   Widget createFracWidget(){    
-    final textFiledWidgets = textFiledService.createTextField(2,true);
+    final textFiledWidgets = textFiledService.createTextField(amountOfField:2,isReplaceOperation:true, addAdictionalFocusNode:  true);
     final globalKey = GlobalKey(); 
     final fracWidget = Column(
       key: const ValueKey(ElementsType.fracElement),
@@ -40,7 +40,7 @@ class MathConstructionsBuilding{
   }
 
   Widget initialization(){
-    final textField = textFiledService.createTextField(1,true);
+    final textField = textFiledService.createTextField(amountOfField:  1,isReplaceOperation:  true);
     return textField.first; 
   }
   

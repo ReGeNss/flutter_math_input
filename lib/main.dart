@@ -30,6 +30,7 @@ class MainScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(context.read<KeyboardModel>().formulaGroopWidgets);
+    final model = context.read<KeyboardModel>();  
     return Scaffold(
       body: Column(
         children: [
@@ -40,10 +41,13 @@ class MainScreenWidget extends StatelessWidget {
             height: 300,
             width: double.infinity,
             child: SingleChildScrollView(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: context.watch<KeyboardModel>().formulaGroopWidgets,
-                // children: context.watch<KeyboardModel>().formulaGroopWidgets
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: model.update==true ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: context.watch<KeyboardModel>().formulaGroopWidgets,
+                  // children: context.watch<KeyboardModel>().formulaGroopWidgets
+                ) : Text('LOAD'),
               ),
             ),
           ),
