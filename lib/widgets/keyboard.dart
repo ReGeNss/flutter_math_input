@@ -349,7 +349,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // model.charButtonTap('+', context);
-
+                      model.createCharWidgets('+');
                       // model.selectNextNewFocus(context);
                     },
                     style: _buttonStyle,

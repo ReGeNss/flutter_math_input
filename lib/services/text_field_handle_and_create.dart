@@ -1,10 +1,5 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:math_keyboard/services/formulas_tree_parsers_and_handler.dart';
-import 'package:math_keyboard/services/widgets_data_handler.dart';
 
 const textFieldDecoration = InputDecoration(focusedBorder: OutlineInputBorder(),border: InputBorder.none);
 // за активний контроллер поля вважається останнє створене поле
@@ -76,6 +71,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
     selectedFieldIndex = currentIndex + 1;
     if( _focusNodes.length > selectedFieldIndex){
       if(_focusNodes[selectedFieldIndex].hasListeners == true){
+        activeTextFieldController = _textFieldControllers[selectedFieldIndex]; 
         _focusNodes[selectedFieldIndex].requestFocus(); 
       }
       else{

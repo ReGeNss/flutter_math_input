@@ -5,7 +5,7 @@ class WidgetsDataHandler{
   void replaceWidgetInTree(ReturnData parsedData,Widget replaceWidget){
     parsedData.wigetData?[parsedData.index!] = replaceWidget;
   }
-  void addToWidgetTree(ReturnData parsedData, Widget widget){
-    parsedData.wigetData!.add(widget); 
+  void addToWidgetTree(ReturnData parsedData, List<Widget> widget){
+    parsedData.wigetData!.addAll(widget); 
   }
 }

@@ -38,6 +38,12 @@ class MathConstructionsBuilding{
     );
     return fracWidget; 
   }
+  List<Widget> createCharWidget({required int amountOfField}){
+    final textFieldWidget = textFiledService.createTextField(amountOfField: amountOfField, isReplaceOperation: false);
+    return textFieldWidget; 
+  }
+
+
 
   Widget initialization(){
     final textField = textFiledService.createTextField(amountOfField:  1,isReplaceOperation:  true);
