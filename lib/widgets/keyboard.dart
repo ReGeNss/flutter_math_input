@@ -169,21 +169,21 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('7');},
                     style: _buttonStyle,
                     child: const Text('7'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('8');},
                     style: _buttonStyle,
                     child: const Text('8'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('9');},
                     style: _buttonStyle,
                     child: const Text('9'))),
             SizedBox(
@@ -191,7 +191,6 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                     onPressed: () {
-                      // model.charButtonTap('÷', context);
                       model.createCharWidgets('÷');
                     },
                     style: _buttonStyle,
@@ -225,21 +224,21 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('4');},
                     style: _buttonStyle,
                     child: const Text('4'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('5');},
                     style: _buttonStyle,
                     child: const Text('5'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('6');},
                     style: _buttonStyle,
                     child: const Text('6'))),
             SizedBox(
@@ -248,7 +247,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // model.charButtonTap('×', context);
-
+                      model.createCharWidgets('×');
                     },
                     style: _buttonStyle,
                     child: const Text('×'))),
@@ -278,28 +277,28 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('1');},
                     style: _buttonStyle,
                     child: const Text('1'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('2');},
                     style: _buttonStyle,
                     child: const Text('2'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('3');},
                     style: _buttonStyle,
                     child: const Text('3'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('4');},
                     style: _buttonStyle,
                     child: const Text('4'))),
           ],
@@ -327,7 +326,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('0');},
                     style: _buttonStyle,
                     child: const Text('0'))),
             SizedBox(

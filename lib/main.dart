@@ -42,6 +42,8 @@ class MainScreenWidget extends StatelessWidget {
             height: 300,
             width: double.infinity,
             child: SingleChildScrollView(
+              
+              scrollDirection: Axis.horizontal,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: model.update==true ? Row(

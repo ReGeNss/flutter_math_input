@@ -20,6 +20,7 @@ class MathConstructionsBuilding{
       child: Row(
         children: [
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             key: const ValueKey(ElementsType.fracElement),
             children: [
               SizedBox(
@@ -122,7 +123,7 @@ class _SqrtCustomPaintState extends State<SqrtCustomPaint> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: Size((size?.width ?? 80) +30,40 ),
+      size: Size((size?.width ?? 80) +30,50 ),
       painter:  SqrtPainter());
   }
 }

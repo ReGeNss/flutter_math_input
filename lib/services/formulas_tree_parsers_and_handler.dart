@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:math_keyboard/services/math_constructions_building.dart';
 
 class FormulasTreeParsersService {
   ReturnData? _parsedData;
@@ -103,22 +104,22 @@ class FormulasTreeParsersService {
             }
             break;
           }
-        // case const (ExpRowWidget) :
-        // {
-        //   final widget = array[index] as ExpRowWidget;
-        //     if(widget.child != null){
-        //       data = textControllerWidgetParser(widget.child!, activeTextFieldController, context,globalKey: globalKey);
-        //     }
-        //     if (data != null) {
-        //       data.index = index; // костилі
-        //       data.wigetData = array;
-        //       if (context.read<KeyboardModel>().parsedData == null) {
-        //         // context.read<KeyboardModel>().parsedData = data;
-        //         return data;
-        //       }
-        //     }
-        //   break;
-        // }
+        case const (ExpRowWidget) :
+        {
+          final widget = array[index] as ExpRowWidget;
+            if(widget.child != null){
+              data = _textControllerWidgetParser(widget.child!, activeTextFieldController);
+            }
+            if (data != null) {
+              data.index = index; // костилі
+              data.wigetData = array;
+              if (_parsedData == null) {
+                _parsedData = data;
+                return data;
+              }
+            }
+          break;
+        }
       }
     }
     return null;
