@@ -52,25 +52,27 @@ class KeyboardModel extends ChangeNotifier{
     } 
   }
 
-  // void createCharWidgets(String char){
-  //   // один сплошной костыль 
-  //   final activeTextFieldController = textFieldService.activeTextFieldController;
-  //   final parsedWidgetData = parsersService.parseWidgetList(formulaGroopWidgets, activeTextFieldController);
-  //   List<Widget> textField;
-  //   if(textFieldService.activeTextFieldController.text.isEmpty){
-  //     textFieldService.activeTextFieldController.text = char; 
-  //     textField = mathConstructionsBuildingService.createCharWidget(amountOfField: 1);
+  void createCharWidgets(String char){
+    // один сплошной костыль 
+    final activeTextFieldController = textFieldService.activeTextFieldController;
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, activeTextFieldController);
+    List<Widget> textField=[];
+    if(textFieldService.activeTextFieldController.text.isEmpty){
+      textFieldService.activeTextFieldController.text = char; 
+      textField.add(mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
       
-  //   }else{
-  //     textField = mathConstructionsBuildingService.createCharWidget(amountOfField: 2);
-  //     textFieldService.provideCharToTextField(char);
-  //   }
-  //   if (parsedWidgetData != null) {
-  //     dataHandler.addToWidgetTree(parsedWidgetData, textField);
-  //     rebuildSreenState();
-  //   }
+    }else{
+
+      textField.add(mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
+      textFieldService.activeTextFieldController.text = char; 
+      textField.add(mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
+    }
+    if (parsedWidgetData != null) {
+      dataHandler.addToWidgetTree(parsedWidgetData, textField);
+      rebuildSreenState();
+    }
     
-  // }
+  }
 
   void selectBackFocus(){
     textFieldService.selectBackFocus(); 

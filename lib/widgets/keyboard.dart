@@ -159,7 +159,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                   onPressed: () {
-                    // model.charButtonTap('>', context);
+                    // model.('>', context);
                   },
                   style: _buttonStyle,
                   child: const Text('>'),
@@ -349,7 +349,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // model.charButtonTap('+', context);
-                      // model.createCharWidgets('+');
+                      model.createCharWidgets('+');
                       // model.selectNextNewFocus(context);
                     },
                     style: _buttonStyle,

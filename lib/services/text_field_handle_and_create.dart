@@ -15,57 +15,6 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
   final parsingService = FormulasTreeParsersService(); 
 
 
-  // Widget createTextField({ required int amountOfField, required isReplaceOperation, bool isActiveTextField = false,addAdictionalFocusNode = false}) {
-  //   final Widget textField;
-  //   final List<TextEditingController> controllersList=[];
-  //   final List<FocusNode> focusNodes =[]; 
-  //   for(int index= 0; amountOfField>index; index+=1){
-  //     focusNodes.add(_createFocusNode());
-  //     controllersList.add(_createTextFieldController());
-  //   }
-  //   if(isReplaceOperation && _focusNodes.isNotEmpty ){
-  //     _focusNodes[selectedFieldIndex].dispose();
-  //     _textFieldControllers[selectedFieldIndex].dispose(); 
-  //     _focusNodes =_addAndRemoveInList(selectedFieldIndex,_focusNodes, focusNodes); 
-  //     _textFieldControllers =_addAndRemoveInList(selectedFieldIndex,_textFieldControllers, controllersList); 
-  //   }else if(_focusNodes.isNotEmpty){
-  //     _focusNodes= _addToList(selectedFieldIndex, _focusNodes, focusNodes);
-  //     _textFieldControllers = _addToList(selectedFieldIndex, _textFieldControllers, controllersList); 
-  //   }else{
-  //     _focusNodes = focusNodes.toList();
-  //     _textFieldControllers = controllersList.toList(); 
-  //   }
-  //   for(int index= 0; amountOfField>index; index+=1){
-      // final textFieldWidget = SizedBox(
-      //   width: 60,
-      //   height: 50,
-      //   child: TextField(
-      //     textAlign: TextAlign.center,
-      //     focusNode: focusNodes[index],
-      //     keyboardType: TextInputType.none,
-      //     decoration: textFieldDecoration,
-      //     controller: controllersList[index],
-      //     onTap: () {
-      //       selectedFieldIndex = _focusNodes.indexOf(focusNodes[index]);
-      //       activeTextFieldController = controllersList[index];
-      //     },
-      //   ));
-  //     textFields.add(textFieldWidget); 
-  //   }
-  //   // if(isReplaceOperation){
-  //   //   _createFocusNode(); 
-  //   // }
-  //   if(addAdictionalFocusNode){
-  //     _focusNodes = _addToList(selectedFieldIndex+1,_focusNodes,[FocusNode()]);
-  //     _textFieldControllers = _addToList(selectedFieldIndex+1, _textFieldControllers, [TextEditingController()]); 
-  //     // _textFieldControllers.add(TextEditingController()); 
-  //   }
-  //   focusNodes[0].requestFocus(); 
-  //   activeTextFieldController = controllersList[0]; 
-  //   selectedFieldIndex = _focusNodes.indexOf(focusNodes[0]);
-  //   return  textFields; 
-  // }
-
   Widget createTextField({required bool isReplaceOperation, bool isActiveTextField = false, bool addAdictionalFocusNode = false}){
     final focusNode = _createFocusNode(); 
     final textFieldController = _createTextFieldController();
@@ -141,9 +90,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
     }
   }
 
-  void provideCharToTextField(String char){
-     _textFieldControllers[selectedFieldIndex].text = char; 
-  }
+
 
 
 

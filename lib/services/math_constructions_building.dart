@@ -8,11 +8,7 @@ class MathConstructionsBuilding{
   
   MathConstructionsBuilding({required this.textFiledService}); 
   Widget createTextField({bool replaceOldFocus = false}){
-    final textField = Row(
-      children: [
-        textFiledService.createTextField(isReplaceOperation: replaceOldFocus,isActiveTextField: true),
-      ],
-    );
+    final textField = textFiledService.createTextField(isReplaceOperation: replaceOldFocus,isActiveTextField: true);
     return textField;
   }
 
@@ -49,10 +45,10 @@ class MathConstructionsBuilding{
     );
     return fracWidget; 
   }
-  // List<Widget> createCharWidget({required int amountOfField}){
-    // final textFieldWidget = textFiledService.createTextField(amountOfField: amountOfField, isReplaceOperation: false);
-    // return textFieldWidget; 
-  // }
+  Widget createCharWidget({required bool isActiveTextField}){
+    final textFieldWidget = textFiledService.createTextField(isActiveTextField: isActiveTextField, isReplaceOperation: false);
+    return textFieldWidget; 
+  }
 
 
 
