@@ -49,7 +49,7 @@ class MathConstructionsBuilding{
 
   Widget createExpWidget(Widget baseWidget){
     final globalKey = GlobalKey(); 
-    final textField = textFiledService.createTextField(isReplaceOperation: false,isActiveTextField: true);
+    final textField = textFiledService.createTextField(isReplaceOperation: false,isActiveTextField: true,textFieldSelectedFormat: TextFieldFormat.small);
     final widget = ExpRowWidget(baseWidget: baseWidget,globalKey: globalKey,textField: textField,);
     return widget; 
   }
@@ -86,7 +86,7 @@ class MathConstructionsBuilding{
 
 
   Widget initialization(){
-    final textField = textFiledService.createTextField(isReplaceOperation: false,isActiveTextField: true);
+    final textField = textFiledService.createTextField(isReplaceOperation: false,isActiveTextField: true,textFieldSelectedFormat: TextFieldFormat.standart);
     return textField; 
   }
   

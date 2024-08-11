@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/services/formulas_tree_parsers_and_handler.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
@@ -30,7 +28,7 @@ class KeyboardModel extends ChangeNotifier{
     // notifyListeners();
   }
   void onFracButtonTap(){
-    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldController);
+    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller);
     final fracWidget = mathConstructionsBuildingService.createFracWidget();
     if(parsedWidgets != null){
       dataHandler.replaceWidgetInTree(parsedWidgets, fracWidget);
@@ -39,7 +37,7 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void onExpButtonTap(){
-    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldController); 
+    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller); 
     if(parsedWidgets != null){
       final baseWidget = parsedWidgets!.wigetData![parsedWidgets.index!];
       final expWidget = mathConstructionsBuildingService.createExpWidget(baseWidget);
@@ -50,7 +48,7 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void sqrtButtonTap(){
-    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldController);
+    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller);
     final sqrtWidget = mathConstructionsBuildingService.createSqrtWidget(); 
     if(parsedWidgets != null){
       dataHandler.replaceWidgetInTree(parsedWidgets, sqrtWidget);
@@ -61,7 +59,7 @@ class KeyboardModel extends ChangeNotifier{
   void selectNextFocus(){
     final shouldCreateNewField =textFieldService.selectNextFocus();
     if(shouldCreateNewField){
-      final parsedWidgetData = parsersService.parseWidgetList(formulaGroopWidgets, textFieldService.activeTextFieldController);
+      final parsedWidgetData = parsersService.parseWidgetList(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller);
       final textfield = mathConstructionsBuildingService.createTextField(replaceOldFocus: true);
         if(parsedWidgetData != null){
           dataHandler.addToWidgetTree(parsedWidgetData, [textfield]); 
@@ -74,17 +72,17 @@ class KeyboardModel extends ChangeNotifier{
 
   void createCharWidgets(String char){
     // один сплошной костыль 
-    final activeTextFieldController = textFieldService.activeTextFieldController;
+    final activeTextFieldController = textFieldService.activeTextFieldControllerData.controller;
     final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, activeTextFieldController);
     List<Widget> textField=[];
-    if(textFieldService.activeTextFieldController.text.isEmpty){
-      textFieldService.activeTextFieldController.text = char; 
+    if(textFieldService.activeTextFieldControllerData.controller.text.isEmpty){
+      textFieldService.activeTextFieldControllerData.controller.text = char; 
       textField.add(mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
       
     }else{
 
       textField.add(mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
-      textFieldService.activeTextFieldController.text = char; 
+      textFieldService.activeTextFieldControllerData.controller.text = char; 
       textField.add(mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
     }
     if (parsedWidgetData != null) {

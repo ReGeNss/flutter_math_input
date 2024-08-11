@@ -9,38 +9,57 @@ const textFieldDecoration = InputDecoration(focusedBorder: OutlineInputBorder(),
 
 class TextFieldHandleAndCreateService extends ChangeNotifier{
   List<FocusNode> _focusNodes = []; 
-  List<TextEditingController> _textFieldControllers = [];
-  late TextEditingController activeTextFieldController;  
+  List<TextFieldControllerData> _textFieldControllers = [];
+  late TextFieldControllerData activeTextFieldControllerData;  
   late int selectedFieldIndex=0; 
   final parsingService = FormulasTreeParsersService(); 
 
 
-  Widget createTextField({required bool isReplaceOperation, bool isActiveTextField = false, bool addAdictionalFocusNode = false}){
+  Widget createTextField({required bool isReplaceOperation,TextFieldFormat? textFieldSelectedFormat, bool isActiveTextField = false, bool addAdictionalFocusNode = false,bool useSmallSize = false}){
     final focusNode = _createFocusNode(); 
-    final textFieldController = _createTextFieldController();
+    late final TextFieldFormat textFieldFormat;
+    Size size; 
+
+    if(textFieldSelectedFormat != null){
+      textFieldFormat = textFieldSelectedFormat; 
+    }else{
+      textFieldFormat = activeTextFieldControllerData.format; 
+    }
+
+    final textFieldControllerData = _createTextFieldControllerData(textFieldFormat);
+    final textFieldController = textFieldControllerData.controller; 
+
+    
     if(isReplaceOperation){
       _focusNodes[selectedFieldIndex].dispose();
-      _textFieldControllers[selectedFieldIndex].dispose(); 
+      _textFieldControllers[selectedFieldIndex].controller.dispose(); 
       _focusNodes = _addAndRemoveInList(selectedFieldIndex, _focusNodes, focusNode);
-      _textFieldControllers = _addAndRemoveInList(selectedFieldIndex, _textFieldControllers, textFieldController);
+      _textFieldControllers = _addAndRemoveInList(selectedFieldIndex, _textFieldControllers, textFieldControllerData);
     }else{
       _focusNodes = _addToList(selectedFieldIndex, _focusNodes, focusNode);
-      _textFieldControllers = _addToList(selectedFieldIndex, _textFieldControllers, textFieldController);
+      _textFieldControllers = _addToList(selectedFieldIndex, _textFieldControllers, textFieldControllerData);
     }
+
     if(addAdictionalFocusNode){
-      final focusNode = _createFocusNode(); 
-      final controller = _createTextFieldController();
-      _textFieldControllers = _addToList(selectedFieldIndex+1, _textFieldControllers, controller);
-      _focusNodes = _addToList(selectedFieldIndex+1, _focusNodes, focusNode);
+      this.addAdictionalFocusNode(); 
     }
+    
     if(isActiveTextField){
-      activeTextFieldController = textFieldController;
-      selectedFieldIndex = _textFieldControllers.indexOf(activeTextFieldController);
+      activeTextFieldControllerData = textFieldControllerData;
+      selectedFieldIndex = _textFieldControllers.indexOf(activeTextFieldControllerData);
       focusNode.requestFocus();   
     }
+
+    if(textFieldFormat == TextFieldFormat.standart){
+      size = const Size(60,50);
+    }else if(textFieldFormat == TextFieldFormat.small){
+      size = const Size(40,30); 
+    }else{
+      size = const Size(60,50);
+    }
     final Widget textFiledWidget = SizedBox(
-        width: 60,
-        height: 50,
+        width: size.width,
+        height: size.height,
         child: TextField(
           textAlign: TextAlign.center,
           focusNode: focusNode,
@@ -49,20 +68,25 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
           controller: textFieldController,
           onTap: () {
             selectedFieldIndex = _focusNodes.indexOf(focusNode);
-            activeTextFieldController = textFieldController;
+            activeTextFieldControllerData = textFieldControllerData;
           },
         ));
     return textFiledWidget; 
 
   }
-
+  void addAdictionalFocusNode(){
+    final focusNode = _createFocusNode(); 
+    final controller = _createTextFieldControllerData(TextFieldFormat.standart);
+    _textFieldControllers = _addToList(selectedFieldIndex+1, _textFieldControllers, controller);
+    _focusNodes = _addToList(selectedFieldIndex+1, _focusNodes, focusNode);
+  }
 
   bool selectNextFocus(){
     final currentIndex = selectedFieldIndex;
     selectedFieldIndex = currentIndex + 1;
     if( _focusNodes.length > selectedFieldIndex){
       if(_focusNodes[selectedFieldIndex].hasListeners == true){
-        activeTextFieldController = _textFieldControllers[selectedFieldIndex]; 
+        activeTextFieldControllerData = _textFieldControllers[selectedFieldIndex]; 
         _focusNodes[selectedFieldIndex].requestFocus(); 
       }
       else{
@@ -84,23 +108,24 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
     selectedFieldIndex = currentIndex - 1;
     if (_focusNodes.length > selectedFieldIndex && selectedFieldIndex >= 0) {
       _focusNodes[selectedFieldIndex].requestFocus();
-      activeTextFieldController = _textFieldControllers[selectedFieldIndex];
+      activeTextFieldControllerData = _textFieldControllers[selectedFieldIndex];
     } else {
       selectedFieldIndex = currentIndex;
     }
   }
 
+  void addCharToTextField(String char){
+    final currentText = activeTextFieldControllerData.controller.text; 
+    activeTextFieldControllerData.controller.text = currentText+char; 
+  }
 
 
 
 
-
-
-
-
-  TextEditingController _createTextFieldController(){
-    final controller = TextEditingController(); 
-    return controller; 
+  TextFieldControllerData _createTextFieldControllerData(TextFieldFormat format ){
+    final controller = TextEditingController();
+    final data = TextFieldControllerData(controller: controller,format: format); 
+    return data; 
   }
 
   
@@ -113,7 +138,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
   void clearAllData(){
     print('dadaddada$selectedFieldIndex'); 
     _focusNodes.forEach((e) =>e.dispose());
-    _textFieldControllers.forEach((e) => e.dispose());
+    _textFieldControllers.forEach((e) => e.controller.dispose());
     _focusNodes.clear();
     _textFieldControllers.clear();
     selectedFieldIndex = 0; 
@@ -149,6 +174,14 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
     }
     return newList; 
   }
+}
 
+enum TextFieldFormat{standart, small,}
 
+class TextFieldControllerData{
+  final TextEditingController controller; 
+  final TextFieldFormat format;
+
+  TextFieldControllerData({required this.controller, required this.format}); 
+  
 }
