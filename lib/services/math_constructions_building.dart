@@ -83,6 +83,23 @@ class MathConstructionsBuilding{
     return sqrtWidget; 
   }
 
+  Widget createNamedFunctionWidget(String functionName){
+    final textFieldWidget = textFiledService.createTextField(isReplaceOperation: true,isActiveTextField: true,addAdictionalFocusNode: true); 
+    final widget = SizedBox(
+      height: 50,
+      width: 110,
+      child: Row(
+        children: [
+          Text(functionName,style: TextStyle(fontSize: 22),),
+          SizedBox(width: 3,),
+          textFieldWidget, 
+        ],
+      ),
+    );
+    return widget; 
+  }
+
+
 
 
   Widget initialization(){

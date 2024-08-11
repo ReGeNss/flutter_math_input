@@ -15,7 +15,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
   final parsingService = FormulasTreeParsersService(); 
 
 
-  Widget createTextField({required bool isReplaceOperation,TextFieldFormat? textFieldSelectedFormat, bool isActiveTextField = false, bool addAdictionalFocusNode = false,bool useSmallSize = false}){
+  Widget createTextField({required bool isReplaceOperation,TextFieldFormat? textFieldSelectedFormat, bool isActiveTextField = false, bool addAdictionalFocusNode = false}){
     final focusNode = _createFocusNode(); 
     late final TextFieldFormat textFieldFormat;
     Size size; 
@@ -41,9 +41,13 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
     }
 
     if(addAdictionalFocusNode){
-      this.addAdictionalFocusNode(); 
+      final adictionalFocusNode = _createFocusNode(); 
+      final controller = _createTextFieldControllerData(TextFieldFormat.standart);
+      final index = _focusNodes.indexOf(focusNode); 
+      _textFieldControllers = _addToList(index, _textFieldControllers, controller);
+      _focusNodes = _addToList(index, _focusNodes, adictionalFocusNode); 
     }
-    
+
     if(isActiveTextField){
       activeTextFieldControllerData = textFieldControllerData;
       selectedFieldIndex = _textFieldControllers.indexOf(activeTextFieldControllerData);
@@ -73,12 +77,6 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
         ));
     return textFiledWidget; 
 
-  }
-  void addAdictionalFocusNode(){
-    final focusNode = _createFocusNode(); 
-    final controller = _createTextFieldControllerData(TextFieldFormat.standart);
-    _textFieldControllers = _addToList(selectedFieldIndex+1, _textFieldControllers, controller);
-    _focusNodes = _addToList(selectedFieldIndex+1, _focusNodes, focusNode);
   }
 
   bool selectNextFocus(){

@@ -36,6 +36,15 @@ class KeyboardModel extends ChangeNotifier{
     }
   }
 
+  void NamedFunctionButtonTap(String functionName){
+    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller);
+    final fracWidget = mathConstructionsBuildingService.createNamedFunctionWidget(functionName); 
+    if(parsedWidgets != null){
+      dataHandler.replaceWidgetInTree(parsedWidgets, fracWidget); 
+      rebuildSreenState(); 
+    }
+  }
+
   void onExpButtonTap(){
     final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller); 
     if(parsedWidgets != null){
@@ -96,6 +105,7 @@ class KeyboardModel extends ChangeNotifier{
   void selectBackFocus(){
     textFieldService.selectBackFocus(); 
   }
+  
 
   void rebuildSreenState(){
     update = false; 
