@@ -160,6 +160,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     // model.('>', context);
+                    model.createCharWidgets('>');
                   },
                   style: _buttonStyle,
                   child: const Text('>'),
@@ -191,6 +192,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // model.charButtonTap('÷', context);
+                      model.createCharWidgets('÷');
                     },
                     style: _buttonStyle,
                     child: const Text('÷'))),
@@ -215,6 +217,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // sqrtButtonTap(context);
+                      model.sqrtButtonTap(); 
                     },
                     style: _buttonStyle,
                     child: const Text('sqrt'))),
@@ -245,6 +248,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // model.charButtonTap('×', context);
+
                     },
                     style: _buttonStyle,
                     child: const Text('×'))),
@@ -259,6 +263,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // toSquareTap(context);
+                      model.onExpButtonTap(); 
                     },
                     style: _buttonStyle,
                     child: const Text('^2'))),
@@ -314,7 +319,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                     onPressed: () {
-                      // model.charButtonTap('%', context);
+                      model.createCharWidgets('%');
                     },
                     style: _buttonStyle,
                     child: const Text('%'))),
@@ -339,7 +344,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                     onPressed: () {
-                      // model.charButtonTap('=', context);
+                      model.createCharWidgets('=');
                     },
                     style: _buttonStyle,
                     child: const Text('='))),

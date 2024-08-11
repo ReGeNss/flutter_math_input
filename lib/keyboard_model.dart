@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/services/formulas_tree_parsers_and_handler.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
@@ -34,8 +36,26 @@ class KeyboardModel extends ChangeNotifier{
       dataHandler.replaceWidgetInTree(parsedWidgets, fracWidget);
       rebuildSreenState();
     }
+  }
+
+  void onExpButtonTap(){
+    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldController); 
+    if(parsedWidgets != null){
+      final baseWidget = parsedWidgets!.wigetData![parsedWidgets.index!];
+      final expWidget = mathConstructionsBuildingService.createExpWidget(baseWidget);
+      dataHandler.replaceWidgetInTree(parsedWidgets, expWidget);
+      rebuildSreenState();
+    }
     
-    
+  }
+
+  void sqrtButtonTap(){
+    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldController);
+    final sqrtWidget = mathConstructionsBuildingService.createSqrtWidget(); 
+    if(parsedWidgets != null){
+      dataHandler.replaceWidgetInTree(parsedWidgets, sqrtWidget);
+      rebuildSreenState();
+    }
   }
 
   void selectNextFocus(){
@@ -73,6 +93,7 @@ class KeyboardModel extends ChangeNotifier{
     }
     
   }
+
 
   void selectBackFocus(){
     textFieldService.selectBackFocus(); 
