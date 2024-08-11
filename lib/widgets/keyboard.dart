@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/keyboard_model.dart';
+import 'package:math_keyboard/widgets/keyboardPages.dart/function_page.dart';
+import 'package:math_keyboard/widgets/keyboardPages.dart/latin_alphabet_page.dart';
+import 'package:math_keyboard/widgets/keyboardPages.dart/standart_numbers_page.dart';
 import 'package:provider/provider.dart';
 
 final _buttonStyle = ButtonStyle(
@@ -9,7 +12,7 @@ final _buttonStyle = ButtonStyle(
     side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
 
 class KeyboardBottomSheet{
-  final List<Widget> keyboardFormat = [KeyboardNumbersButtomWidget(),Text('data')];
+  final List<Widget> keyboardFormat = const [KeyboardNumbersButtomWidget(),FunctionPageWidget(),LatinAlphabetPageWidget()];
   int selectedKeyboardFormat = 0; 
 
   Future<dynamic> keyboardBottomSheetWidget(BuildContext context) {
@@ -74,6 +77,18 @@ class KeyboardBottomSheet{
                         child: IconButton(
                           onPressed: () {
                             selectedKeyboardFormat = 1; 
+                            setState((){}); 
+                          },
+                          icon: const Icon(Icons.functions_outlined),
+                          style: _buttonStyle,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: IconButton(
+                          onPressed: () {
+                            selectedKeyboardFormat = 2; 
                             setState(() {
                               
                             });
@@ -123,244 +138,3 @@ class KeyboardBottomSheet{
   
 }
 
-class KeyboardNumbersButtomWidget extends StatelessWidget {
-  const KeyboardNumbersButtomWidget({
-    super.key,
-  });
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    final model = context.read<KeyboardModel>();
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: 50,
-              height: 50,
-              child: TextButton(
-                  onPressed: () {
-                    // if (context.read<KeyboardModel>().changeHandler == true) {
-                    //   context.read<KeyboardModel>().changeHandler = false;
-                    // } else {
-                    //   context.read<KeyboardModel>().changeHandler = true;
-                    // }
-                    // context.read<KeyboardModel>().notify();
-                  },
-                  style: _buttonStyle,
-                  child: const Text('( )')),
-            ),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                  onPressed: () {
-                    // model.('>', context);
-                    model.createCharWidgets('>');
-                  },
-                  style: _buttonStyle,
-                  child: const Text('>'),
-                )),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('7');},
-                    style: _buttonStyle,
-                    child: const Text('7'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('8');},
-                    style: _buttonStyle,
-                    child: const Text('8'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('9');},
-                    style: _buttonStyle,
-                    child: const Text('9'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      model.createCharWidgets('÷');
-                    },
-                    style: _buttonStyle,
-                    child: const Text('÷'))),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      // fracButtonTap(context);
-                      model.onFracButtonTap(); 
-                    },
-                    style: _buttonStyle,
-                    child: const Text('frac'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      // sqrtButtonTap(context);
-                      model.sqrtButtonTap(); 
-                    },
-                    style: _buttonStyle,
-                    child: const Text('sqrt'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('4');},
-                    style: _buttonStyle,
-                    child: const Text('4'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('5');},
-                    style: _buttonStyle,
-                    child: const Text('5'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('6');},
-                    style: _buttonStyle,
-                    child: const Text('6'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      // model.charButtonTap('×', context);
-                      model.createCharWidgets('×');
-                    },
-                    style: _buttonStyle,
-                    child: const Text('×'))),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      // toSquareTap(context);
-                      model.onExpButtonTap(); 
-                    },
-                    style: _buttonStyle,
-                    child: const Text('^2'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {},
-                    style: _buttonStyle,
-                    child: const Text('X'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('1');},
-                    style: _buttonStyle,
-                    child: const Text('1'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('2');},
-                    style: _buttonStyle,
-                    child: const Text('2'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('3');},
-                    style: _buttonStyle,
-                    child: const Text('3'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('4');},
-                    style: _buttonStyle,
-                    child: const Text('4'))),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {},
-                    style: _buttonStyle,
-                    child: const Text('π'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      model.createCharWidgets('%');
-                    },
-                    style: _buttonStyle,
-                    child: const Text('%'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('0');},
-                    style: _buttonStyle,
-                    child: const Text('0'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      // formulaParseToString(context);
-                    },
-                    style: _buttonStyle,
-                    child: const Text(','))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      model.createCharWidgets('=');
-                    },
-                    style: _buttonStyle,
-                    child: const Text('='))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      // model.charButtonTap('+', context);
-                      model.createCharWidgets('+');
-                      // model.selectNextNewFocus(context);
-                    },
-                    style: _buttonStyle,
-                    child: const Text('+'))),
-          ],
-        ),
-      ],
-    );
-  }
-}
