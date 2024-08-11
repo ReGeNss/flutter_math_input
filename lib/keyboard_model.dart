@@ -42,7 +42,7 @@ class KeyboardModel extends ChangeNotifier{
     final shouldCreateNewField =textFieldService.selectNextFocus();
     if(shouldCreateNewField){
       final parsedWidgetData = parsersService.parseWidgetList(formulaGroopWidgets, textFieldService.activeTextFieldController);
-      final textfield = mathConstructionsBuildingService.createTextField();
+      final textfield = mathConstructionsBuildingService.createTextField(replaceOldFocus: true);
         if(parsedWidgetData != null){
           dataHandler.addToWidgetTree(parsedWidgetData, [textfield]); 
           rebuildSreenState();
@@ -52,21 +52,25 @@ class KeyboardModel extends ChangeNotifier{
     } 
   }
 
-  void createCharWidgets(String char){
-    final activeTextFieldController = textFieldService.activeTextFieldController;
-    final parsedWidgetData = parsersService.parseWidgetList(formulaGroopWidgets, activeTextFieldController);
-    List<Widget>? textField;
-    if(textFieldService.activeTextFieldController.text.isEmpty){
-      textFieldService.activeTextFieldController.text = char; 
-      textField = mathConstructionsBuildingService.createCharWidget(amountOfField: 1);
+  // void createCharWidgets(String char){
+  //   // один сплошной костыль 
+  //   final activeTextFieldController = textFieldService.activeTextFieldController;
+  //   final parsedWidgetData = parsersService.parseWidgetList(formulaGroopWidgets, activeTextFieldController);
+  //   List<Widget> textField;
+  //   if(textFieldService.activeTextFieldController.text.isEmpty){
+  //     textFieldService.activeTextFieldController.text = char; 
+  //     textField = mathConstructionsBuildingService.createCharWidget(amountOfField: 1);
       
-    }
-    if(parsedWidgetData != null){
-          dataHandler.addToWidgetTree(parsedWidgetData, textField!); 
-          rebuildSreenState();
-        }
+  //   }else{
+  //     textField = mathConstructionsBuildingService.createCharWidget(amountOfField: 2);
+  //     textFieldService.provideCharToTextField(char);
+  //   }
+  //   if (parsedWidgetData != null) {
+  //     dataHandler.addToWidgetTree(parsedWidgetData, textField);
+  //     rebuildSreenState();
+  //   }
     
-  }
+  // }
 
   void selectBackFocus(){
     textFieldService.selectBackFocus(); 

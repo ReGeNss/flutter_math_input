@@ -7,47 +7,58 @@ class MathConstructionsBuilding{
   final TextFieldHandleAndCreateService textFiledService;
   
   MathConstructionsBuilding({required this.textFiledService}); 
-  Widget createTextField(){
-    final textField = textFiledService.createTextField(amountOfField:  1,isReplaceOperation: true);
-    return textField.first;
+  Widget createTextField({bool replaceOldFocus = false}){
+    final textField = Row(
+      children: [
+        textFiledService.createTextField(isReplaceOperation: replaceOldFocus,isActiveTextField: true),
+      ],
+    );
+    return textField;
   }
 
   Widget createFracWidget(){    
-    final textFiledWidgets = textFiledService.createTextField(amountOfField:2,isReplaceOperation:true, addAdictionalFocusNode:  true);
+    final upperField =textFiledService.createTextField(isReplaceOperation:true,isActiveTextField: true);
+    final downField = textFiledService.createTextField(isReplaceOperation:false, addAdictionalFocusNode:  true);
     final globalKey = GlobalKey(); 
-    final fracWidget = Column(
-      key: const ValueKey(ElementsType.fracElement),
-      children: [
-        SizedBox(
-          child: Row(
-            key: globalKey,
+    final fracWidget = SizedBox(
+      child: Row(
+        children: [
+          Column(
+            key: const ValueKey(ElementsType.fracElement),
             children: [
-              textFiledWidgets[0]
+              SizedBox(
+                child: Row(
+                  key: globalKey,
+                  children: [
+                    upperField
+                  ],
+                ),
+              ),
+              FracDividerWidget(globalKey: globalKey,),
+              SizedBox(
+                child: Row(
+                  children: [
+                   downField
+                  ],
+                ),
+              )
             ],
           ),
-        ),
-        FracDividerWidget(globalKey: globalKey,),
-        SizedBox(
-          child: Row(
-            children: [
-             textFiledWidgets[1]
-            ],
-          ),
-        )
-      ],
+        ],
+      ),
     );
     return fracWidget; 
   }
-  List<Widget> createCharWidget({required int amountOfField}){
-    final textFieldWidget = textFiledService.createTextField(amountOfField: amountOfField, isReplaceOperation: false);
-    return textFieldWidget; 
-  }
+  // List<Widget> createCharWidget({required int amountOfField}){
+    // final textFieldWidget = textFiledService.createTextField(amountOfField: amountOfField, isReplaceOperation: false);
+    // return textFieldWidget; 
+  // }
 
 
 
   Widget initialization(){
-    final textField = textFiledService.createTextField(amountOfField:  1,isReplaceOperation:  true);
-    return textField.first; 
+    final textField = textFiledService.createTextField(isReplaceOperation: false,isActiveTextField: true);
+    return textField; 
   }
   
 }
