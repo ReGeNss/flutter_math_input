@@ -29,14 +29,13 @@ class MainScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(context.read<KeyboardModel>().formulaGroopWidgets);
     var  a= context.read<KeyboardModel>().formulaGroopWidgets;
     final model = context.read<KeyboardModel>();  
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: 50,),
-          Divider(color: Colors.black,),
+          const SizedBox(height: 50,),
+          const Divider(color: Colors.black,),
           Container(
             color: Colors.grey,
             height: 300,
@@ -50,13 +49,13 @@ class MainScreenWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: context.watch<KeyboardModel>().formulaGroopWidgets,
                   // children: context.watch<KeyboardModel>().formulaGroopWidgets
-                ) : Text('LOAD'),
+                ) : const Center(child: Text('LOAD')),
               ),
             ),
           ),
-          Divider(color: Colors.black),
-          SizedBox(height: 10,),
-          FilledButton(onPressed: (){KeyboardBottomSheet().keyboardBottomSheetWidget(context);}, child: Text('Show keyboard'))
+          const Divider(color: Colors.black),
+          const SizedBox(height: 10,),
+          FilledButton(onPressed: (){KeyboardBottomSheet().keyboardBottomSheetWidget(context);}, child: const Text('Show keyboard'))
 
         ],
 

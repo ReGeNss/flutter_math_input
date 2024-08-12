@@ -140,13 +140,12 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
     _focusNodes.clear();
     _textFieldControllers.clear();
     selectedFieldIndex = 0; 
-    // TODO: видали фокусноди
   }
 
   List<T> _addAndRemoveInList<T>(
       int addIndex, List<T> list, T replaceData) {
     final newList = <T>[];
-     if(list.length ==0 && addIndex == 0){
+     if(list.isEmpty && addIndex == 0){
       return [replaceData]; 
     }
     for (int index = 0; list.length > index; index += 1) {
@@ -160,7 +159,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
   }
   List<T> _addToList<T>(int addIndex, List<T> list, T replaceData){
     final newList = <T>[];
-    if(list.length ==0 && addIndex == 0){
+    if(list.isEmpty && addIndex == 0){
       return [replaceData]; 
     }
     for(int index= 0; list.length > index; index+=1){

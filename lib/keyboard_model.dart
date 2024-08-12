@@ -48,7 +48,7 @@ class KeyboardModel extends ChangeNotifier{
   void onExpButtonTap(){
     final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller); 
     if(parsedWidgets != null){
-      final baseWidget = parsedWidgets!.wigetData![parsedWidgets.index!];
+      final baseWidget = parsedWidgets.wigetData![parsedWidgets.index!];
       final expWidget = mathConstructionsBuildingService.createExpWidget(baseWidget);
       dataHandler.replaceWidgetInTree(parsedWidgets, expWidget);
       rebuildSreenState();
@@ -110,7 +110,7 @@ class KeyboardModel extends ChangeNotifier{
   void rebuildSreenState(){
     update = false; 
     notifyListeners();
-    Future.delayed(Duration(milliseconds: 20)).then((_){update = true;notifyListeners();},);
+    Future.delayed(const Duration(milliseconds: 20)).then((_){update = true;notifyListeners();},);
   }
 
   void deleteAllButtonTap(){

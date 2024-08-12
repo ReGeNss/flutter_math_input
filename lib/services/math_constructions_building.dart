@@ -70,14 +70,14 @@ class MathConstructionsBuilding{
         top: 5,
         left: 25,
         child: Row(
-          key: ValueKey(ElementsType.sqrtElement),
+          key: const ValueKey(ElementsType.sqrtElement),
           children: [
             textFieldWidget,
           ],
         ),
       ),
       IgnorePointer(
-        child: SqrtCustomPaint(globalKey: globalKey,),
+        child: _SqrtCustomPaint(globalKey: globalKey,),
       ),
     ],); 
     return sqrtWidget; 
@@ -86,12 +86,10 @@ class MathConstructionsBuilding{
   Widget createNamedFunctionWidget(String functionName){
     final textFieldWidget = textFiledService.createTextField(isReplaceOperation: true,isActiveTextField: true,addAdictionalFocusNode: true); 
     final widget = SizedBox(
-      height: 50,
-      width: 110,
       child: Row(
         children: [
-          Text(functionName,style: TextStyle(fontSize: 22),),
-          SizedBox(width: 3,),
+          Text(functionName,style: const TextStyle(fontSize: 22),),
+          const SizedBox(width: 3,),
           textFieldWidget, 
         ],
       ),
@@ -109,17 +107,17 @@ class MathConstructionsBuilding{
   
 }
 
-class SqrtCustomPaint extends StatefulWidget {
-  const SqrtCustomPaint({
+class _SqrtCustomPaint extends StatefulWidget {
+  const _SqrtCustomPaint({
     super.key, required this.globalKey,
   });
   final GlobalKey globalKey;
 
   @override
-  State<SqrtCustomPaint> createState() => _SqrtCustomPaintState();
+  State<_SqrtCustomPaint> createState() => _SqrtCustomPaintState();
 }
 
-class _SqrtCustomPaintState extends State<SqrtCustomPaint> {
+class _SqrtCustomPaintState extends State<_SqrtCustomPaint> {
   Size? size;  
   _SqrtCustomPaintState(); 
   void getSize(){
@@ -132,7 +130,6 @@ class _SqrtCustomPaintState extends State<SqrtCustomPaint> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     WidgetsBinding.instance.addPostFrameCallback((_) =>getSize());
   }
@@ -141,11 +138,11 @@ class _SqrtCustomPaintState extends State<SqrtCustomPaint> {
   Widget build(BuildContext context) {
     return CustomPaint(
       size: Size((size?.width ?? 80) +30,50 ),
-      painter:  SqrtPainter());
+      painter:  _SqrtPainter());
   }
 }
 
-class SqrtPainter extends CustomPainter{
+class _SqrtPainter extends CustomPainter{
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
@@ -168,6 +165,7 @@ class SqrtPainter extends CustomPainter{
 
 }
 
+// ignore: must_be_immutable
 class ExpRowWidget extends StatefulWidget {
   ExpRowWidget({Key? key, required this.baseWidget, required this.globalKey, this.child, required this.textField}) : super(key: key);
   final Widget baseWidget; 
@@ -180,7 +178,7 @@ class ExpRowWidget extends StatefulWidget {
 }
 
 class _ExpRowWidgetState extends State<ExpRowWidget> {
-  Size size = Size(120, 60); 
+  Size size = const Size(120, 60); 
   void getSize(){
     final renderBox = widget.globalKey.currentContext?.findRenderObject() as RenderBox; 
     size = Size(renderBox.size.width+70,renderBox.size.height+20); 
@@ -207,7 +205,7 @@ class _ExpRowWidgetState extends State<ExpRowWidget> {
                     top: -5,
                     left: 45,
                     child: Row(
-                      key: ValueKey(ElementsType.exponentiationElement),
+                      key: const ValueKey(ElementsType.exponentiationElement),
                       children: [
                         SizedBox(
                           height: 30,
