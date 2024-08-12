@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:math_keyboard/keyboard_model.dart';
 import 'package:math_keyboard/widgets/keyboardPages.dart/function_page.dart';
 import 'package:math_keyboard/widgets/keyboardPages.dart/greek_symbols_scrool.dart';
@@ -101,7 +100,17 @@ class KeyboardBottomSheet{
                             height: 50,
                             child: IconButton(
                               onPressed: () {
-                                final model = context.read<KeyboardModel>();
+                                model.backspaceButtonTap(); 
+                              },
+                              icon: const Icon(Icons.backspace_outlined),
+                              style: _buttonStyle,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: IconButton(
+                              onPressed: () {
                                 model.deleteAllButtonTap();
                               },
                               icon: const Icon(Icons.delete_outline),

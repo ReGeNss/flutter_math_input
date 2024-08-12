@@ -181,7 +181,7 @@ class _ExpRowWidgetState extends State<ExpRowWidget> {
   Size size = const Size(120, 60); 
   void getSize(){
     final renderBox = widget.globalKey.currentContext?.findRenderObject() as RenderBox; 
-    size = Size(renderBox.size.width+70,renderBox.size.height+20); 
+    size = Size(renderBox.size.width+70,renderBox.size.height+25); 
     setState(() {});
   }
   @override
@@ -203,7 +203,7 @@ class _ExpRowWidgetState extends State<ExpRowWidget> {
     Widget secondPositioned=Positioned(
                     key: widget.globalKey,
                     top: -5,
-                    left: 45,
+                    right: 40,
                     child: Row(
                       key: const ValueKey(ElementsType.exponentiationElement),
                       children: [

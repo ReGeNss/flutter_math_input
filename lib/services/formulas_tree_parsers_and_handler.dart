@@ -258,7 +258,7 @@ class FormulasTreeParsersService {
                   widget.child!, activeTextFieldController);
             }
             if (data != null) {
-              // data.index = index; // костилі
+              data.index = index; // костилі
               if (isFromRowOrColumn == false) {
                 data.wigetData = array;
               }

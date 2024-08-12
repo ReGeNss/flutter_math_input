@@ -8,4 +8,7 @@ class WidgetsDataHandler{
   void addToWidgetTree(ReturnData parsedData, List<Widget> widget){
     parsedData.wigetData!.addAll(widget); 
   }
+  void deleteFromWidgetTree(ReturnData parsedData){
+    parsedData.wigetData?.removeAt(parsedData.index!); 
+  }
 }

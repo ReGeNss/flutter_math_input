@@ -142,6 +142,18 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
     selectedFieldIndex = 0; 
   }
 
+  TextEditingController PreviousTextFieldController(){
+    if(selectedFieldIndex - 1 >= 0 ){
+    final index = _textFieldControllers.indexOf(activeTextFieldControllerData);
+    final controller = _textFieldControllers[index-1].controller; 
+      selectedFieldIndex = index - 1; 
+      return controller;
+    }
+    
+    
+    return activeTextFieldControllerData.controller; 
+  }
+
   List<T> _addAndRemoveInList<T>(
       int addIndex, List<T> list, T replaceData) {
     final newList = <T>[];
@@ -170,6 +182,14 @@ class TextFieldHandleAndCreateService extends ChangeNotifier{
       }
     }
     return newList; 
+  }
+
+  void deleteCurrentState(){
+    _focusNodes.removeAt(selectedFieldIndex);
+    _textFieldControllers.removeAt(selectedFieldIndex); 
+    selectedFieldIndex -= 1; 
+    activeTextFieldControllerData = _textFieldControllers[selectedFieldIndex];  
+    _focusNodes[selectedFieldIndex].requestFocus(); 
   }
 }
 

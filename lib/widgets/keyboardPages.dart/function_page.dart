@@ -38,9 +38,10 @@ class FunctionPageWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                   onPressed: () {
+                    model.NamedFunctionButtonTap('arccos');
                   },
                   style: _buttonStyle,
-                  child: const Text('f(x)'),
+                  child: const Text('arccos'),
                 )),
             SizedBox(
                 width: 50,
@@ -93,10 +94,10 @@ class FunctionPageWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // sqrtButtonTap(context);
-                      model.sqrtButtonTap(); 
+                      model.NamedFunctionButtonTap('arcsin');
                     },
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    child: const Text('arcsin'))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -145,9 +146,9 @@ class FunctionPageWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.NamedFunctionButtonTap('arctan');},
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    child: const Text('arctan'))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -193,10 +194,10 @@ class FunctionPageWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                     onPressed: () {
-
+                      model.NamedFunctionButtonTap('arccot');
                     },
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    child: const Text('arccot'))),
             SizedBox(
                 width: 50,
                 height: 50,

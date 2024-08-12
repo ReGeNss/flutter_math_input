@@ -46,7 +46,22 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void onExpButtonTap(){
-    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller); 
+    ReturnData? parsedWidgets;  
+    final activeTextFieldController = textFieldService.activeTextFieldControllerData.controller; 
+    if(activeTextFieldController.text.isNotEmpty){
+      parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, activeTextFieldController); 
+    }
+    else{
+      final controller = textFieldService.PreviousTextFieldController();
+      if(controller == activeTextFieldController){
+        parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, activeTextFieldController);
+      }
+      else{
+        parsedWidgets = parsersService.parseWidgetList(formulaGroopWidgets, controller);
+      }
+      
+    }
+    
     if(parsedWidgets != null){
       final baseWidget = parsedWidgets.wigetData![parsedWidgets.index!];
       final expWidget = mathConstructionsBuildingService.createExpWidget(baseWidget);
@@ -105,6 +120,18 @@ class KeyboardModel extends ChangeNotifier{
   void selectBackFocus(){
     textFieldService.selectBackFocus(); 
   }
+
+  void backspaceButtonTap(){
+    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller ); 
+    textFieldService.deleteCurrentState(); 
+    if(parsedWidgets != null){
+      dataHandler.deleteFromWidgetTree(parsedWidgets); 
+      rebuildSreenState(); 
+    }
+    
+  }
+
+  
   
 
   void rebuildSreenState(){
