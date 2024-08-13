@@ -122,12 +122,19 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void backspaceButtonTap(){
-    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller ); 
-    textFieldService.deleteCurrentState(); 
-    if(parsedWidgets != null){
+    final activeController = textFieldService.activeTextFieldControllerData.controller; 
+    
+    final isControllerDeleted =  textFieldService.deleteCurrentState();
+    if(isControllerDeleted){
+      final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets,activeController); 
+      if(parsedWidgets != null){
       dataHandler.deleteFromWidgetTree(parsedWidgets); 
-      rebuildSreenState(); 
     }
+    }else{
+      deleteAllButtonTap(); 
+    }
+     
+    rebuildSreenState(); 
     
   }
 

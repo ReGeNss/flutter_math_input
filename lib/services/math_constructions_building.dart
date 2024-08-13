@@ -15,7 +15,8 @@ class MathConstructionsBuilding{
   Widget createFracWidget(){    
     final upperField =textFiledService.createTextField(isReplaceOperation:true,isActiveTextField: true);
     final downField = textFiledService.createTextField(isReplaceOperation:false, addAdictionalFocusNode:  true);
-    final globalKey = GlobalKey(); 
+    final upperGlobalKey = GlobalKey();
+    final downGlobalKey = GlobalKey();  
     final fracWidget = SizedBox(
       child: Row(
         children: [
@@ -25,15 +26,16 @@ class MathConstructionsBuilding{
             children: [
               SizedBox(
                 child: Row(
-                  key: globalKey,
+                  key: upperGlobalKey,
                   children: [
                     upperField
                   ],
                 ),
               ),
-              FracDividerWidget(globalKey: globalKey,),
+              FracDividerWidget(upperGlobalKey: upperGlobalKey,downGlobalKey: downGlobalKey,),
               SizedBox(
                 child: Row(
+                  key: downGlobalKey,
                   children: [
                    downField
                   ],
@@ -244,8 +246,9 @@ class _ExpRowWidgetState extends State<ExpRowWidget> {
 }
 
 class FracDividerWidget extends StatefulWidget {
-  const FracDividerWidget({Key? key, required this.globalKey}) : super(key: key);
-  final GlobalKey globalKey; 
+  const FracDividerWidget({super.key, required this.upperGlobalKey, required this.downGlobalKey,});
+  final GlobalKey upperGlobalKey;
+  final GlobalKey downGlobalKey;  
 
   @override
   State<FracDividerWidget> createState() => _FracDividerWidgetState();
@@ -254,8 +257,13 @@ class FracDividerWidget extends StatefulWidget {
 class _FracDividerWidgetState extends State<FracDividerWidget> {
   Size? size; 
   getSize(){
-    final renderBox = widget.globalKey.currentContext?.findRenderObject() as RenderBox;
-    size = renderBox.size; 
+    final upperRenderBox = widget.upperGlobalKey.currentContext?.findRenderObject() as RenderBox;
+    final downRenderBox = widget.downGlobalKey.currentContext?.findRenderObject() as RenderBox;
+    if(upperRenderBox.size.width > downRenderBox.size.width){
+      size = upperRenderBox.size; 
+    }else{
+      size = downRenderBox.size;
+    }
     setState(() {
       
     });   

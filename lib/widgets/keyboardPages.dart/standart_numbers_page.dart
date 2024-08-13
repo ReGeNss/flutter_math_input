@@ -7,6 +7,12 @@ final _buttonStyle = ButtonStyle(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
     foregroundColor: WidgetStateProperty.all(Colors.black),
     side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
+final _popButtonStyle = ButtonStyle(
+    shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+    backgroundColor: WidgetStateProperty.all(Colors.white70),
+    foregroundColor: WidgetStateProperty.all(Colors.black),
+    side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
 
 
 class KeyboardNumbersButtomWidget extends StatelessWidget {
@@ -154,9 +160,9 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('x');},
                     style: _buttonStyle,
-                    child: const Text('X'))),
+                    child: const Text('x'))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -182,9 +188,9 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('4');},
+                    onPressed: () {model.createCharWidgets('-');},
                     style: _buttonStyle,
-                    child: const Text('4'))),
+                    child: const Text('-'))),
           ],
         ),
         Row(
@@ -219,6 +225,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // formulaParseToString(context);
+                      model.textFieldService.addCharToTextField(',');
                     },
                     style: _buttonStyle,
                     child: const Text(','))),
@@ -240,6 +247,20 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                       model.createCharWidgets('+');
                       // model.selectNextNewFocus(context);
                     },
+                    // onLongPress: () {                   
+                    //   final overlay = Overlay.of(context); 
+                    //   final overlayEntry = OverlayEntry(builder: (context) {
+                    //     return Positioned(
+                    //         top: MediaQuery.of(context).size.height-100,
+                    //         left: MediaQuery.of(context).size.width-100,
+                    //         child: Row(
+                    //           children: [
+                    //             TextButton(onPressed: (){overlayEntry.remove();},style: _popButtonStyle, child: const Text('±'),),
+                    //           ],
+                    //         ));
+                    //   });
+                    //   overlay.insert(overlayEntry);
+                    // },
                     style: _buttonStyle,
                     child: const Text('+'))),
           ],

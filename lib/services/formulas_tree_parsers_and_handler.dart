@@ -243,8 +243,9 @@ class FormulasTreeParsersService {
               final textField = data!.widget as TextField;
               if (_parsedData == null &&
                   textField.controller == activeTextFieldController) {
-                // context.read<KeyboardModel>().parsedData =
-                //     ReturnData(wigetData: array);
+                    data.index = index; 
+                    data.wigetData = array; 
+                    _parsedData = data; 
               }
             }
             isFromRowOrColumn = false;
