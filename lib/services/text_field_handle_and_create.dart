@@ -172,7 +172,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     return newList;
   }
 
-  List<T> _addToList<T>(int addIndex, List<T> list, T replaceData) {
+  List<T> _addToList<T>(int addIndex, List<T> list, T replaceData,) {
     final newList = <T>[];
     if (list.isEmpty && addIndex == 0) {
       return [replaceData];
@@ -181,7 +181,9 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
       if (index != addIndex) {
         newList.add(list[index]);
       } else {
-        newList.addAll([list[index], replaceData]);
+          newList.addAll([list[index], replaceData]);
+       
+        
       }
     }
     return newList;

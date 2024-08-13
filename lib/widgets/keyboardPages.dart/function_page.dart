@@ -56,23 +56,23 @@ class FunctionPageWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {},
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    child: const Text('module'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('!');},
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    child: const Text('!'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {
-    
+                      model.textFieldService.addCharToTextField('e'); 
                     },
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    child: const Text('e'))),
           ],
         ),
         Row(
@@ -153,7 +153,7 @@ class FunctionPageWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {model.NamedFunctionButtonTap('log');},
+                    onPressed: () {model.logButtonTap() ;},
                     style: _buttonStyle,
                     child: const Text('log'))),
             SizedBox(

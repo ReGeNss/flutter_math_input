@@ -80,6 +80,16 @@ class KeyboardModel extends ChangeNotifier{
     }
   }
 
+  void logButtonTap(){
+    final activeTextFieldController = textFieldService.activeTextFieldControllerData.controller;
+    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, activeTextFieldController);
+    final logWidget = mathConstructionsBuildingService.createLogWidget(); 
+    if(parsedWidgets != null){
+      dataHandler.replaceWidgetInTree(parsedWidgets, logWidget);
+      rebuildSreenState(); 
+    }
+  }
+
   void selectNextFocus(){
     final shouldCreateNewField =textFieldService.selectNextFocus();
     if(shouldCreateNewField){

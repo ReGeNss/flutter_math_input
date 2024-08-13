@@ -85,6 +85,33 @@ class MathConstructionsBuilding{
     return sqrtWidget; 
   }
 
+  Widget createLogWidget(){
+    final argField = textFiledService.createTextField(isReplaceOperation: false);
+    final baseField = textFiledService.createTextField(isReplaceOperation: true, isActiveTextField:  true, textFieldSelectedFormat: TextFieldFormat.small); 
+    final logWidget = Stack(
+      clipBehavior: Clip.none,
+      children: [
+        const SizedBox(height: 50,child: Center(child: Text('log',style: TextStyle(fontSize: 25)))),
+        Positioned(
+          left: 35,
+          child: Row(
+          children: [
+            argField,
+          ],
+        )),
+        Positioned(
+          bottom: 0,
+          left: 25,
+          child: Row(
+          children: [
+            baseField,
+          ],
+        )),
+      ],
+    );
+    return logWidget; 
+  }
+
   Widget createNamedFunctionWidget(String functionName){
     final textFieldWidget = textFiledService.createTextField(isReplaceOperation: true,isActiveTextField: true,addAdictionalFocusNode: true); 
     final widget = SizedBox(
@@ -99,15 +126,15 @@ class MathConstructionsBuilding{
     return widget; 
   }
 
-
-
-
   Widget initialization(){
     final textField = textFiledService.createTextField(isReplaceOperation: false,isActiveTextField: true,textFieldSelectedFormat: TextFieldFormat.standart);
     return textField; 
   }
   
 }
+
+
+
 
 class _SqrtCustomPaint extends StatefulWidget {
   const _SqrtCustomPaint({
