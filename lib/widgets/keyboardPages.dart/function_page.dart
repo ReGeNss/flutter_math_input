@@ -164,7 +164,7 @@ class FunctionPageWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {},
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    child: const Text('integral'))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -215,7 +215,7 @@ class FunctionPageWidget extends StatelessWidget {
                       // formulaParseToString(context);
                     },
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    child: const Text('unintegral'))),
             SizedBox(
                 width: 50,
                 height: 50,

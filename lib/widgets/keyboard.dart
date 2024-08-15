@@ -37,7 +37,7 @@ class KeyboardBottomSheet{
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: 50,
+                        width: 45,
                         height: 50,
                         child: IconButton(
                           onPressed: () {
@@ -49,7 +49,7 @@ class KeyboardBottomSheet{
                         ),
                       ),
                       SizedBox(
-                        width: 50,
+                        width: 45,
                         height: 50,
                         child: IconButton(
                           onPressed: () {
@@ -60,7 +60,7 @@ class KeyboardBottomSheet{
                         ),
                       ),
                       SizedBox(
-                        width: 50,
+                        width: 45,
                         height: 50,
                         child: IconButton(
                           onPressed: () {
@@ -72,7 +72,7 @@ class KeyboardBottomSheet{
                         ),
                       ),
                       SizedBox(
-                        width: 50,
+                        width: 45,
                         height: 50,
                         child: IconButton(
                           onPressed: () {
@@ -84,7 +84,7 @@ class KeyboardBottomSheet{
                             ),
                           ),
                           SizedBox(
-                            width: 50,
+                            width: 45,
                             height: 50,
                             child: IconButton(
                               onPressed: () {
@@ -96,7 +96,7 @@ class KeyboardBottomSheet{
                             ),
                           ),
                           SizedBox(
-                            width: 50,
+                            width: 45,
                             height: 50,
                             child: IconButton(
                               onPressed: () {
@@ -107,7 +107,7 @@ class KeyboardBottomSheet{
                             ),
                           ),
                           SizedBox(
-                            width: 50,
+                            width: 45,
                             height: 50,
                             child: IconButton(
                               onPressed: () {

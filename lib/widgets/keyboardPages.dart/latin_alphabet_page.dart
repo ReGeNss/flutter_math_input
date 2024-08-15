@@ -8,7 +8,7 @@ final _buttonStyle = ButtonStyle(
     foregroundColor: WidgetStateProperty.all(Colors.black),
     side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
 
-const double buttonWidth = 40; 
+const double buttonWidth = 35; 
 const double buttonHeight = 60;
 class LatinAlphabetPageWidget extends StatelessWidget {
   const LatinAlphabetPageWidget({Key? key}) : super(key: key);
@@ -92,6 +92,13 @@ class LatinAlphabetPageWidget extends StatelessWidget {
                     },
                     style: _buttonStyle,
                     child: const Text('h'))),
+            
+            
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
             SizedBox(
                 width: buttonWidth,
                 height: buttonHeight,
@@ -99,12 +106,6 @@ class LatinAlphabetPageWidget extends StatelessWidget {
                     onPressed: () {model.textFieldService.addCharToTextField('i');},
                     style: _buttonStyle,
                     child: const Text('i'))),
-            
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
             SizedBox(
                 width: buttonWidth,
                 height: buttonHeight,
@@ -160,6 +161,11 @@ class LatinAlphabetPageWidget extends StatelessWidget {
                     onPressed: () {model.textFieldService.addCharToTextField('p');},
                     style: _buttonStyle,
                     child: const Text('p'))),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
             SizedBox(
                 width: buttonWidth,
                 height: buttonHeight,
@@ -174,11 +180,6 @@ class LatinAlphabetPageWidget extends StatelessWidget {
                     onPressed: () {model.textFieldService.addCharToTextField('r');},
                     style: _buttonStyle,
                     child: const Text('r'))),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
             SizedBox(
                 width: buttonWidth,
                 height: buttonHeight,
