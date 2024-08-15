@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_keyboard/services/formula_to_tex_parser.dart';
 import 'package:math_keyboard/services/formulas_tree_parsers_and_handler.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
 import 'package:math_keyboard/services/text_field_handle_and_create.dart';
@@ -9,6 +10,7 @@ class KeyboardModel extends ChangeNotifier{
   late final MathConstructionsBuilding mathConstructionsBuildingService; 
   late final FormulasTreeParsersService parsersService; 
   late final WidgetsDataHandler dataHandler; 
+  late final FormulaToTexParser texParsingService; 
 
   bool update = true; 
 
@@ -17,6 +19,7 @@ class KeyboardModel extends ChangeNotifier{
     mathConstructionsBuildingService = MathConstructionsBuilding(textFiledService: textFieldService);
     parsersService = FormulasTreeParsersService();
     dataHandler = WidgetsDataHandler(); 
+    texParsingService = FormulaToTexParser(); 
     initialization();
   }
   List<Widget> formulaGroopWidgets =[];
@@ -36,9 +39,9 @@ class KeyboardModel extends ChangeNotifier{
     }
   }
 
-  void NamedFunctionButtonTap(String functionName){
+  void NamedFunctionButtonTap(String functionName, ElementsType type){
     final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller);
-    final fracWidget = mathConstructionsBuildingService.createNamedFunctionWidget(functionName); 
+    final fracWidget = mathConstructionsBuildingService.createNamedFunctionWidget(functionName, type); 
     if(parsedWidgets != null){
       dataHandler.replaceWidgetInTree(parsedWidgets, fracWidget); 
       rebuildSreenState(); 
@@ -88,6 +91,25 @@ class KeyboardModel extends ChangeNotifier{
       dataHandler.replaceWidgetInTree(parsedWidgets, logWidget);
       rebuildSreenState(); 
     }
+  }
+
+  void limButtonTap(){
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller);
+    final limitWidget = mathConstructionsBuildingService.createLimitWidget(); 
+    if(parsedWidgetData != null){
+      dataHandler.replaceWidgetInTree(parsedWidgetData, limitWidget);
+      rebuildSreenState(); 
+    }
+  }
+
+  void absButtonTap(){
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller);
+    final absWidet = mathConstructionsBuildingService.createAbsWidget();
+    if(parsedWidgetData != null){
+      dataHandler.replaceWidgetInTree(parsedWidgetData, absWidet);
+      rebuildSreenState(); 
+    }
+
   }
 
   void selectNextFocus(){

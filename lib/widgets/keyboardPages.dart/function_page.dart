@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/keyboard_model.dart';
+import 'package:math_keyboard/services/math_constructions_building.dart';
 import 'package:provider/provider.dart';
 
 final _buttonStyle = ButtonStyle(
@@ -28,7 +29,7 @@ class FunctionPageWidget extends StatelessWidget {
               height: 50,
               child: TextButton(
                   onPressed: () {
-                    model.NamedFunctionButtonTap('cos');
+                    model.NamedFunctionButtonTap('cos',ElementsType.cosElement);
                   },
                   style: _buttonStyle,
                   child: const Text('cos')),
@@ -38,7 +39,7 @@ class FunctionPageWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                   onPressed: () {
-                    model.NamedFunctionButtonTap('arccos');
+                    model.NamedFunctionButtonTap('arccos',ElementsType.arccosElement);
                   },
                   style: _buttonStyle,
                   child: const Text('arccos'),
@@ -47,16 +48,16 @@ class FunctionPageWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {model.NamedFunctionButtonTap('lg');},
+                    onPressed: () {model.NamedFunctionButtonTap('lg',ElementsType.decimalLogElement);},
                     style: _buttonStyle,
                     child: const Text('lg'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.absButtonTap();},
                     style: _buttonStyle,
-                    child: const Text('module'))),
+                    child: const Text('abs'))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -84,7 +85,7 @@ class FunctionPageWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // fracButtonTap(context);
-                      model.NamedFunctionButtonTap('sin');
+                      model.NamedFunctionButtonTap('sin',ElementsType.sinElement);
                     },
                     style: _buttonStyle,
                     child: const Text('sin'))),
@@ -94,7 +95,7 @@ class FunctionPageWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // sqrtButtonTap(context);
-                      model.NamedFunctionButtonTap('arcsin');
+                      model.NamedFunctionButtonTap('arcsin',ElementsType.arcsinElement);
                     },
                     style: _buttonStyle,
                     child: const Text('arcsin'))),
@@ -102,16 +103,16 @@ class FunctionPageWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {model.NamedFunctionButtonTap('log₂');},
+                    onPressed: () {model.NamedFunctionButtonTap('log₂',ElementsType.logBaseTwoElement);},
                     style: _buttonStyle,
                     child: const Text('log₂'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.limButtonTap(); },
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    child: const Text('lim'))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -124,9 +125,10 @@ class FunctionPageWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                     onPressed: () {
+                      model.textFieldService.addCharToTextField('∞'); 
                     },
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    child: const Text('∞'))),
           ],
         ),
         Row(
@@ -138,7 +140,7 @@ class FunctionPageWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // toSquareTap(context);
-                      model.NamedFunctionButtonTap('tan');
+                      model.NamedFunctionButtonTap('tan',ElementsType.tanElement);
                     },
                     style: _buttonStyle,
                     child: const Text('tan'))),
@@ -146,7 +148,7 @@ class FunctionPageWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {model.NamedFunctionButtonTap('arctan');},
+                    onPressed: () {model.NamedFunctionButtonTap('arctan',ElementsType.arctanElement);},
                     style: _buttonStyle,
                     child: const Text('arctan'))),
             SizedBox(
@@ -186,7 +188,7 @@ class FunctionPageWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {model.NamedFunctionButtonTap('cot');},
+                    onPressed: () {model.NamedFunctionButtonTap('cot',ElementsType.cotElement);},
                     style: _buttonStyle,
                     child: const Text('cot'))),
             SizedBox(
@@ -194,7 +196,7 @@ class FunctionPageWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                     onPressed: () {
-                      model.NamedFunctionButtonTap('arccot');
+                      model.NamedFunctionButtonTap('arccot',ElementsType.arccotElement);
                     },
                     style: _buttonStyle,
                     child: const Text('arccot'))),
@@ -202,7 +204,7 @@ class FunctionPageWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {model.NamedFunctionButtonTap('ln');},
+                    onPressed: () {model.NamedFunctionButtonTap('ln',ElementsType.naturalLogElement);},
                     style: _buttonStyle,
                     child: const Text('ln'))),
             SizedBox(

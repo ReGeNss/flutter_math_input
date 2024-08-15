@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
 
 class FormulasTreeParsersService {
@@ -15,6 +14,7 @@ class FormulasTreeParsersService {
     _parsedData = null;
     _widgetTreeParser(array, activeTextFieldController); 
     return _parsedData; 
+    
   }
 
   ReturnData? _parseWidgetWithPeplacment(
@@ -120,6 +120,7 @@ class FormulasTreeParsersService {
             }
           break;
         }
+
       }
     }
     return null;
@@ -355,6 +356,10 @@ class FormulasTreeParsersService {
     }
     return null;
   }
+
+
+
+
 
   
 

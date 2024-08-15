@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/services/text_field_handle_and_create.dart';
 
-enum ElementsType{fracElement,sqrtElement,fieldElement,exponentiationElement}
+enum ElementsType{fracElement,sqrtElement,fieldElement,exponentiationElement,naturalLogElement,decimalLogElement,logBaseTwoElement,logElement ,absElement,limitElement, cosElement,sinElement,tanElement,cotElement,arcsinElement,arccosElement,arctanElement,arccotElement,}
 
 class MathConstructionsBuilding{
   final TextFieldHandleAndCreateService textFiledService;
@@ -89,6 +89,7 @@ class MathConstructionsBuilding{
     final argField = textFiledService.createTextField(isReplaceOperation: false);
     final baseField = textFiledService.createTextField(isReplaceOperation: true, isActiveTextField:  true, textFieldSelectedFormat: TextFieldFormat.small); 
     final logWidget = Stack(
+      key: const ValueKey(ElementsType.logElement),
       clipBehavior: Clip.none,
       children: [
         const SizedBox(height: 50,child: Center(child: Text('log',style: TextStyle(fontSize: 25)))),
@@ -112,10 +113,56 @@ class MathConstructionsBuilding{
     return logWidget; 
   }
 
-  Widget createNamedFunctionWidget(String functionName){
+  Widget createLimitWidget(){ 
+    final argField = textFiledService.createTextField(isReplaceOperation: false,addAdictionalFocusNode: true);
+    final firstDownField = textFiledService.createTextField(isReplaceOperation: true,isActiveTextField:true,textFieldSelectedFormat: TextFieldFormat.small);
+    final secondDownField = textFiledService.createTextField(isReplaceOperation: false,textFieldSelectedFormat: TextFieldFormat.small); 
+    final limitWidget = Stack(
+      key: const ValueKey(ElementsType.limitElement),
+      clipBehavior: Clip.none,
+      children: [
+        const SizedBox(height: 50,child: Center(child: Text('lim',style: TextStyle(fontSize: 40,fontWeight: FontWeight.w400),),),),
+        Positioned(
+          left: 55,
+          child: Row(
+            children: [
+              argField, 
+            ],
+          ),
+        ),
+         Positioned(
+          bottom: -20,
+          left: 0,
+          child: Row(
+            children: [
+              firstDownField
+            ],
+          ),
+        ),
+        const Positioned(
+          bottom: -20,
+          left: 20,
+          child: Icon(Icons.arrow_forward_outlined)),
+         Positioned(
+          bottom: -20,
+          left: 35,
+          child: Row(
+            children: [
+              secondDownField
+            ],
+          ),
+        ),
+      ],
+    );
+    return limitWidget; 
+  }
+
+
+  Widget createNamedFunctionWidget(String functionName, ElementsType type){
     final textFieldWidget = textFiledService.createTextField(isReplaceOperation: true,isActiveTextField: true,addAdictionalFocusNode: true); 
     final widget = SizedBox(
       child: Row(
+        key: ValueKey(type),
         children: [
           Text(functionName,style: const TextStyle(fontSize: 22),),
           const SizedBox(width: 3,),
@@ -126,6 +173,26 @@ class MathConstructionsBuilding{
     return widget; 
   }
 
+  Widget createAbsWidget(){
+    final textFieldWidget = textFiledService.createTextField(isReplaceOperation: true,isActiveTextField: true,addAdictionalFocusNode: true);
+    final globalKey = GlobalKey(); 
+    final absWidget = Row(
+      key: globalKey,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 5),
+          child: AbsLineWidget(globalKey: globalKey,),
+        ),
+        textFieldWidget,
+        Padding(
+          padding: const EdgeInsets.only(left: 5),
+          child: AbsLineWidget(globalKey: globalKey,),
+        ),
+      ],
+    );
+    return absWidget;
+  }
+
   Widget initialization(){
     final textField = textFiledService.createTextField(isReplaceOperation: false,isActiveTextField: true,textFieldSelectedFormat: TextFieldFormat.standart);
     return textField; 
@@ -133,7 +200,33 @@ class MathConstructionsBuilding{
   
 }
 
+class AbsLineWidget extends StatefulWidget {
+  const AbsLineWidget({Key? key, required this.globalKey}) : super(key: key);
+  final GlobalKey globalKey;
 
+  @override
+  State<AbsLineWidget> createState() => _AbsLineWidgetState();
+}
+
+class _AbsLineWidgetState extends State<AbsLineWidget> {
+  Size? size; 
+  getSize(){
+    final rendexBox = widget.globalKey.currentContext!.findRenderObject() as RenderBox;
+    size = rendexBox.size;  
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPersistentFrameCallback((_)=> getSize());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(color: Colors.black,width: 3,height: size?.height ?? 50,);
+  }
+}
 
 
 class _SqrtCustomPaint extends StatefulWidget {

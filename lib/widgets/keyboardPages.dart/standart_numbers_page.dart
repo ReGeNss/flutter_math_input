@@ -93,13 +93,12 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
             SizedBox(
                 width: 50,
                 height: 50,
-                child: TextButton(
+                child: IconButton(
                     onPressed: () {
-                      // fracButtonTap(context);
                       model.onFracButtonTap(); 
                     },
                     style: _buttonStyle,
-                    child: const Text('frac'))),
+                    icon: const Text('frac'))),
             SizedBox(
                 width: 50,
                 height: 50,

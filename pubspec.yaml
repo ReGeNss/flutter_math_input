@@ -11,7 +11,11 @@ dependencies:
     sdk: flutter
   provider: ^6.1.2
 
-
+fonts:
+  - family:  MathKeyboardCustomIcons
+    fonts:
+    - asset: assets/fonts/MathKeyboardCustomIcons.ttf
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
