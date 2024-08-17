@@ -109,7 +109,15 @@ class KeyboardModel extends ChangeNotifier{
       dataHandler.replaceWidgetInTree(parsedWidgetData, absWidet);
       rebuildSreenState(); 
     }
+  }
 
+  void backetsButtonTap(){
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller);
+    final backetsWidget = mathConstructionsBuildingService.createBracketsWidget();
+    if(parsedWidgetData != null){
+      dataHandler.replaceWidgetInTree(parsedWidgetData, backetsWidget);
+      rebuildSreenState(); 
+    }
   }
 
   void selectNextFocus(){

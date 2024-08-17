@@ -120,6 +120,15 @@ class FormulasTreeParsersService {
             }
           break;
         }
+        case const (BacketsWidget):
+        {
+          final widget = (array[index] as BacketsWidget).child as Row; 
+          data = _parseWidgetWithPeplacment(widget.children, activeTextFieldController); 
+          if (data != null) {
+              return data;
+            }
+            break;
+        }
 
       }
     }
@@ -297,6 +306,22 @@ class FormulasTreeParsersService {
             }
             break;
           }
+        case const (BacketsWidget):
+        {
+          final widget = (array[index] as BacketsWidget).child as Row;
+          data = _widgetTreeParser(
+                widget.children, activeTextFieldController,
+                isFromRowOrColumn: true);
+            if (data?.widget is TextField) {
+              final textField = data!.widget as TextField;
+              if (_parsedData == null &&
+                  textField.controller == activeTextFieldController) {
+                _parsedData = ReturnData(wigetData: array);
+              }
+            }
+            isFromRowOrColumn = false;
+            break;
+        }
       }
     }
     return null;

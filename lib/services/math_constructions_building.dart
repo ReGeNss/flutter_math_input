@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:math_keyboard/services/text_field_handle_and_create.dart';
 
 enum ElementsType{fracElement,sqrtElement,fieldElement,exponentiationElement,naturalLogElement,decimalLogElement,logBaseTwoElement,logElement ,absElement,limitElement, cosElement,sinElement,tanElement,cotElement,arcsinElement,arccosElement,arctanElement,arccotElement,}
@@ -193,11 +195,54 @@ class MathConstructionsBuilding{
     return absWidget;
   }
 
+  Widget createBracketsWidget(){
+    final textFieldWidget = textFiledService.createTextField(isReplaceOperation: true,isActiveTextField: true,);
+    final adictionalField = textFiledService.createTextField(isReplaceOperation: false,);
+    final backetsWidget = Row(
+      children: [
+        BacketsWidget(textFieldWidget: textFieldWidget),
+        adictionalField,
+      ],
+    ) ;
+    return backetsWidget;  
+  }
+
   Widget initialization(){
     final textField = textFiledService.createTextField(isReplaceOperation: false,isActiveTextField: true,textFieldSelectedFormat: TextFieldFormat.standart);
     return textField; 
   }
   
+}
+
+class BacketsWidget extends StatefulWidget {
+  BacketsWidget({
+    Key? key,
+    required this.textFieldWidget,
+  }) : super(key: key);
+  final Widget textFieldWidget;
+  Widget? child; 
+
+  @override
+  State<BacketsWidget> createState() => _BacketsWidgetState();
+}
+
+class _BacketsWidgetState extends State<BacketsWidget> {
+
+  @override
+  Widget build(BuildContext context) {
+    if(widget.child == null){
+      widget.child = Row(
+        children: [
+          widget.textFieldWidget,
+        ],
+      );
+    }
+    return Row(children: [
+      const Text('('),
+      widget.child!,
+      const Text(')'),
+    ],);
+  }
 }
 
 class AbsLineWidget extends StatefulWidget {
@@ -317,11 +362,7 @@ class _ExpRowWidgetState extends State<ExpRowWidget> {
     Widget firstPositioned=Positioned(
                     left: 0,
                     bottom: 0,
-                    child: Row(
-                      children: [
-                        widget.baseWidget,
-                      ],
-                    )); 
+                    child: widget.baseWidget); 
     Widget secondPositioned=Positioned(
                     key: widget.globalKey,
                     top: -5,
@@ -337,27 +378,23 @@ class _ExpRowWidgetState extends State<ExpRowWidget> {
                       ],
                     ));
     if(widget.child != null){
-      final row = widget.child as Row; 
-      final sizedBox = row.children[0] as SizedBox;
+      // final row = widget.child as Row; 
+      final sizedBox = widget.child as SizedBox;
       final stack = sizedBox.child! as Stack; 
       firstPositioned = stack.children[0];
       secondPositioned = stack.children[1]; 
     }
-    final child = Row(
-      children: [
-        SizedBox(
-          width: size.width,
-          height: size.height,
-          child: Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.topRight,
-            children: [
-              firstPositioned,
-              secondPositioned, 
-            ],
-          ),
-        )
-      ],
+    final child = SizedBox(
+      width: size.width,
+      height: size.height,
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.topRight,
+        children: [
+          firstPositioned,
+          secondPositioned, 
+        ],
+      ),
     );
     widget.child = child; 
     return child; 

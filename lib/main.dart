@@ -48,7 +48,6 @@ class MainScreenWidget extends StatelessWidget {
                 child: model.update==true ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: context.watch<KeyboardModel>().formulaGroopWidgets,
-                  // children: context.watch<KeyboardModel>().formulaGroopWidgets
                 ) : const Center(child: Text('LOAD')),
               ),
             ),

@@ -34,12 +34,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
               height: 50,
               child: TextButton(
                   onPressed: () {
-                    // if (context.read<KeyboardModel>().changeHandler == true) {
-                    //   context.read<KeyboardModel>().changeHandler = false;
-                    // } else {
-                    //   context.read<KeyboardModel>().changeHandler = true;
-                    // }
-                    // context.read<KeyboardModel>().notify();
+                    model.backetsButtonTap();
                   },
                   style: _buttonStyle,
                   child: const Text('( )')),
