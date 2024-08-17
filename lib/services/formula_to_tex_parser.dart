@@ -20,29 +20,57 @@ class FormulaToTexParser{
             switch(keyValue){
               case (ElementsType.exponentiationElement):
               {
-                final intermediateTeXData = formulaInTeX;
-              formulaInTeX = ''; 
-              final expData= expParser(element.children);
-              formulaInTeX = intermediateTeXData + expData;
-              return formulaInTeX;
+                return addToTeXData(widgetsData: element.children, parseFunction: expParser);
               }
               case (ElementsType.sqrtElement):
               {
-                 final intermediateTeXData = formulaInTeX;
-              formulaInTeX = ''; 
-              final sqrtData= sqrtParser(element.children);
-              formulaInTeX = intermediateTeXData + sqrtData;
-              print(formulaInTeX);
-              return formulaInTeX;
+                return addToTeXData(widgetsData: element.children, parseFunction: sqrtParser);
               }
               case (ElementsType.cosElement):
               {
-                 final intermediateTeXData = formulaInTeX;
-              formulaInTeX = ''; 
-              final expData= expParser(element.children);
-              formulaInTeX = intermediateTeXData + expData;
-              return formulaInTeX;
+                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\cos');
               }
+              case (ElementsType.sinElement):
+              {
+                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\sin');
+              }
+              case (ElementsType.tanElement):
+              {
+                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\tan');
+              }
+              case (ElementsType.cotElement):
+              {
+                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\cot');
+              }
+              case (ElementsType.arccosElement):
+              {
+                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\arccos');
+              }
+              case (ElementsType.arcsinElement):
+              {
+                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\arcsin');
+              }
+              case (ElementsType.arctanElement):
+              {
+                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\arctan');
+              }
+              case (ElementsType.arccotElement):
+              {
+                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\arccot');
+              }
+              case (ElementsType.naturalLogElement):
+              {
+                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\ln'); 
+              }
+              case (ElementsType.logBaseTwoElement):
+              {
+                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\log_2');
+              }
+              case (ElementsType.decimalLogElement):
+              {
+                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\lg');
+              }
+
             }
           } else {
             final intermediateTeXData = formulaInTeX; 
@@ -88,7 +116,7 @@ class FormulaToTexParser{
               }
             } else {
               if (element.children.isNotEmpty) {
-                _formulaParser(element.children);
+                return _formulaParser(element.children);
               }
             }
           
@@ -100,14 +128,14 @@ class FormulaToTexParser{
           // if(element.key == ElementsType.fieldElement)
           if (element.child != null) {
             // return formulaParseLoop([element.child!]);
-            _formulaParser([element.child!]);
+            return _formulaParser([element.child!]);
           }
           break;
         }
       case const (Positioned):
         {
           element as Positioned;
-          _formulaParser([element.child]);
+          return _formulaParser([element.child]);
           break;
         }
       case const (TextField):
@@ -121,6 +149,21 @@ class FormulaToTexParser{
   }
   print(formulaInTeX); 
 }
+
+String addToTeXData({
+      Function(List<Widget>)? parseFunction,required List<Widget> widgetsData,Function(List<Widget>,String)? parseFunctionWithTeXFormula,String? teXFormula}) {
+    final intermediateTeXData = formulaInTeX;
+    var teXData = ''; 
+    if(parseFunction != null){
+      teXData = parseFunction(widgetsData) as String;
+    }else if(teXFormula != null && parseFunctionWithTeXFormula != null){
+      teXData = parseFunctionWithTeXFormula(widgetsData,teXFormula) as String;
+    }
+    
+    formulaInTeX = intermediateTeXData + teXData;
+    print(formulaInTeX);
+    return formulaInTeX;
+  }
 
 String expParser(List<Widget> widgets){
   String teXExpData=''; 
@@ -177,6 +220,10 @@ String fracParser(List<Widget> widgets) {
   return fracStringData;
 }
 
+// String absParser(List<Widget> widgets){
+//   final List<String>>
+// }
+
 String logParser(List<Widget> widgets) {
     final List<String> logData = ['', ''];
     for (final element in widgets) {
@@ -215,5 +262,15 @@ String limitParser(List<Widget> widgets){
   return limitStringData; 
 }
 
+String trigonometricParser(List<Widget> widgets, String TeXFormula){
+  if(widgets[2] is SizedBox && (widgets[2] as SizedBox).child != null)
+  {
+    final sizedBox = widgets[2] as SizedBox;
+    final stringData = _formulaParser([sizedBox.child!]);
+    formulaInTeX = ''; 
+    return '$TeXFormula $stringData';
+  } 
+  return ''; 
+}
 
 }
