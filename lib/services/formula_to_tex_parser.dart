@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
 
@@ -70,6 +72,12 @@ class FormulaToTexParser{
               {
                 return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\lg');
               }
+              case (ElementsType.indefiniteIntegralElement):
+              {
+                final integralString = undefinitIntegralParser(element.children);
+                formulaInTeX = formulaInTeX + integralString;
+                return formulaInTeX; 
+              }
 
             }
           } else {
@@ -112,6 +120,12 @@ class FormulaToTexParser{
                   final limitString = limitParser(element.children);
                   formulaInTeX = formulaInTeX + limitString; 
                   return formulaInTeX; 
+                }
+                case(ElementsType.integralElement):
+                {
+                  final intString = integralParser(element.children); 
+                  formulaInTeX = formulaInTeX + intString;
+                  return formulaInTeX;
                 }
               }
             } else {
@@ -158,6 +172,16 @@ class FormulaToTexParser{
           return element.controller?.text;
           // break;
         }
+      case const (IntegralWidget):
+      {
+        element as IntegralWidget;
+          return _formulaParser([element.child!]);
+      }
+      case const (IntegralArgumentWidget):
+      {
+        element as IntegralArgumentWidget;
+        return _formulaParser([element.child!]);
+      }
     }
   }
   print(formulaInTeX); 
@@ -252,6 +276,50 @@ String logParser(List<Widget> widgets) {
     }
   final logStringData = '\\log_{${logData[1]}}${logData[0]}';
   return logStringData; 
+}
+
+String integralParser(List<Widget> widgets){
+  final List<String> integralData = ['','','',''];
+  for(final element in widgets){
+    if(element.runtimeType == Positioned){
+      element as Positioned;  
+      final fieldData = _formulaParser([element.child]);
+      if(integralData[0].isEmpty){
+        integralData[0] = fieldData ??'';
+      }
+      else if(integralData[1].isEmpty){
+        integralData[1] = fieldData ??'';
+      }
+      else if(integralData[2].isEmpty){
+        integralData[2] = fieldData ??'';
+      }
+      else if(integralData[3].isEmpty){
+        integralData[3] = fieldData ??'';
+      }
+      formulaInTeX = '';
+    }
+  }
+  print("tyt");
+  print(formulaInTeX);
+  formulaInTeX = ''; 
+  final integralString = '\\integral{${integralData[0]}}{${integralData[1]}} ${integralData[2]} d${integralData[3]}';
+  return integralString; 
+}
+
+String undefinitIntegralParser(List<Widget> widgets){
+  final List<String> integralData = ['',''];
+  for(final element in widgets){
+    if(element.runtimeType == IntegralArgumentWidget){
+      final arg = element as IntegralArgumentWidget;
+      integralData[0] = _formulaParser([arg.child!]) ??''; 
+    }else if(element.runtimeType == SizedBox){
+      final sizedBox = element as SizedBox; 
+      integralData[1] = _formulaParser([sizedBox.child!]) ??'';
+    }
+  }
+  formulaInTeX = ''; 
+  final integral = '\\int ${integralData[0]} d${integralData[1]}'; 
+  return integral;
 }
 
 String absParser(List<Widget> widgets){

@@ -341,7 +341,7 @@ class _IntegralArgumentWidgetState extends State<IntegralArgumentWidget> {
     }
     widget.child = Row(
       children: [
-        SizedBox(child: widget.argumentWidget),
+        widget.argumentWidget,
       ],
     );
     return widget.child!; 
