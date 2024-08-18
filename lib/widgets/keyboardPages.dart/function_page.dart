@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_keyboard/custom_math_icons_icons.dart';
 import 'package:math_keyboard/keyboard_model.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
 import 'package:provider/provider.dart';
@@ -109,10 +110,10 @@ class FunctionPageWidget extends StatelessWidget {
             SizedBox(
                 width: 50,
                 height: 50,
-                child: TextButton(
+                child: IconButton(
                     onPressed: () {model.limButtonTap(); },
                     style: _buttonStyle,
-                    child: const Text('lim'))),
+                    icon: const Icon(CustomMathIcons.lim))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -154,17 +155,17 @@ class FunctionPageWidget extends StatelessWidget {
             SizedBox(
                 width: 50,
                 height: 50,
-                child: TextButton(
+                child: IconButton(
                     onPressed: () {model.logButtonTap() ;},
                     style: _buttonStyle,
-                    child: const Text('log'))),
+                    icon: const Icon(CustomMathIcons.log))),
             SizedBox(
                 width: 50,
                 height: 50,
-                child: TextButton(
+                child: IconButton(
                     onPressed: () {},
                     style: _buttonStyle,
-                    child: const Text('integral'))),
+                    icon: const Icon(CustomMathIcons.integral))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -210,12 +211,12 @@ class FunctionPageWidget extends StatelessWidget {
             SizedBox(
                 width: 50,
                 height: 50,
-                child: TextButton(
+                child: IconButton(
                     onPressed: () {
                       // formulaParseToString(context);
                     },
                     style: _buttonStyle,
-                    child: const Text('unintegral'))),
+                    icon: const Icon(CustomMathIcons.indefinite_integral))),
             SizedBox(
                 width: 50,
                 height: 50,

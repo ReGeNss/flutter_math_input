@@ -11,10 +11,7 @@ dependencies:
     sdk: flutter
   provider: ^6.1.2
 
-fonts:
-  - family:  MathKeyboardCustomIcons
-    fonts:
-    - asset: assets/fonts/MathKeyboardCustomIcons.ttf
+
   
 dev_dependencies:
   flutter_test:
@@ -23,3 +20,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family:  CustomMathIcons
+      fonts:
+       - asset: fonts/CustomMathIcons.ttf
