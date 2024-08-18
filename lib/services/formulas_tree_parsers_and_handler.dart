@@ -138,7 +138,19 @@ class FormulasTreeParsersService {
             }
             break; 
         }
-
+        case const (IntegralWidget): 
+        {
+            final widget =
+                (array[index] as IntegralWidget).child as SizedBox;
+            if (widget.child != null) {
+              data = _parseWidgetWithPeplacment(
+                  [widget.child!], activeTextFieldController);
+              if (data != null) {
+                return data;
+              }
+            }
+            break; 
+        }
       }
     }
     return null;
@@ -197,6 +209,18 @@ class FormulasTreeParsersService {
               stack.children, activeTextFieldController);
           return data;
         }
+      case const (IntegralWidget):
+      {
+        final integralWiget = widget as IntegralWidget;
+        data = _textControllerWidgetParser(integralWiget.child!, activeTextFieldController);
+        return data; 
+      }
+      case const (IntegralArgumentWidget):
+      {
+        final integralArg = widget as IntegralArgumentWidget;
+        data = _textControllerWidgetParser(integralArg.child!, activeTextFieldController);
+        return data;  
+      }
     }
     return null;
   }
@@ -347,6 +371,30 @@ class FormulasTreeParsersService {
             isFromRowOrColumn = false;
             break;
         }
+        case const (IntegralWidget):
+        {
+            final widget = array[index] as IntegralWidget;
+            if (widget.child != null) {
+              data = _widgetParser(
+                  widget.child!, activeTextFieldController);
+            }
+            if (data != null) {
+              data.index = index; // костилі
+              if (isFromRowOrColumn == false) {
+                data.wigetData = array;
+              }
+              if (data.widget is TextField && isFromRowOrColumn == false) {
+                final controller = (data.widget as TextField).controller;
+                if (controller == activeTextFieldController) {
+                  _parsedData = data;
+                }
+              }
+              return data;
+            }
+            // isFromRowOrColumn = false;
+            break;
+        }
+        
       }
     }
     return null;
@@ -402,6 +450,18 @@ class FormulasTreeParsersService {
       data = _widgetParser(
           widget.child!, activeTextFieldController);
       return data;
+      }
+      case const (IntegralWidget):
+      {
+        final integralWiget = widget as IntegralWidget;
+        data = _widgetParser(integralWiget.child!, activeTextFieldController);
+        return data; 
+      }
+      case const (IntegralArgumentWidget):
+      {
+        final integralArg = widget as IntegralArgumentWidget;
+        data = _widgetParser(integralArg.child!, activeTextFieldController);
+        return data;  
       }
     }
     return null;

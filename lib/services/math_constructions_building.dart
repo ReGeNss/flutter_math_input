@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
 import 'package:math_keyboard/services/text_field_handle_and_create.dart';
 
 enum ElementsType{fracElement,sqrtElement,fieldElement,exponentiationElement,naturalLogElement,decimalLogElement,logBaseTwoElement,logElement ,absElement,limitElement, cosElement,sinElement,tanElement,cotElement,arcsinElement,arccosElement,arctanElement,arccotElement,indefiniteIntegralElement,integralElement}
@@ -238,25 +237,12 @@ class MathConstructionsBuilding{
 
   Widget createIntegralWidget(){
     final startPointField = textFieldService.createTextField(isReplaceOperation: true,isActiveTextField: true ,addAdictionalFocusNode: false,textFieldSelectedFormat: TextFieldFormat.small);
+    final derevativeField = textFieldService.createTextField(isReplaceOperation: false,addAdictionalFocusNode: true,textFieldSelectedFormat: TextFieldFormat.standart);
+    final argFieldWidget = textFieldService.createTextField(isReplaceOperation: false,textFieldSelectedFormat: TextFieldFormat.standart);
     final finishPointField = textFieldService.createTextField(isReplaceOperation: false,addAdictionalFocusNode: false,textFieldSelectedFormat: TextFieldFormat.small);
-    final argFieldWidget = textFieldService.createTextField(isReplaceOperation: false);
-    final derevativeField = textFieldService.createTextField(isReplaceOperation: false,addAdictionalFocusNode: true);
-    final integralWidget = SizedBox(
-      width: 100,
-      height: 50,
-      child: Stack(
-        key: const ValueKey(ElementsType.integralElement),
-        clipBehavior: Clip.none,
-        children: [
-          const Positioned(left: 0,child: Text('∫',style: TextStyle(fontSize: 30),),),
-          Positioned(bottom: 0,left: 5,child: startPointField),
-          Positioned(top: 0,left: 5,child: finishPointField),
-          Positioned(left: 10,child: argFieldWidget),
-          const Positioned(child: Text('d',style: TextStyle(fontSize: 25),),),
-          Positioned(right: 50,child: derevativeField),
-        ],
-      )
-    );
+    final globalKey = GlobalKey(); 
+
+    final integralWidget = IntegralWidget(startPointField: startPointField, finishPointField: finishPointField, argFieldWidget: argFieldWidget, derevativeField: derevativeField,globalKey: globalKey);
     return integralWidget; 
   }
 
@@ -266,6 +252,76 @@ class MathConstructionsBuilding{
     return textField; 
   }
   
+}
+
+class IntegralWidget extends StatefulWidget {
+  IntegralWidget({
+    super.key,
+    required this.startPointField,
+    required this.finishPointField,
+    required this.argFieldWidget,
+    required this.derevativeField, required this.globalKey,
+  });
+
+  final Widget startPointField;
+  final Widget finishPointField;
+  final Widget argFieldWidget;
+  final Widget derevativeField;
+  final GlobalKey globalKey; 
+  Widget? child; 
+  @override
+  State<IntegralWidget> createState() => _IntegralWidgetState();
+}
+
+class _IntegralWidgetState extends State<IntegralWidget> {
+  Size? size; 
+  
+  void getSize(){
+    if(widget.globalKey.currentContext != null){
+      final renderBox = widget.globalKey.currentContext?.findRenderObject() as RenderBox;
+      if(size == null || size!.width != renderBox.size.width){
+        size =Size(renderBox.size.width+80, renderBox.size.height);
+        setState(() { });
+      } 
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_)=> getSize());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    late final Stack stack; 
+    if(widget.child != null){
+      final box = widget.child as SizedBox;
+      stack = box.child as Stack;  
+    }else{
+        stack = Stack(
+        key: const ValueKey(ElementsType.integralElement),
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: [
+          const Positioned(left: 0,child: Center(child: Text('∫',style: TextStyle(fontSize: 35),)),),
+          Positioned(bottom: 0,left: 5,child: widget.startPointField),
+          Positioned(top: 0,left: 5,child: widget.finishPointField),
+          Positioned(key: widget.globalKey,left: 30,child: IntegralArgumentWidget(argumentWidget: widget.argFieldWidget)),
+          const Positioned(right: 35,child: Text('d',style: TextStyle(fontSize: 25),),),
+          Positioned(right: 0,child: widget.derevativeField),
+        ],
+      );
+    }
+    
+    final child = SizedBox(
+      width: size?.width?? 150,
+      height: 60,
+      child: stack, 
+    );
+    widget.child = child;
+    return child;
+  }
 }
 
 class IntegralArgumentWidget extends StatefulWidget {
@@ -430,7 +486,7 @@ class _ExpRowWidgetState extends State<ExpRowWidget> {
   Size size = const Size(120, 60); 
   void getSize(){
     final renderBox = widget.globalKey.currentContext?.findRenderObject() as RenderBox; 
-    size = Size(renderBox.size.width+70,renderBox.size.height+25); 
+    size = Size(renderBox.size.width+20,renderBox.size.height+25); 
     setState(() {});
   }
   @override
@@ -448,7 +504,7 @@ class _ExpRowWidgetState extends State<ExpRowWidget> {
     Widget secondPositioned=Positioned(
                     key: widget.globalKey,
                     top: -5,
-                    right: 40,
+                    right: 0,
                     child: Row(
                       key: const ValueKey(ElementsType.exponentiationElement),
                       children: [
