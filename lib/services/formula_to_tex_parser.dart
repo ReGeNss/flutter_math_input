@@ -125,11 +125,24 @@ class FormulaToTexParser{
       case const (SizedBox):
         {
           element as SizedBox;
-          // if(element.key == ElementsType.fieldElement)
           if (element.child != null) {
-            // return formulaParseLoop([element.child!]);
+            if (element.key != null && element.key is ValueKey) {
+              final key = element.key as ValueKey; 
+              final keyValue = key.value; 
+              switch (keyValue) 
+              {
+                case (ElementsType.absElement):
+                  {
+                    final absString = absParser([element.child!]);
+                    formulaInTeX = formulaInTeX + absString; 
+                    return formulaInTeX; 
+                  }
+              }
+            }
             return _formulaParser([element.child!]);
           }
+          
+          
           break;
         }
       case const (Positioned):
@@ -239,6 +252,16 @@ String logParser(List<Widget> widgets) {
     }
   final logStringData = '\\log_{${logData[1]}}${logData[0]}';
   return logStringData; 
+}
+
+String absParser(List<Widget> widgets){
+  if(widgets.first is Row){
+    final row = widgets.first as Row; 
+    final fieldData = _formulaParser(row.children);
+    formulaInTeX = ''; 
+    return '\\abs{$fieldData}'; 
+  }
+  return ''; 
 }
 
 String limitParser(List<Widget> widgets){
