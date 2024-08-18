@@ -98,6 +98,10 @@ class FormulaToTexParser{
               final fracString = fracParser(element.children);
               formulaInTeX = formulaInTeX + fracString;
               return formulaInTeX;
+            }else if(key.value == ElementsType.derevativeElement){
+              final derevativeString = derevativeParser(element.children);
+              formulaInTeX = formulaInTeX + derevativeString;
+              return formulaInTeX;
             }
           }
 
@@ -255,6 +259,26 @@ String fracParser(List<Widget> widgets) {
   }
   final fracStringData = '\\frac{${fracData[0]}}{${fracData[1]}}';
   return fracStringData;
+}
+
+String derevativeParser(List<Widget> widgets){
+  final List<String> derevativeData = ['',''];
+  for(final element in widgets){
+    if(element.runtimeType == SizedBox){
+      element as SizedBox; 
+      if(element.child != null){
+        final textController = _formulaParser([element.child!]);
+        if(derevativeData[0].isEmpty){
+          derevativeData[0] = textController ?? '';
+        }else if(derevativeData[1].isEmpty){
+          derevativeData[1] = textController ?? ''; 
+        }
+      }
+      formulaInTeX = ''; 
+    }
+  }
+  final derevativeString = '\\frac{d${derevativeData[0]}}{d${derevativeData[1]}}';
+  return derevativeString;
 }
 
 // String absParser(List<Widget> widgets){

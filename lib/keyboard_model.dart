@@ -137,6 +137,14 @@ class KeyboardModel extends ChangeNotifier{
       rebuildSreenState();
     }
   }
+  void onDerevativeButtonTap({String? upperField, String? downField}){
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller );
+    final derevativeWidget = mathConstructionsBuildingService.createDerevativeWidget(upperField,downField);
+    if(parsedWidgetData!= null){
+      dataHandler.replaceWidgetInTree(parsedWidgetData, derevativeWidget);
+      rebuildSreenState();
+    }
+  }
 
   void selectNextFocus(){
     final shouldCreateNewField =textFieldService.selectNextFocus();

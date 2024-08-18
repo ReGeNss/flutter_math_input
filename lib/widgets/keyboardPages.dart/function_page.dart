@@ -118,9 +118,9 @@ class FunctionPageWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('f(x)');},
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    child: const Text('f(x)'))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -169,10 +169,10 @@ class FunctionPageWidget extends StatelessWidget {
             SizedBox(
                 width: 50,
                 height: 50,
-                child: TextButton(
-                    onPressed: () {},
+                child: IconButton(
+                    onPressed: () {model.onDerevativeButtonTap(upperField: 'x',downField: 'y');},
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    icon: const Icon(CustomMathIcons.dx_dy))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -220,12 +220,12 @@ class FunctionPageWidget extends StatelessWidget {
             SizedBox(
                 width: 50,
                 height: 50,
-                child: TextButton(
+                child: IconButton(
                     onPressed: () {
-                      
+                      model.onDerevativeButtonTap(); 
                     },
                     style: _buttonStyle,
-                    child: const Text(''))),
+                    icon: const Icon(CustomMathIcons.derevative))),
             SizedBox(
                 width: 50,
                 height: 50,
