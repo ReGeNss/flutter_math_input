@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 
 import 'package:math_keyboard/services/text_field_handle_and_create.dart';
 
-enum ElementsType{fracElement,sqrtElement,fieldElement,exponentiationElement,naturalLogElement,decimalLogElement,logBaseTwoElement,logElement ,absElement,limitElement, cosElement,sinElement,tanElement,cotElement,arcsinElement,arccosElement,arctanElement,arccotElement,}
+enum ElementsType{fracElement,sqrtElement,fieldElement,exponentiationElement,naturalLogElement,decimalLogElement,logBaseTwoElement,logElement ,absElement,limitElement, cosElement,sinElement,tanElement,cotElement,arcsinElement,arccosElement,arctanElement,arccotElement,indefiniteIntegralElement,integralElement}
 
 class MathConstructionsBuilding{
-  final TextFieldHandleAndCreateService textFiledService;
+  final TextFieldHandleAndCreateService textFieldService;
   
-  MathConstructionsBuilding({required this.textFiledService}); 
+  MathConstructionsBuilding({required this.textFieldService}); 
   Widget createTextField({bool replaceOldFocus = false}){
-    final textField = textFiledService.createTextField(isReplaceOperation: replaceOldFocus,isActiveTextField: true);
+    final textField = textFieldService.createTextField(isReplaceOperation: replaceOldFocus,isActiveTextField: true);
     return textField;
   }
 
   Widget createFracWidget(){    
-    final upperField =textFiledService.createTextField(isReplaceOperation:true,isActiveTextField: true);
-    final downField = textFiledService.createTextField(isReplaceOperation:false, addAdictionalFocusNode:  true);
+    final upperField =textFieldService.createTextField(isReplaceOperation:true,isActiveTextField: true);
+    final downField = textFieldService.createTextField(isReplaceOperation:false, addAdictionalFocusNode:  true);
     final upperGlobalKey = GlobalKey();
     final downGlobalKey = GlobalKey();  
     final fracWidget = SizedBox(
@@ -53,19 +53,19 @@ class MathConstructionsBuilding{
 
   Widget createExpWidget(Widget baseWidget){
     final globalKey = GlobalKey(); 
-    final textField = textFiledService.createTextField(isReplaceOperation: false,isActiveTextField: true,textFieldSelectedFormat: TextFieldFormat.small);
+    final textField = textFieldService.createTextField(isReplaceOperation: false,isActiveTextField: true,textFieldSelectedFormat: TextFieldFormat.small);
     final widget = ExpRowWidget(baseWidget: baseWidget,globalKey: globalKey,textField: textField,);
     return widget; 
   }
 
   Widget createCharWidget({required bool isActiveTextField}){
-    final textFieldWidget = textFiledService.createTextField(isActiveTextField: isActiveTextField, isReplaceOperation: false);
+    final textFieldWidget = textFieldService.createTextField(isActiveTextField: isActiveTextField, isReplaceOperation: false);
     return textFieldWidget; 
   }
 
   Widget createSqrtWidget(){
     final globalKey = GlobalKey(); 
-    final textFieldWidget = textFiledService.createTextField(isReplaceOperation: true,isActiveTextField: true);
+    final textFieldWidget = textFieldService.createTextField(isReplaceOperation: true,isActiveTextField: true);
     final sqrtWidget = SizedBox(
       child: Stack(
         clipBehavior: Clip.none,
@@ -90,8 +90,8 @@ class MathConstructionsBuilding{
   }
 
   Widget createLogWidget(){
-    final argField = textFiledService.createTextField(isReplaceOperation: false);
-    final baseField = textFiledService.createTextField(isReplaceOperation: true, isActiveTextField:  true, textFieldSelectedFormat: TextFieldFormat.small); 
+    final argField = textFieldService.createTextField(isReplaceOperation: false);
+    final baseField = textFieldService.createTextField(isReplaceOperation: true, isActiveTextField:  true, textFieldSelectedFormat: TextFieldFormat.small); 
     final logWidget = SizedBox(
       child: Stack(
         key: const ValueKey(ElementsType.logElement),
@@ -120,9 +120,9 @@ class MathConstructionsBuilding{
   }
 
   Widget createLimitWidget(){ 
-    final argField = textFiledService.createTextField(isReplaceOperation: false,addAdictionalFocusNode: true);
-    final firstDownField = textFiledService.createTextField(isReplaceOperation: true,isActiveTextField:true,textFieldSelectedFormat: TextFieldFormat.small);
-    final secondDownField = textFiledService.createTextField(isReplaceOperation: false,textFieldSelectedFormat: TextFieldFormat.small); 
+    final argField = textFieldService.createTextField(isReplaceOperation: false,addAdictionalFocusNode: true);
+    final firstDownField = textFieldService.createTextField(isReplaceOperation: true,isActiveTextField:true,textFieldSelectedFormat: TextFieldFormat.small);
+    final secondDownField = textFieldService.createTextField(isReplaceOperation: false,textFieldSelectedFormat: TextFieldFormat.small); 
     final limitWidget = SizedBox(
       child: Stack(
         key: const ValueKey(ElementsType.limitElement),
@@ -167,7 +167,7 @@ class MathConstructionsBuilding{
 
 
   Widget createNamedFunctionWidget(String functionName, ElementsType type){
-    final textFieldWidget = textFiledService.createTextField(isReplaceOperation: true,isActiveTextField: true,addAdictionalFocusNode: true); 
+    final textFieldWidget = textFieldService.createTextField(isReplaceOperation: true,isActiveTextField: true,addAdictionalFocusNode: true); 
     final widget = SizedBox(
       child: Row(
         key: ValueKey(type),
@@ -182,7 +182,7 @@ class MathConstructionsBuilding{
   }
 
   Widget createAbsWidget(){
-    final textFieldWidget = textFiledService.createTextField(isReplaceOperation: true,isActiveTextField: true,addAdictionalFocusNode: true);
+    final textFieldWidget = textFieldService.createTextField(isReplaceOperation: true,isActiveTextField: true,addAdictionalFocusNode: true);
     final globalKey = GlobalKey(); 
     final absWidget = SizedBox(
       key: const ValueKey(ElementsType.absElement),
@@ -205,8 +205,8 @@ class MathConstructionsBuilding{
   }
 
   Widget createBracketsWidget(){
-    final textFieldWidget = textFiledService.createTextField(isReplaceOperation: true,isActiveTextField: true,);
-    final adictionalField = textFiledService.createTextField(isReplaceOperation: false,);
+    final textFieldWidget = textFieldService.createTextField(isReplaceOperation: true,isActiveTextField: true,);
+    final adictionalField = textFieldService.createTextField(isReplaceOperation: false,);
     final backetsWidget = Row(
       children: [
         BacketsWidget(textFieldWidget: textFieldWidget),
@@ -216,11 +216,80 @@ class MathConstructionsBuilding{
     return backetsWidget;  
   }
 
+  Widget createUndefinitIntegralWidget(){
+    final argFieldWidget = textFieldService.createTextField(isReplaceOperation: true,isActiveTextField: true);
+    final derevativeField = textFieldService.createTextField(isReplaceOperation: false,addAdictionalFocusNode: true);
+    // final addictionalField = textFieldService.createTextField(isReplaceOperation: false, );
+    final integralWidget = Row(
+      children: [
+        Row(
+          key: const ValueKey(ElementsType.indefiniteIntegralElement),
+          children: [
+            const Text('∫',style: TextStyle(fontSize: 30),),
+            IntegralArgumentWidget(argumentWidget: argFieldWidget,),
+            const Text('d',style: TextStyle(fontSize: 25),),
+            derevativeField,
+          ],
+        )
+      ],
+    );
+    return integralWidget;
+  }
+
+  Widget createIntegralWidget(){
+    final startPointField = textFieldService.createTextField(isReplaceOperation: true,isActiveTextField: true ,addAdictionalFocusNode: false,textFieldSelectedFormat: TextFieldFormat.small);
+    final finishPointField = textFieldService.createTextField(isReplaceOperation: false,addAdictionalFocusNode: false,textFieldSelectedFormat: TextFieldFormat.small);
+    final argFieldWidget = textFieldService.createTextField(isReplaceOperation: false);
+    final derevativeField = textFieldService.createTextField(isReplaceOperation: false,addAdictionalFocusNode: true);
+    final integralWidget = SizedBox(
+      width: 100,
+      height: 50,
+      child: Stack(
+        key: const ValueKey(ElementsType.integralElement),
+        clipBehavior: Clip.none,
+        children: [
+          const Positioned(left: 0,child: Text('∫',style: TextStyle(fontSize: 30),),),
+          Positioned(bottom: 0,left: 5,child: startPointField),
+          Positioned(top: 0,left: 5,child: finishPointField),
+          Positioned(left: 10,child: argFieldWidget),
+          const Positioned(child: Text('d',style: TextStyle(fontSize: 25),),),
+          Positioned(right: 50,child: derevativeField),
+        ],
+      )
+    );
+    return integralWidget; 
+  }
+
+
   Widget initialization(){
-    final textField = textFiledService.createTextField(isReplaceOperation: false,isActiveTextField: true,textFieldSelectedFormat: TextFieldFormat.standart);
+    final textField = textFieldService.createTextField(isReplaceOperation: false,isActiveTextField: true,textFieldSelectedFormat: TextFieldFormat.standart);
     return textField; 
   }
   
+}
+
+class IntegralArgumentWidget extends StatefulWidget {
+   IntegralArgumentWidget({Key? key, required this.argumentWidget}) : super(key: key);
+  final Widget argumentWidget;  
+  Widget? child;
+  @override
+  State<IntegralArgumentWidget> createState() => _IntegralArgumentWidgetState();
+}
+
+class _IntegralArgumentWidgetState extends State<IntegralArgumentWidget> {
+
+  @override
+  Widget build(BuildContext context) {
+    if(widget.child != null){
+      return widget.child!; 
+    }
+    widget.child = Row(
+      children: [
+        SizedBox(child: widget.argumentWidget),
+      ],
+    );
+    return widget.child!; 
+  }
 }
 
 class BacketsWidget extends StatefulWidget {

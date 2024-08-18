@@ -16,7 +16,7 @@ class KeyboardModel extends ChangeNotifier{
 
   KeyboardModel(){
     textFieldService = TextFieldHandleAndCreateService();
-    mathConstructionsBuildingService = MathConstructionsBuilding(textFiledService: textFieldService);
+    mathConstructionsBuildingService = MathConstructionsBuilding(textFieldService: textFieldService);
     parsersService = FormulasTreeParsersService();
     dataHandler = WidgetsDataHandler(); 
     texParsingService = FormulaToTexParser(); 
@@ -117,6 +117,24 @@ class KeyboardModel extends ChangeNotifier{
     if(parsedWidgetData != null){
       dataHandler.replaceWidgetInTree(parsedWidgetData, backetsWidget);
       rebuildSreenState(); 
+    }
+  }
+
+  void undefinitintegralButtonTap(){
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller);
+    final integralWidget = mathConstructionsBuildingService.createUndefinitIntegralWidget();
+    if(parsedWidgetData != null){
+      dataHandler.replaceWidgetInTree(parsedWidgetData, integralWidget);
+      rebuildSreenState(); 
+    }
+  }
+
+  void integralButtonTap(){
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller );
+    final integralWidget = mathConstructionsBuildingService.createIntegralWidget();
+    if(parsedWidgetData!= null){
+      dataHandler.replaceWidgetInTree(parsedWidgetData, integralWidget);
+      rebuildSreenState();
     }
   }
 

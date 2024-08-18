@@ -36,7 +36,6 @@ class MainScreenWidget extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(height: 50,),
-          const Icon( CustomMathIcons.log),
           const Divider(color: Colors.black,),
           Container(
             color: Colors.grey,

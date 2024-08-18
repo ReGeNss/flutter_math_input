@@ -163,7 +163,7 @@ class FunctionPageWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {model.integralButtonTap();},
                     style: _buttonStyle,
                     icon: const Icon(CustomMathIcons.integral))),
             SizedBox(
@@ -213,7 +213,7 @@ class FunctionPageWidget extends StatelessWidget {
                 height: 50,
                 child: IconButton(
                     onPressed: () {
-                      // formulaParseToString(context);
+                      model.undefinitintegralButtonTap();
                     },
                     style: _buttonStyle,
                     icon: const Icon(CustomMathIcons.indefinite_integral))),
