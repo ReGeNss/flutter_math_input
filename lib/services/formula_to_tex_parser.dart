@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
 
@@ -193,6 +191,11 @@ class FormulaToTexParser{
         element as ExpRowWidget; 
         return _formulaParser([element.child!]);
       }
+      case const (BacketsWidget):
+      {
+        element as BacketsWidget;
+        return addToTeXData(widgetsData: [element.child!],parseFunction: backetsParer );
+      }
     }
   }
   print(formulaInTeX); 
@@ -213,15 +216,36 @@ String addToTeXData({
     return formulaInTeX;
   }
 
+String backetsParer(List<Widget> widgets){
+  String backetData = ''; 
+  for(final element in widgets){
+    if(element is SizedBox && element.child != null){
+        _formulaParser([element.child!]);
+    }else if(element is Row){
+        _formulaParser(element.children);
+    }
+    if(formulaInTeX.isNotEmpty){
+      backetData = '$backetData$formulaInTeX';
+    }
+    formulaInTeX ='';
+  }
+  return '($backetData)';
+}
+
 String expParser(List<Widget> widgets){
   String teXExpData=''; 
   for(final element in widgets){
     if(element.runtimeType == SizedBox){
       element as SizedBox; 
       if(element.child != null){
-        final textData = _formulaParser([element.child!]); 
-        teXExpData = '$teXExpData$textData';
+        formulaInTeX = ''; 
+         _formulaParser([element.child!]); 
+        if(formulaInTeX.isNotEmpty){
+          teXExpData = '$teXExpData$formulaInTeX';
+        }
+        
       }
+      
     }else{
 
     }

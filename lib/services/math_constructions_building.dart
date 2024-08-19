@@ -242,7 +242,7 @@ class MathConstructionsBuilding {
     final textFieldWidget = textFieldService.createTextField(
         isReplaceOperation: true,
         isActiveTextField: true,
-        addAdictionalFocusNode: true);
+        addAdictionalFocusNode: false);
     final adictionalField = textFieldService.createTextField(isReplaceOperation: false);
   
     final globalKey = GlobalKey();
@@ -259,7 +259,11 @@ class MathConstructionsBuilding {
                   globalKey: globalKey,
                 ),
               ),
-              ArgumentWidget(argumentWidget:textFieldWidget),
+              Row(
+                children: [
+                  textFieldWidget,
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 5),
                 child: AbsLineWidget(

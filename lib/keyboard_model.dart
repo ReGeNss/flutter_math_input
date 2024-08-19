@@ -66,7 +66,7 @@ class KeyboardModel extends ChangeNotifier{
       
     }
     
-    if(parsedWidgets != null){
+    if(parsedWidgets != null && parsedWidgets.index != null){
       final baseWidget = parsedWidgets.wigetData![parsedWidgets.index!];
       final expWidget = mathConstructionsBuildingService.createExpWidget(baseWidget);
       dataHandler.replaceWidgetInTree(parsedWidgets, expWidget);

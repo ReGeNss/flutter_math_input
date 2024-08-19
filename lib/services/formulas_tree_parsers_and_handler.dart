@@ -349,7 +349,7 @@ class FormulasTreeParsersService {
               final textField = data!.widget as TextField;
               if (_parsedData == null &&
                   textField.controller == activeTextFieldController) {
-                _parsedData = ReturnData(wigetData: array);
+                _parsedData = ReturnData(wigetData: array,index: index);
               }
             }
             isFromRowOrColumn = false;
