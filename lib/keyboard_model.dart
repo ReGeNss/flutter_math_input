@@ -13,6 +13,7 @@ class KeyboardModel extends ChangeNotifier{
   late final FormulaToTexParser texParsingService; 
 
   bool update = true; 
+  String? formulaInTeX; 
 
   KeyboardModel(){
     textFieldService = TextFieldHandleAndCreateService();

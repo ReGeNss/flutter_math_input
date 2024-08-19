@@ -243,27 +243,34 @@ class MathConstructionsBuilding {
         isReplaceOperation: true,
         isActiveTextField: true,
         addAdictionalFocusNode: true);
+    final adictionalField = textFieldService.createTextField(isReplaceOperation: false);
+  
     final globalKey = GlobalKey();
-    final absWidget = SizedBox(
-      key: const ValueKey(ElementsType.absElement),
-      child: Row(
-        key: globalKey,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 5),
-            child: AbsLineWidget(
-              globalKey: globalKey,
-            ),
+    final absWidget = Row(
+      children: [
+        SizedBox(
+          key: const ValueKey(ElementsType.absElement),
+          child: Row(
+            key: globalKey,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: AbsLineWidget(
+                  globalKey: globalKey,
+                ),
+              ),
+              ArgumentWidget(argumentWidget:textFieldWidget),
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: AbsLineWidget(
+                  globalKey: globalKey,
+                ),
+              ),
+            ],
           ),
-          textFieldWidget,
-          Padding(
-            padding: const EdgeInsets.only(left: 5),
-            child: AbsLineWidget(
-              globalKey: globalKey,
-            ),
-          ),
-        ],
-      ),
+        ),
+        adictionalField
+      ],
     );
     return absWidget;
   }
@@ -300,7 +307,7 @@ class MathConstructionsBuilding {
               '∫',
               style: TextStyle(fontSize: 30),
             ),
-            IntegralArgumentWidget(
+            ArgumentWidget(
               argumentWidget: argFieldWidget,
             ),
             const Text(
@@ -454,7 +461,7 @@ class _IntegralWidgetState extends State<IntegralWidget> {
           Positioned(
               key: widget.globalKey,
               left: 30,
-              child: IntegralArgumentWidget(
+              child: ArgumentWidget(
                   argumentWidget: widget.argFieldWidget)),
           const Positioned(
             right: 35,
@@ -478,16 +485,16 @@ class _IntegralWidgetState extends State<IntegralWidget> {
   }
 }
 
-class IntegralArgumentWidget extends StatefulWidget {
-  IntegralArgumentWidget({Key? key, required this.argumentWidget})
+class ArgumentWidget extends StatefulWidget {
+  ArgumentWidget({Key? key, required this.argumentWidget})
       : super(key: key);
   final Widget argumentWidget;
   Widget? child;
   @override
-  State<IntegralArgumentWidget> createState() => _IntegralArgumentWidgetState();
+  State<ArgumentWidget> createState() => _ArgumentWidgetState();
 }
 
-class _IntegralArgumentWidgetState extends State<IntegralArgumentWidget> {
+class _ArgumentWidgetState extends State<ArgumentWidget> {
   @override
   Widget build(BuildContext context) {
     if (widget.child != null) {
@@ -563,7 +570,7 @@ class _AbsLineWidgetState extends State<AbsLineWidget> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black,
-      width: 3,
+      width: 2,
       height: size?.height ?? 50,
     );
   }

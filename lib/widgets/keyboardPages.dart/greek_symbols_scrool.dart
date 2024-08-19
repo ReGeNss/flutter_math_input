@@ -28,7 +28,8 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           child: TextButton(
             onPressed: () {
               // model.createCharWidgets('α');
-              model.texParsingService.start(model.formulaGroopWidgets);
+              model.formulaInTeX= model.texParsingService.start(model.formulaGroopWidgets);
+              model.rebuildSreenState();
             },
             style: _buttonStyle,
             child: const Text('α'),

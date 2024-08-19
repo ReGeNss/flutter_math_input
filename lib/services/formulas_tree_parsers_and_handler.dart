@@ -129,9 +129,9 @@ class FormulasTreeParsersService {
             }
             break;
         }
-        case const (IntegralArgumentWidget): 
+        case const (ArgumentWidget): 
         {
-          final widget = (array[index] as IntegralArgumentWidget).child as Row; 
+          final widget = (array[index] as ArgumentWidget).child as Row; 
           data = _parseWidgetWithPeplacment(widget.children, activeTextFieldController); 
           if (data != null) {
               return data;
@@ -215,9 +215,9 @@ class FormulasTreeParsersService {
         data = _textControllerWidgetParser(integralWiget.child!, activeTextFieldController);
         return data; 
       }
-      case const (IntegralArgumentWidget):
+      case const (ArgumentWidget):
       {
-        final integralArg = widget as IntegralArgumentWidget;
+        final integralArg = widget as ArgumentWidget;
         data = _textControllerWidgetParser(integralArg.child!, activeTextFieldController);
         return data;  
       }
@@ -355,9 +355,9 @@ class FormulasTreeParsersService {
             isFromRowOrColumn = false;
             break;
         }
-        case const (IntegralArgumentWidget):
+        case const (ArgumentWidget):
         {
-          final widget = (array[index] as IntegralArgumentWidget).child as Row; 
+          final widget = (array[index] as ArgumentWidget).child as Row; 
           data = _widgetTreeParser(
                 widget.children, activeTextFieldController,
                 isFromRowOrColumn: true);
@@ -457,9 +457,9 @@ class FormulasTreeParsersService {
         data = _widgetParser(integralWiget.child!, activeTextFieldController);
         return data; 
       }
-      case const (IntegralArgumentWidget):
+      case const (ArgumentWidget):
       {
-        final integralArg = widget as IntegralArgumentWidget;
+        final integralArg = widget as ArgumentWidget;
         data = _widgetParser(integralArg.child!, activeTextFieldController);
         return data;  
       }
