@@ -55,10 +55,10 @@ class FunctionPageWidget extends StatelessWidget {
             SizedBox(
                 width: 50,
                 height: 50,
-                child: TextButton(
+                child: IconButton(
                     onPressed: () {model.absButtonTap();},
                     style: _buttonStyle,
-                    child: const Text('abs'))),
+                    icon: const Icon(CustomMathIcons.abs))),
             SizedBox(
                 width: 50,
                 height: 50,

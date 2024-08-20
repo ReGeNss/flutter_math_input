@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
+import 'package:math_keyboard/services/text_field_handle_and_create.dart';
 
 class FormulasTreeParsersService {
   ReturnData? _parsedData;
@@ -151,6 +152,18 @@ class FormulasTreeParsersService {
             }
             break; 
         }
+        case const (TextFieldWidgetHandler):
+        {
+           final widget =
+                (array[index] as TextFieldWidgetHandler).textField as TextField;
+              data = _textControllerWidgetParser(
+                  widget, activeTextFieldController);
+              if (data != null) {
+                return data;
+              }
+            
+          break; 
+        }
       }
     }
     return null;
@@ -221,6 +234,13 @@ class FormulasTreeParsersService {
         data = _textControllerWidgetParser(integralArg.child!, activeTextFieldController);
         return data;  
       }
+      case const (TextFieldWidgetHandler):
+      {
+        final textFieldWidget = widget as TextFieldWidgetHandler;
+        data = _textControllerWidgetParser(textFieldWidget.textField!, activeTextFieldController);
+        return data;  
+      }
+
     }
     return null;
   }
@@ -394,6 +414,15 @@ class FormulasTreeParsersService {
             // isFromRowOrColumn = false;
             break;
         }
+        case const (TextFieldWidgetHandler):
+        {
+          final textFieldWidget = array[index] as TextFieldWidgetHandler;
+            if (textFieldWidget.textField!.controller == activeTextFieldController) {
+              return ReturnData(
+                  wigetData: array, index: index, widget: textFieldWidget);
+            }
+            break;
+        }
         
       }
     }
@@ -462,6 +491,12 @@ class FormulasTreeParsersService {
         final integralArg = widget as ArgumentWidget;
         data = _widgetParser(integralArg.child!, activeTextFieldController);
         return data;  
+      }
+      case const (TextFieldWidgetHandler):
+      {
+        final textFieldHandler = widget as TextFieldWidgetHandler; 
+        data = _widgetParser(textFieldHandler.textField!, activeTextFieldController);
+        return data; 
       }
     }
     return null;

@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:math_keyboard/services/formulas_tree_parsers_and_handler.dart';
 
 const textFieldDecoration = InputDecoration(
@@ -72,19 +74,8 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
       size = const Size(60, 50);
     }
     final Widget textFiledWidget = SizedBox(
-        width: size.width,
         height: size.height,
-        child: TextField(
-          textAlign: TextAlign.center,
-          focusNode: focusNode,
-          keyboardType: TextInputType.none,
-          decoration: textFieldDecoration,
-          controller: textFieldController,
-          onTap: () {
-            selectedFieldIndex = _focusNodes.indexOf(focusNode);
-            activeTextFieldControllerData = textFieldControllerData;
-          },
-        ));
+        child: TextFieldWidgetHandler(focusNode: focusNode, textFieldController: textFieldController, textFieldControllerData: textFieldControllerData,onTextFieldTap: onTextFieldTap,));
     return textFiledWidget;
   }
 
@@ -106,6 +97,11 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
       selectedFieldIndex = currentIndex;
     }
     return false;
+  }
+
+  void onTextFieldTap(FocusNode focusNode,TextFieldControllerData textFieldControllerData){
+    selectedFieldIndex = _focusNodes.indexOf(focusNode);
+          activeTextFieldControllerData = textFieldControllerData;
   }
 
   void selectBackFocus() {
@@ -213,6 +209,49 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     }
     return false;
     // тут є приколи з 
+  }
+}
+
+class TextFieldWidgetHandler extends StatefulWidget {
+  TextFieldWidgetHandler({
+    Key? key,
+    required this.focusNode,
+    required this.textFieldController, required this.textFieldControllerData, required this.onTextFieldTap,
+  }) : super(key: key);
+
+  final FocusNode focusNode;
+  final TextEditingController textFieldController;
+  final TextFieldControllerData textFieldControllerData;
+  final Function(FocusNode focusNode,TextFieldControllerData textFieldControllerData) onTextFieldTap;
+  TextField? textField; 
+  String? initTextInField; 
+
+  @override
+  State<TextFieldWidgetHandler> createState() => _TextFieldWidgetHandlerState();
+}
+
+class _TextFieldWidgetHandlerState extends State<TextFieldWidgetHandler> {
+  @override
+  Widget build(BuildContext context) {
+    if(widget.textField == null){ widget.textField = TextField(
+        textAlign: TextAlign.center,
+        focusNode: widget.focusNode,
+        keyboardType: TextInputType.none,
+        decoration: textFieldDecoration,
+        controller: widget.textFieldController,
+        onChanged: (_){setState(() {});},
+        onTap: () {
+          widget.onTextFieldTap(widget.focusNode,widget.textFieldControllerData);
+          // selectedFieldIndex = _focusNodes.indexOf(focusNode);
+          // activeTextFieldControllerData = textFieldControllerData;
+        },
+      );
+      widget.textFieldController.text = widget.initTextInField ?? '';
+    }
+    final fieldWidget= IntrinsicWidth(
+      child: widget.textField, 
+    );
+    return fieldWidget; 
   }
 }
 

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:math_keyboard/services/text_field_handle_and_create.dart';
 
 enum ElementsType {
@@ -98,28 +99,34 @@ class MathConstructionsBuilding {
     final globalKey = GlobalKey();
     final textFieldWidget = textFieldService.createTextField(
         isReplaceOperation: true, isActiveTextField: true);
-    final sqrtWidget = SizedBox(
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Positioned(
-            key: globalKey,
-            top: 5,
-            left: 25,
-            child: Row(
-              key: const ValueKey(ElementsType.sqrtElement),
-              children: [
-                textFieldWidget,
-              ],
-            ),
+    final adictionalField = textFieldService.createTextField(isReplaceOperation: false);
+    final sqrtWidget = Row(
+      children: [
+        SizedBox(
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned(
+                key: globalKey,
+                top: 5,
+                left: 25,
+                child: Row(
+                  key: const ValueKey(ElementsType.sqrtElement),
+                  children: [
+                    textFieldWidget,
+                  ],
+                ),
+              ),
+              IgnorePointer(
+                child: _SqrtCustomPaint(
+                  globalKey: globalKey,
+                ),
+              ),
+            ],
           ),
-          IgnorePointer(
-            child: _SqrtCustomPaint(
-              globalKey: globalKey,
-            ),
-          ),
-        ],
-      ),
+        ),
+        adictionalField,
+      ],
     );
     return sqrtWidget;
   }
@@ -232,6 +239,7 @@ class MathConstructionsBuilding {
             width: 3,
           ),
           textFieldWidget,
+          const SizedBox(width: 10,)
         ],
       ),
     );
@@ -333,12 +341,11 @@ class MathConstructionsBuilding {
         isReplaceOperation: false, addAdictionalFocusNode: true);
     if (upperFieldText != null && downFieldText != null) {
       upperField as SizedBox;
-      (upperField.child as TextField).controller?.text = upperFieldText;
+      (upperField.child as TextFieldWidgetHandler).initTextInField = upperFieldText;
       downField as SizedBox;
-      (downField.child as TextField).controller?.text = downFieldText;
+      (downField.child as TextFieldWidgetHandler).initTextInField = downFieldText;
     }
     final derevativeWidget = SizedBox(
-      width: 70,
       child: Column(
         key: const ValueKey(ElementsType.derevativeElement),
         mainAxisAlignment: MainAxisAlignment.center,
@@ -348,7 +355,7 @@ class MathConstructionsBuilding {
               children: [const Text('d'), upperField],
             ),
           ),
-          const Divider(color: Colors.black),
+          const SizedBox(width: 25,child:  Divider(color: Colors.black)),
           SizedBox(
             child: Row(
               children: [
@@ -423,7 +430,7 @@ class IntegralWidget extends StatefulWidget {
 class _IntegralWidgetState extends State<IntegralWidget> {
   Size? size;
 
-  void getSize() {
+  void getSize(List<FrameTiming> frameTiming) {
     if (widget.globalKey.currentContext != null) {
       final renderBox =
           widget.globalKey.currentContext?.findRenderObject() as RenderBox;
@@ -434,12 +441,21 @@ class _IntegralWidgetState extends State<IntegralWidget> {
     }
   }
 
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
+  // }
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
+  void dispose() {
+    WidgetsBinding.instance.removeTimingsCallback(getSize);
+    super.dispose();
   }
-
+  @override
+  void initState() {
+    WidgetsBinding.instance.addTimingsCallback(getSize);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     late final Stack stack;
@@ -461,7 +477,7 @@ class _IntegralWidgetState extends State<IntegralWidget> {
             )),
           ),
           Positioned(bottom: 0, left: 5, child: widget.startPointField),
-          Positioned(top: 0, left: 5, child: widget.finishPointField),
+          Positioned(top: 0, left: 10, child: widget.finishPointField),
           Positioned(
               key: widget.globalKey,
               left: 30,
@@ -594,17 +610,30 @@ class _SqrtCustomPaint extends StatefulWidget {
 class _SqrtCustomPaintState extends State<_SqrtCustomPaint> {
   Size? size;
   _SqrtCustomPaintState();
-  void getSize() {
+  void getSize(List<FrameTiming> frameTiming) {
     final renderBox =
         widget.globalKey.currentContext?.findRenderObject() as RenderBox;
-    size = renderBox.size;
-    setState(() {});
+    if(size == null || (size != null && size != renderBox.size)){
+      size = renderBox.size;
+      setState(() {});
+    }
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
+  // }
+  @override
+  void initState() {
+    WidgetsBinding.instance.addTimingsCallback(getSize);
+    super.initState();
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
+  void dispose() {
+    WidgetsBinding.instance.removeTimingsCallback(getSize); 
+    super.dispose();
   }
 
   @override
@@ -656,17 +685,31 @@ class ExpRowWidget extends StatefulWidget {
 
 class _ExpRowWidgetState extends State<ExpRowWidget> {
   Size size = const Size(120, 60);
-  void getSize() {
+  void getSize(List<FrameTiming> frameTiming) {
     final renderBox =
         widget.globalKey.currentContext?.findRenderObject() as RenderBox;
-    size = Size(renderBox.size.width + 20, renderBox.size.height + 25);
-    setState(() {});
+    if(size != renderBox.size){
+      // print('adadadadadadada'); 
+      size = Size(renderBox.size.width + 20, renderBox.size.height + 25);
+      setState(() {});
+    }
+    
   }
 
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
+  // }
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
+  void dispose() {
+    WidgetsBinding.instance.removeTimingsCallback(getSize);
+    super.dispose();
+  }
+  @override
+  void initState() {
+    WidgetsBinding.instance.addTimingsCallback(getSize);
+    super.initState();
   }
 
   @override
@@ -680,7 +723,7 @@ class _ExpRowWidgetState extends State<ExpRowWidget> {
         child: Row(
           key: const ValueKey(ElementsType.exponentiationElement),
           children: [
-            SizedBox(height: 30, width: 40, child: widget.textField),
+            SizedBox(height: 30, child: widget.textField),
           ],
         ));
     if (widget.child != null) {
@@ -722,7 +765,9 @@ class FracDividerWidget extends StatefulWidget {
 
 class _FracDividerWidgetState extends State<FracDividerWidget> {
   Size? size;
-  getSize() {
+  final trimingCallBack = TimingsCallback; 
+
+  void getSize(List<FrameTiming> timings) {
     final upperRenderBox =
         widget.upperGlobalKey.currentContext?.findRenderObject() as RenderBox;
     final downRenderBox =
@@ -736,10 +781,23 @@ class _FracDividerWidgetState extends State<FracDividerWidget> {
   }
 
   @override
-  void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
-    super.didChangeDependencies();
+  void dispose() {
+    // TODO: implement dispose
+    WidgetsBinding.instance.removeTimingsCallback(getSize);
+    super.dispose();
   }
+  @override
+  void initState() {
+    WidgetsBinding.instance.addTimingsCallback(getSize);
+    // TODO: implement initState
+    super.initState();
+  }
+
+  // @override
+  // void init() {
+  //   WidgetsBinding.instance.addTimingsCallback((_) => getSize());
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
+import 'package:math_keyboard/services/text_field_handle_and_create.dart';
 
 class FormulaToTexParser{
   String formulaInTeX = '';
@@ -179,7 +180,7 @@ class FormulaToTexParser{
       case const (IntegralWidget):
       {
         element as IntegralWidget;
-          return _formulaParser([element.child!]);
+          _formulaParser([element.child!]);
       }
       case const (ArgumentWidget):
       {
@@ -194,7 +195,12 @@ class FormulaToTexParser{
       case const (BacketsWidget):
       {
         element as BacketsWidget;
-        return addToTeXData(widgetsData: [element.child!],parseFunction: backetsParer );
+        addToTeXData(widgetsData: [element.child!],parseFunction: backetsParer );
+      }
+      case const (TextFieldWidgetHandler):
+      {
+        element as TextFieldWidgetHandler;
+        return _formulaParser([element.textField!]);
       }
     }
   }
@@ -268,6 +274,7 @@ String sqrtParser(List<Widget> widgets){
       final data = _formulaParser([element]); 
       textData = '$textData$data';
     }
+    formulaInTeX = '';
   }
   final teXSqrtData = '\\sqrt{$textData}';
   return teXSqrtData;
@@ -381,7 +388,7 @@ String absParser(List<Widget> widgets){
     final row = widgets.first as Row; 
     final fieldData = _formulaParser(row.children);
     formulaInTeX = ''; 
-    return '\\abs{$fieldData}'; 
+    return '\\left| $fieldData \\right|'; 
   }
   return ''; 
 }
