@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:math_keyboard/custom_math_icons_icons.dart';
 import 'package:math_keyboard/keyboard_model.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
+import 'package:math_keyboard/widgets/keyboard.dart';
 import 'package:provider/provider.dart';
 
 final _buttonStyle = ButtonStyle(
@@ -9,7 +10,7 @@ final _buttonStyle = ButtonStyle(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
     foregroundColor: WidgetStateProperty.all(Colors.black),
     side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
-
+ 
 
 class FunctionPageWidget extends StatelessWidget {
   const FunctionPageWidget({
@@ -58,7 +59,7 @@ class FunctionPageWidget extends StatelessWidget {
                 child: IconButton(
                     onPressed: () {model.absButtonTap();},
                     style: _buttonStyle,
-                    icon: const Icon(CustomMathIcons.abs))),
+                    icon: const Icon(CustomMathIcons.abs,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -113,7 +114,7 @@ class FunctionPageWidget extends StatelessWidget {
                 child: IconButton(
                     onPressed: () {model.limButtonTap(); },
                     style: _buttonStyle,
-                    icon: const Icon(CustomMathIcons.lim))),
+                    icon: const Icon(CustomMathIcons.lim,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -158,21 +159,21 @@ class FunctionPageWidget extends StatelessWidget {
                 child: IconButton(
                     onPressed: () {model.logButtonTap() ;},
                     style: _buttonStyle,
-                    icon: const Icon(CustomMathIcons.log))),
+                    icon: const Icon(CustomMathIcons.log,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: IconButton(
                     onPressed: () {model.integralButtonTap();},
                     style: _buttonStyle,
-                    icon: const Icon(CustomMathIcons.integral))),
+                    icon: const Icon(CustomMathIcons.integral,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: IconButton(
                     onPressed: () {model.onDerevativeButtonTap(upperField: 'x',downField: 'y');},
                     style: _buttonStyle,
-                    icon: const Icon(CustomMathIcons.dx_dy))),
+                    icon: const Icon(CustomMathIcons.dx_dy,size: iconSize,))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -216,7 +217,7 @@ class FunctionPageWidget extends StatelessWidget {
                       model.undefinitintegralButtonTap();
                     },
                     style: _buttonStyle,
-                    icon: const Icon(CustomMathIcons.indefinite_integral))),
+                    icon: const Icon(CustomMathIcons.indefinite_integral,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -225,7 +226,7 @@ class FunctionPageWidget extends StatelessWidget {
                       model.onDerevativeButtonTap(); 
                     },
                     style: _buttonStyle,
-                    icon: const Icon(CustomMathIcons.derevative))),
+                    icon: const Icon(CustomMathIcons.derevative,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,

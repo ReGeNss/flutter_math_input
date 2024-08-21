@@ -21,8 +21,8 @@ class CustomMathIcons {
   static const _kFontFam = 'CustomMathIcons';
   static const String? _kFontPkg = null;
 
-  static const IconData dx_dy = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData derevative = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData dx_dy = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData sqrt = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData sqrt_extended = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData lim = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);

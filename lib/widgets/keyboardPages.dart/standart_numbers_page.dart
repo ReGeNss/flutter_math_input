@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/custom_math_icons_icons.dart';
 import 'package:math_keyboard/keyboard_model.dart';
+import 'package:math_keyboard/widgets/keyboard.dart';
 import 'package:provider/provider.dart';
 
 final _buttonStyle = ButtonStyle(
@@ -94,7 +95,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                       model.onFracButtonTap(); 
                     },
                     style: _buttonStyle,
-                    icon: const Icon(CustomMathIcons.frac))),
+                    icon: const Icon(CustomMathIcons.frac,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -104,7 +105,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                       model.sqrtButtonTap(); 
                     },
                     style: _buttonStyle,
-                    icon: const Icon(CustomMathIcons.sqrt))),
+                    icon: const Icon(CustomMathIcons.sqrt,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
@@ -150,7 +151,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                       model.onExpButtonTap(); 
                     },
                     style: _buttonStyle,
-                    icon: const Icon(CustomMathIcons.exp))),
+                    icon: const Icon(CustomMathIcons.exp,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,

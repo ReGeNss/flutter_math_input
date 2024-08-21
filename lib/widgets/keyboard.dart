@@ -6,6 +6,8 @@ import 'package:math_keyboard/widgets/keyboardPages.dart/latin_alphabet_page.dar
 import 'package:math_keyboard/widgets/keyboardPages.dart/standart_numbers_page.dart';
 import 'package:provider/provider.dart';
 
+const double iconSize = 30;
+
 final _buttonStyle = ButtonStyle(
     shape: WidgetStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
