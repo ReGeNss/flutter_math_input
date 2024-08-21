@@ -208,6 +208,12 @@ class FormulaToTexParser{
         element as TextFieldWidgetHandler;
         return _formulaParser([element.textField!]);
       }
+      case const (LimStackWidget):
+      {
+        element as LimStackWidget; 
+        _formulaParser([element.child!]); 
+        break; 
+      }
     }
   }
   print(formulaInTeX); 

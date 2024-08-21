@@ -178,49 +178,8 @@ class MathConstructionsBuilding {
     final secondDownField = textFieldService.createTextField(
         isReplaceOperation: false,
         textFieldSelectedFormat: TextFieldFormat.small);
-    final limitWidget = SizedBox(
-      child: Stack(
-        key: const ValueKey(ElementsType.limitElement),
-        clipBehavior: Clip.none,
-        children: [
-          const Positioned(
-            child: SizedBox(
-              height: 50,
-              child: Center(
-                child: Text(
-                  'lim',
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.w400),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 55,
-            child: Row(
-              children: [
-                argField,
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: -20,
-            left: 0,
-            child: Row(
-              children: [firstDownField],
-            ),
-          ),
-          const Positioned(
-              bottom: -20, left: 20, child: Icon(Icons.arrow_forward_outlined)),
-          Positioned(
-            bottom: -20,
-            left: 35,
-            child: Row(
-              children: [secondDownField],
-            ),
-          ),
-        ],
-      ),
-    );
+    final globalKey = GlobalKey(); 
+    final limitWidget = LimStackWidget(argField: argField, firstDownField: firstDownField, secondDownField: secondDownField,globalKey: globalKey,);
     return limitWidget;
   }
 
@@ -406,6 +365,95 @@ class MathConstructionsBuilding {
         isActiveTextField: true,
         textFieldSelectedFormat: TextFieldFormat.standart);
     return textField;
+  }
+}
+
+class LimStackWidget extends StatefulWidget {
+   LimStackWidget({
+    super.key,
+    required this.argField,
+    required this.firstDownField,
+    required this.secondDownField, required this.globalKey,
+  });
+
+  final Widget argField;
+  final Widget firstDownField;
+  final Widget secondDownField;
+  final GlobalKey globalKey; 
+  Widget? child; 
+
+  @override
+  State<LimStackWidget> createState() => _LimStackWidgetState();
+}
+
+class _LimStackWidgetState extends State<LimStackWidget> {
+  Size? size; 
+  getSize(){
+    final renderBox = widget.globalKey.currentContext?.findRenderObject();
+    if(renderBox is RenderBox){
+      if(size == null || size!= renderBox.size ){
+      size = renderBox.size; 
+      // pi
+      setState(() {
+        
+      });
+    }
+    }
+    
+  }
+  @override
+  void didChangeDependencies() {
+    WidgetsBinding.instance.addPostFrameCallback((_)=> getSize());
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    widget.child ??= Stack(
+        key: const ValueKey(ElementsType.limitElement),
+        clipBehavior: Clip.none,
+        // alignment: Alignment.centerLeft,
+        children: [
+          const Positioned(
+            left:0,
+            child: SizedBox(
+              height: 50,
+              child: Center(
+                child: Text(
+                  'lim',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            key: widget.globalKey,
+            left: 55,
+            child: Row(
+              children: [
+                widget.argField,
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: -20,
+            left: 0,
+            child: Row(
+              children: [widget.firstDownField],
+            ),
+          ),
+          const Positioned(
+              bottom: -20, left: 20, child: Icon(Icons.arrow_forward_outlined)),
+          Positioned(
+            bottom: -20,
+            left: 40,
+            child: Row(
+              children: [widget.secondDownField],
+            ),
+          ),
+        ],
+      );
+    return SizedBox(width: 70+(size?.width ?? 0),height: size?.height ?? 50,child: widget.child,);
   }
 }
 

@@ -164,6 +164,18 @@ class FormulasTreeParsersService {
             
           break; 
         }
+        case const (LimStackWidget):
+        {
+          final widget =
+                (array[index] as LimStackWidget).child;
+              data = _textControllerWidgetParser(
+                  widget!, activeTextFieldController);
+              if (data != null) {
+                return data;
+              }
+            
+          break; 
+        }
       }
     }
     return null;
@@ -239,6 +251,12 @@ class FormulasTreeParsersService {
         final textFieldWidget = widget as TextFieldWidgetHandler;
         data = _textControllerWidgetParser(textFieldWidget.textField!, activeTextFieldController);
         return data;  
+      }
+      case const (LimStackWidget): 
+      {
+        final limStackWidget = widget as LimStackWidget;
+        data = _textControllerWidgetParser(limStackWidget.child! , activeTextFieldController);
+        return data; 
       }
 
     }
@@ -423,6 +441,29 @@ class FormulasTreeParsersService {
             }
             break;
         }
+        case const (LimStackWidget):
+        {
+          final widget  = array[index] as LimStackWidget; 
+            if (widget.child != null) {
+              data = _widgetParser(
+                  widget.child!, activeTextFieldController);
+            }
+            if (data != null) {
+              data.index = index; // костилі
+              if (isFromRowOrColumn == false) {
+                data.wigetData = array;
+              }
+              if (data.widget is TextField && isFromRowOrColumn == false) {
+                final controller = (data.widget as TextField).controller;
+                if (controller == activeTextFieldController) {
+                  _parsedData = data;
+                }
+              }
+              return data;
+            }
+            // isFromRowOrColumn = false;
+            break;
+        }
         
       }
     }
@@ -496,6 +537,12 @@ class FormulasTreeParsersService {
       {
         final textFieldHandler = widget as TextFieldWidgetHandler; 
         data = _widgetParser(textFieldHandler.textField!, activeTextFieldController);
+        return data; 
+      }
+      case const(LimStackWidget):
+      {
+        final limStackWidget = widget as LimStackWidget; 
+        data = _widgetParser(limStackWidget.child!, activeTextFieldController);
         return data; 
       }
     }
