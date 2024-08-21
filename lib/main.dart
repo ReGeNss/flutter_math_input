@@ -3,7 +3,6 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:math_keyboard/keyboard_model.dart';
 import 'package:math_keyboard/widgets/keyboard.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_math_fork/tex.dart';
 
 void main() {
   runApp(const MainApp());

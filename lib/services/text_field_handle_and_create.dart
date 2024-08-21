@@ -141,18 +141,6 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     selectedFieldIndex = 0;
   }
 
-  TextEditingController PreviousTextFieldController() {
-    if (selectedFieldIndex - 1 >= 0) {
-      final index =
-          _textFieldControllers.indexOf(activeTextFieldControllerData);
-      final controller = _textFieldControllers[index - 1].controller;
-      selectedFieldIndex = index - 1;
-      return controller;
-    }
-
-    return activeTextFieldControllerData.controller;
-  }
-
   List<T> _addAndRemoveInList<T>(int addIndex, List<T> list, T replaceData) {
     final newList = <T>[];
     if (list.isEmpty && addIndex == 0) {
@@ -234,7 +222,7 @@ class _TextFieldWidgetHandlerState extends State<TextFieldWidgetHandler> {
   @override
   Widget build(BuildContext context) {
     if(widget.textField == null){ widget.textField = TextField(
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.left,
         focusNode: widget.focusNode,
         style: const TextStyle(
           fontSize: 20

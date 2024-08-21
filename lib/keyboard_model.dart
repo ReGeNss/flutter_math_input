@@ -56,13 +56,10 @@ class KeyboardModel extends ChangeNotifier{
       parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, activeTextFieldController); 
     }
     else{
-      final controller = textFieldService.PreviousTextFieldController();
-      if(controller == activeTextFieldController){
         parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, activeTextFieldController);
-      }
-      else{
-        parsedWidgets = parsersService.parseWidgetList(formulaGroopWidgets, controller);
-      }
+        if(parsedWidgets?.index != null){
+          parsedWidgets!.index = parsedWidgets.index! - 1;
+        }
       
     }
     

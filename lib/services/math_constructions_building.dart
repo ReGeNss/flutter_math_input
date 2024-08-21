@@ -76,15 +76,16 @@ class MathConstructionsBuilding {
   }
 
   Widget createExpWidget(Widget baseWidget) {
-    final globalKey = GlobalKey();
+    final expGlobalKey = GlobalKey();
+    final baseGlobalKey = GlobalKey();
     final textField = textFieldService.createTextField(
         isReplaceOperation: false,
         isActiveTextField: true,
         textFieldSelectedFormat: TextFieldFormat.small);
     final widget = ExpRowWidget(
       baseWidget: baseWidget,
-      globalKey: globalKey,
-      textField: textField,
+      expGlobalKey: expGlobalKey,
+      textField: textField, baseGlobalKey: baseGlobalKey,
     );
     return widget;
   }
@@ -99,7 +100,8 @@ class MathConstructionsBuilding {
     final globalKey = GlobalKey();
     final textFieldWidget = textFieldService.createTextField(
         isReplaceOperation: true, isActiveTextField: true);
-    final adictionalField = textFieldService.createTextField(isReplaceOperation: false);
+    final adictionalField =
+        textFieldService.createTextField(isReplaceOperation: false);
     final sqrtWidget = Row(
       children: [
         SizedBox(
@@ -148,15 +150,15 @@ class MathConstructionsBuilding {
               child:
                   Center(child: Text('log', style: TextStyle(fontSize: 25)))),
           Positioned(
-              left: 35,
+              left: 40,
               child: Row(
                 children: [
                   argField,
                 ],
               )),
           Positioned(
-              bottom: 0,
-              left: 25,
+              bottom: -5,
+              left: 30,
               child: Row(
                 children: [
                   baseField,
@@ -178,8 +180,13 @@ class MathConstructionsBuilding {
     final secondDownField = textFieldService.createTextField(
         isReplaceOperation: false,
         textFieldSelectedFormat: TextFieldFormat.small);
-    final globalKey = GlobalKey(); 
-    final limitWidget = LimStackWidget(argField: argField, firstDownField: firstDownField, secondDownField: secondDownField,globalKey: globalKey,);
+    final globalKey = GlobalKey();
+    final limitWidget = LimStackWidget(
+      argField: argField,
+      firstDownField: firstDownField,
+      secondDownField: secondDownField,
+      globalKey: globalKey,
+    );
     return limitWidget;
   }
 
@@ -200,7 +207,9 @@ class MathConstructionsBuilding {
             width: 3,
           ),
           textFieldWidget,
-          const SizedBox(width: 10,)
+          const SizedBox(
+            width: 10,
+          )
         ],
       ),
     );
@@ -212,8 +221,9 @@ class MathConstructionsBuilding {
         isReplaceOperation: true,
         isActiveTextField: true,
         addAdictionalFocusNode: false);
-    final adictionalField = textFieldService.createTextField(isReplaceOperation: false);
-  
+    final adictionalField =
+        textFieldService.createTextField(isReplaceOperation: false);
+
     final globalKey = GlobalKey();
     final absWidget = Row(
       children: [
@@ -268,9 +278,12 @@ class MathConstructionsBuilding {
   Widget createUndefinitIntegralWidget() {
     final argFieldWidget = textFieldService.createTextField(
         isReplaceOperation: true, isActiveTextField: true);
+    final addictionalField = textFieldService.createTextField(
+      isReplaceOperation: false,
+    );
     final derevativeField = textFieldService.createTextField(
-        isReplaceOperation: false, addAdictionalFocusNode: true);
-    // final addictionalField = textFieldService.createTextField(isReplaceOperation: false, );
+        isReplaceOperation: false, addAdictionalFocusNode: false);
+
     final integralWidget = Row(
       children: [
         Row(
@@ -278,18 +291,19 @@ class MathConstructionsBuilding {
           children: [
             const Text(
               '∫',
-              style: TextStyle(fontSize: 30),
+              style: TextStyle(fontSize: 25),
             ),
-            ArgumentWidget(
-              argumentWidget: argFieldWidget,
+            Row(
+              children: [argFieldWidget],
             ),
             const Text(
               'd',
-              style: TextStyle(fontSize: 25),
+              style: TextStyle(fontSize: 20),
             ),
             derevativeField,
           ],
-        )
+        ),
+        addictionalField
       ],
     );
     return integralWidget;
@@ -302,9 +316,11 @@ class MathConstructionsBuilding {
         isReplaceOperation: false, addAdictionalFocusNode: true);
     if (upperFieldText != null && downFieldText != null) {
       upperField as SizedBox;
-      (upperField.child as TextFieldWidgetHandler).initTextInField = upperFieldText;
+      (upperField.child as TextFieldWidgetHandler).initTextInField =
+          upperFieldText;
       downField as SizedBox;
-      (downField.child as TextFieldWidgetHandler).initTextInField = downFieldText;
+      (downField.child as TextFieldWidgetHandler).initTextInField =
+          downFieldText;
     }
     final derevativeWidget = SizedBox(
       child: Column(
@@ -313,14 +329,20 @@ class MathConstructionsBuilding {
         children: [
           SizedBox(
             child: Row(
-              children: [const Text('d'), upperField],
+              children: [
+                const Text('d', style: TextStyle(fontSize: 20)),
+                upperField
+              ],
             ),
           ),
-          const SizedBox(width: 25,child:  Divider(color: Colors.black)),
+          const SizedBox(width: 25, child: Divider(color: Colors.black)),
           SizedBox(
             child: Row(
               children: [
-                const Text('d'),
+                const Text(
+                  'd',
+                  style: TextStyle(fontSize: 20),
+                ),
                 downField,
               ],
             ),
@@ -369,91 +391,94 @@ class MathConstructionsBuilding {
 }
 
 class LimStackWidget extends StatefulWidget {
-   LimStackWidget({
+  LimStackWidget({
     super.key,
     required this.argField,
     required this.firstDownField,
-    required this.secondDownField, required this.globalKey,
+    required this.secondDownField,
+    required this.globalKey,
   });
 
   final Widget argField;
   final Widget firstDownField;
   final Widget secondDownField;
-  final GlobalKey globalKey; 
-  Widget? child; 
+  final GlobalKey globalKey;
+  Widget? child;
 
   @override
   State<LimStackWidget> createState() => _LimStackWidgetState();
 }
 
 class _LimStackWidgetState extends State<LimStackWidget> {
-  Size? size; 
-  getSize(){
+  Size? size;
+  getSize() {
     final renderBox = widget.globalKey.currentContext?.findRenderObject();
-    if(renderBox is RenderBox){
-      if(size == null || size!= renderBox.size ){
-      size = renderBox.size; 
-      // pi
-      setState(() {
-        
-      });
+    if (renderBox is RenderBox) {
+      if (size == null || size != renderBox.size) {
+        size = renderBox.size;
+        // pi
+        setState(() {});
+      }
     }
-    }
-    
   }
+
   @override
   void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((_)=> getSize());
+    WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     widget.child ??= Stack(
-        key: const ValueKey(ElementsType.limitElement),
-        clipBehavior: Clip.none,
-        // alignment: Alignment.centerLeft,
-        children: [
-          const Positioned(
-            left:0,
-            child: SizedBox(
-              height: 50,
-              child: Center(
-                child: Text(
-                  'lim',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
-                ),
+      key: const ValueKey(ElementsType.limitElement),
+      clipBehavior: Clip.none,
+      // alignment: Alignment.centerLeft,
+      children: [
+        const Positioned(
+          left: 0,
+          child: SizedBox(
+            height: 50,
+            child: Center(
+              child: Text(
+                'lim',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
               ),
             ),
           ),
-          Positioned(
-            key: widget.globalKey,
-            left: 55,
-            child: Row(
-              children: [
-                widget.argField,
-              ],
-            ),
+        ),
+        Positioned(
+          key: widget.globalKey,
+          left: 45,
+          child: Row(
+            children: [
+              widget.argField,
+            ],
           ),
-          Positioned(
-            bottom: -20,
-            left: 0,
-            child: Row(
-              children: [widget.firstDownField],
-            ),
+        ),
+        Positioned(
+          bottom: -20,
+          left: 0,
+          child: Row(
+            children: [widget.firstDownField],
           ),
-          const Positioned(
-              bottom: -20, left: 20, child: Icon(Icons.arrow_forward_outlined)),
-          Positioned(
-            bottom: -20,
-            left: 40,
-            child: Row(
-              children: [widget.secondDownField],
-            ),
+        ),
+        const Positioned(
+            bottom: -20, left: 20, child: Icon(Icons.arrow_forward_outlined)),
+        Positioned(
+          bottom: -20,
+          left: 40,
+          child: Row(
+            children: [widget.secondDownField],
           ),
-        ],
-      );
-    return SizedBox(width: 70+(size?.width ?? 0),height: size?.height ?? 50,child: widget.child,);
+        ),
+      ],
+    );
+    return SizedBox(
+      width: 70 + (size?.width ?? 0),
+      height: size?.height ?? 50,
+      child: widget.child,
+    );
   }
 }
 
@@ -485,7 +510,7 @@ class _IntegralWidgetState extends State<IntegralWidget> {
       final renderBox =
           widget.globalKey.currentContext?.findRenderObject() as RenderBox;
       if (size == null || size!.width != renderBox.size.width) {
-        size = Size(renderBox.size.width + 80, renderBox.size.height);
+        size = Size(renderBox.size.width + 70, renderBox.size.height);
         setState(() {});
       }
     }
@@ -501,11 +526,13 @@ class _IntegralWidgetState extends State<IntegralWidget> {
     WidgetsBinding.instance.removeTimingsCallback(getSize);
     super.dispose();
   }
+
   @override
   void initState() {
     WidgetsBinding.instance.addTimingsCallback(getSize);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     late final Stack stack;
@@ -523,7 +550,7 @@ class _IntegralWidgetState extends State<IntegralWidget> {
             child: Center(
                 child: Text(
               '∫',
-              style: TextStyle(fontSize: 35),
+              style: TextStyle(fontSize: 30),
             )),
           ),
           Positioned(bottom: 0, left: 5, child: widget.startPointField),
@@ -531,16 +558,15 @@ class _IntegralWidgetState extends State<IntegralWidget> {
           Positioned(
               key: widget.globalKey,
               left: 30,
-              child: ArgumentWidget(
-                  argumentWidget: widget.argFieldWidget)),
+              child: ArgumentWidget(argumentWidget: widget.argFieldWidget)),
           const Positioned(
-            right: 35,
+            right: 30,
             child: Text(
               'd',
-              style: TextStyle(fontSize: 25),
+              style: TextStyle(fontSize: 20),
             ),
           ),
-          Positioned(right: 0, child: widget.derevativeField),
+          Positioned(right: 10, child: widget.derevativeField),
         ],
       );
     }
@@ -556,8 +582,7 @@ class _IntegralWidgetState extends State<IntegralWidget> {
 }
 
 class ArgumentWidget extends StatefulWidget {
-  ArgumentWidget({Key? key, required this.argumentWidget})
-      : super(key: key);
+  ArgumentWidget({Key? key, required this.argumentWidget}) : super(key: key);
   final Widget argumentWidget;
   Widget? child;
   @override
@@ -594,18 +619,16 @@ class BacketsWidget extends StatefulWidget {
 class _BacketsWidgetState extends State<BacketsWidget> {
   @override
   Widget build(BuildContext context) {
-    if (widget.child == null) {
-      widget.child = Row(
+    widget.child ??= Row(
         children: [
           widget.textFieldWidget,
         ],
       );
-    }
     return Row(
       children: [
-        const Text('('),
+        const Text('(',style: TextStyle(fontSize: 20),),
         widget.child!,
-        const Text(')'),
+        const Text(')',style: TextStyle(fontSize: 20),)
       ],
     );
   }
@@ -663,7 +686,7 @@ class _SqrtCustomPaintState extends State<_SqrtCustomPaint> {
   void getSize(List<FrameTiming> frameTiming) {
     final renderBox =
         widget.globalKey.currentContext?.findRenderObject() as RenderBox;
-    if(size == null || (size != null && size != renderBox.size)){
+    if (size == null || (size != null && size != renderBox.size)) {
       size = renderBox.size;
       setState(() {});
     }
@@ -682,7 +705,7 @@ class _SqrtCustomPaintState extends State<_SqrtCustomPaint> {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeTimingsCallback(getSize); 
+    WidgetsBinding.instance.removeTimingsCallback(getSize);
     super.dispose();
   }
 
@@ -720,12 +743,13 @@ class ExpRowWidget extends StatefulWidget {
   ExpRowWidget(
       {Key? key,
       required this.baseWidget,
-      required this.globalKey,
+      required this.expGlobalKey,
       this.child,
-      required this.textField})
+      required this.textField, required this.baseGlobalKey})
       : super(key: key);
   final Widget baseWidget;
-  final GlobalKey globalKey;
+  final GlobalKey expGlobalKey;
+  final GlobalKey baseGlobalKey;
   Widget? child;
   final Widget textField;
 
@@ -736,14 +760,27 @@ class ExpRowWidget extends StatefulWidget {
 class _ExpRowWidgetState extends State<ExpRowWidget> {
   Size size = const Size(120, 60);
   void getSize(List<FrameTiming> frameTiming) {
-    final renderBox =
-        widget.globalKey.currentContext?.findRenderObject() as RenderBox;
-    if(size != renderBox.size){
-      // print('adadadadadadada'); 
-      size = Size(renderBox.size.width + 20, renderBox.size.height + 25);
+    final expRenderBox =
+        widget.expGlobalKey.currentContext?.findRenderObject() as RenderBox;
+    final baseRenderBox =
+        widget.baseGlobalKey.currentContext?.findRenderObject() as RenderBox;
+    late final double newHeight; 
+    late final double newWidth; 
+    if(expRenderBox.size.height > baseRenderBox.size.height){
+      newHeight = expRenderBox.size.height + 15; 
+    }else{ 
+      newHeight = baseRenderBox.size.height + 15; 
+    }
+    if(expRenderBox.size.width > baseRenderBox.size.width){
+      newWidth = expRenderBox.size.width + 25; 
+    }else{ 
+      newWidth = baseRenderBox.size.width + 20; 
+    }
+    if (size != Size(newWidth,newHeight) ) {
+      // print('adadadadadadada');
+      size = Size(newWidth,newHeight);
       setState(() {});
     }
-    
   }
 
   // @override
@@ -756,6 +793,7 @@ class _ExpRowWidgetState extends State<ExpRowWidget> {
     WidgetsBinding.instance.removeTimingsCallback(getSize);
     super.dispose();
   }
+
   @override
   void initState() {
     WidgetsBinding.instance.addTimingsCallback(getSize);
@@ -764,10 +802,13 @@ class _ExpRowWidgetState extends State<ExpRowWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget firstPositioned =
-        Positioned(left: 0, bottom: 0, child: widget.baseWidget);
+    Widget firstPositioned = Positioned(
+        key: widget.baseGlobalKey,
+        left: 0,
+        bottom: 0,
+        child: widget.baseWidget);
     Widget secondPositioned = Positioned(
-        key: widget.globalKey,
+        key: widget.expGlobalKey,
         top: -5,
         right: 0,
         child: Row(
@@ -815,7 +856,7 @@ class FracDividerWidget extends StatefulWidget {
 
 class _FracDividerWidgetState extends State<FracDividerWidget> {
   Size? size;
-  final trimingCallBack = TimingsCallback; 
+  final trimingCallBack = TimingsCallback;
 
   void getSize(List<FrameTiming> timings) {
     final upperRenderBox =
@@ -836,6 +877,7 @@ class _FracDividerWidgetState extends State<FracDividerWidget> {
     WidgetsBinding.instance.removeTimingsCallback(getSize);
     super.dispose();
   }
+
   @override
   void initState() {
     WidgetsBinding.instance.addTimingsCallback(getSize);

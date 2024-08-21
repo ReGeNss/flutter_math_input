@@ -67,8 +67,7 @@ class FormulasTreeParsersService {
                 widget.child!,
                 activeTextFieldController,
               );
-            }
-            if (data != null) {
+              if (data != null) {
               data.index = index; // костилі
               data.wigetData = array;
               if (_parsedData == null) {
@@ -76,6 +75,8 @@ class FormulasTreeParsersService {
                 // return data;
               }
             }
+            }
+            
             break;
           }
         case const (Stack):
@@ -96,11 +97,15 @@ class FormulasTreeParsersService {
             data = _textControllerWidgetParser(
                 widget.child, activeTextFieldController);
             if (data != null) {
-              data.index = index; // костилі
-              data.wigetData = array;
+              if(data.index == null && data.wigetData == null){
+                data.index = 0; 
+                data.wigetData = [widget.child]; 
+              }
+              // data.index = index; // костилі
+              // data.wigetData = array;
               if (_parsedData == null) {
                 _parsedData = data;
-                return data;
+                return null;
               }
             }
             break;
