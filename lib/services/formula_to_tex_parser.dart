@@ -58,7 +58,7 @@ class FormulaToTexParser{
               }
               case (ElementsType.arccotElement):
               {
-                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\arccot');
+                return addToTeXData(widgetsData: element.children,parseFunctionWithTeXFormula: trigonometricParser,teXFormula: '\\arcctg');
               }
               case (ElementsType.naturalLogElement):
               {
@@ -153,11 +153,13 @@ class FormulaToTexParser{
                   {
                     final absString = absParser([element.child!]);
                     formulaInTeX = formulaInTeX + absString; 
-                    return formulaInTeX; 
+                    // return formulaInTeX; 
                   }
               }
+            }else{
+               _formulaParser([element.child!]);
             }
-             _formulaParser([element.child!]);
+
           }
           
           
@@ -180,22 +182,26 @@ class FormulaToTexParser{
       case const (IntegralWidget):
       {
         element as IntegralWidget;
-          _formulaParser([element.child!]);
+        _formulaParser([element.child!]);
+        break;
       }
       case const (ArgumentWidget):
       {
         element as ArgumentWidget;
-        return _formulaParser([element.child!]);
+        _formulaParser([element.child!]);
+        break; 
       }
       case const (ExpRowWidget):
       {
         element as ExpRowWidget; 
-        return _formulaParser([element.child!]);
+        _formulaParser([element.child!]);
+        break; 
       }
       case const (BacketsWidget):
       {
         element as BacketsWidget;
         addToTeXData(widgetsData: [element.child!],parseFunction: backetsParer );
+        break; 
       }
       case const (TextFieldWidgetHandler):
       {
@@ -231,7 +237,7 @@ String backetsParer(List<Widget> widgets){
         _formulaParser(element.children);
     }
     if(formulaInTeX.isNotEmpty){
-      backetData = '$backetData$formulaInTeX';
+      backetData = '$backetData$formulaInTeX ';
     }
     formulaInTeX ='';
   }
@@ -247,7 +253,7 @@ String expParser(List<Widget> widgets){
         formulaInTeX = ''; 
          _formulaParser([element.child!]); 
         if(formulaInTeX.isNotEmpty){
-          teXExpData = '$teXExpData$formulaInTeX';
+          teXExpData = '$teXExpData$formulaInTeX ';
         }
         
       }
@@ -296,7 +302,7 @@ String fracParser(List<Widget> widgets) {
       }
     } else {}
   }
-  final fracStringData = '\\frac{${fracData[0]}}{${fracData[1]}}';
+  final fracStringData = '\\frac{${fracData[0]}}{${fracData[1]}} ';
   return fracStringData;
 }
 
@@ -316,7 +322,7 @@ String derevativeParser(List<Widget> widgets){
       formulaInTeX = ''; 
     }
   }
-  final derevativeString = '\\frac{d${derevativeData[0]}}{d${derevativeData[1]}}';
+  final derevativeString = '\\frac{d${derevativeData[0]}}{d${derevativeData[1]}} ';
   return derevativeString;
 }
 
@@ -337,7 +343,7 @@ String logParser(List<Widget> widgets) {
         formulaInTeX = '';
       }
     }
-  final logStringData = '\\log_{${logData[1]}}${logData[0]}';
+  final logStringData = '\\log_{${logData[1]}}${logData[0]} ';
   return logStringData; 
 }
 
@@ -363,7 +369,7 @@ String integralParser(List<Widget> widgets){
     }
   }
   formulaInTeX = ''; 
-  final integralString = '\\int_{${integralData[0]}}^{${integralData[1]}} ${integralData[2]} d${integralData[3]}';
+  final integralString = '\\int_{${integralData[0]}}^{${integralData[1]}} ${integralData[2]} d${integralData[3]} ';
   return integralString; 
 }
 
@@ -372,14 +378,17 @@ String undefinitIntegralParser(List<Widget> widgets){
   for(final element in widgets){
     if(element.runtimeType == ArgumentWidget){
       final arg = element as ArgumentWidget;
-      integralData[0] = _formulaParser([arg.child!]) ??''; 
-    }else if(element.runtimeType == SizedBox){
+      _formulaParser([arg.child!]);
+      integralData[0] = formulaInTeX; 
+    }else if(element.runtimeType == SizedBox && integralData[1].isEmpty){
       final sizedBox = element as SizedBox; 
-      integralData[1] = _formulaParser([sizedBox.child!]) ??'';
+      _formulaParser([sizedBox.child!]);
+      integralData[1] = formulaInTeX;
     }
+      formulaInTeX = '';
   }
-  formulaInTeX = ''; 
-  final integral = '\\int ${integralData[0]} d${integralData[1]}'; 
+ 
+  final integral = '\\int ${integralData[0]} d${integralData[1]} '; 
   return integral;
 }
 
@@ -410,7 +419,7 @@ String limitParser(List<Widget> widgets){
       formulaInTeX = ''; 
     }
   }
-  final limitStringData = '\\lim_{${limitData[1]}\\to ${limitData[2]}} ${limitData[0]}';
+  final limitStringData = '\\lim_{${limitData[1]}\\to ${limitData[2]}} ${limitData[0]} ';
   return limitStringData; 
 }
 
@@ -420,7 +429,7 @@ String trigonometricParser(List<Widget> widgets, String TeXFormula){
     if(element is SizedBox && element.child != null){
       final data = _formulaParser([element.child!]);
     if(data != null){
-      stringData = '$stringData$data';
+      stringData = '$stringData$data ';
     }
     formulaInTeX = ''; 
     }

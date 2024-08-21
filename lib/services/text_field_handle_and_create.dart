@@ -236,6 +236,9 @@ class _TextFieldWidgetHandlerState extends State<TextFieldWidgetHandler> {
     if(widget.textField == null){ widget.textField = TextField(
         textAlign: TextAlign.center,
         focusNode: widget.focusNode,
+        style: const TextStyle(
+          fontSize: 20
+        ),
         keyboardType: TextInputType.none,
         decoration: textFieldDecoration,
         controller: widget.textFieldController,
@@ -246,7 +249,9 @@ class _TextFieldWidgetHandlerState extends State<TextFieldWidgetHandler> {
           // activeTextFieldControllerData = textFieldControllerData;
         },
       );
-      widget.textFieldController.text = widget.initTextInField ?? '';
+      if(widget.initTextInField != null){
+        widget.textFieldController.text = widget.initTextInField!;
+      }
     }
     final fieldWidget= IntrinsicWidth(
       child: widget.textField, 

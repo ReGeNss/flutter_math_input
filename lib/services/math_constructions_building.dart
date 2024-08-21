@@ -183,12 +183,14 @@ class MathConstructionsBuilding {
         key: const ValueKey(ElementsType.limitElement),
         clipBehavior: Clip.none,
         children: [
-          const SizedBox(
-            height: 50,
-            child: Center(
-              child: Text(
-                'lim',
-                style: TextStyle(fontSize: 40, fontWeight: FontWeight.w400),
+          const Positioned(
+            child: SizedBox(
+              height: 50,
+              child: Center(
+                child: Text(
+                  'lim',
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.w400),
+                ),
               ),
             ),
           ),

@@ -197,10 +197,10 @@ class FunctionPageWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                     onPressed: () {
-                      model.NamedFunctionButtonTap('arccot',ElementsType.arccotElement);
+                      model.NamedFunctionButtonTap('arcctg',ElementsType.arccotElement);
                     },
                     style: _buttonStyle,
-                    child: const Text('arccot'))),
+                    child: const Text('arcctg'))),
             SizedBox(
                 width: 50,
                 height: 50,
