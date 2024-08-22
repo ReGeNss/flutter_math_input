@@ -332,6 +332,14 @@ class FormulaToTexParser {
         element as Stack;
         final data = _formulaParser([element]);
         textData = '$textData$data';
+      // }else if(element is SingleChildRenderObjectWidget ||
+      // element is ParentDataWidget ||
+      // element is ProxyWidget){
+      //   element as SingleChildRenderObjectWidget; 
+      //   print(element.child); 
+      }else if(element is MultiChildRenderObjectWidget){
+        _formulaParser(element.children);
+        textData = '$textData$formulaInTeX';
       }
       formulaInTeX = '';
     }

@@ -196,7 +196,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {model.textFieldService.addCharToTextField('π');},
                     style: _buttonStyle,
                     child: const Text('π'))),
             SizedBox(

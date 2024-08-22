@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_keyboard/custom_math_icons_icons.dart';
 import 'package:math_keyboard/keyboard_model.dart';
 import 'package:provider/provider.dart';
 
@@ -10,13 +11,33 @@ final _buttonStyle = ButtonStyle(
 
 const double buttonWidth = 35; 
 const double buttonHeight = 60;
-class LatinAlphabetPageWidget extends StatelessWidget {
+class LatinAlphabetPageWidget extends StatefulWidget {
   const LatinAlphabetPageWidget({Key? key}) : super(key: key);
+
+  @override
+  State<LatinAlphabetPageWidget> createState() => _LatinAlphabetPageWidgetState();
+}
+
+class _LatinAlphabetPageWidgetState extends State<LatinAlphabetPageWidget> {
+  bool isCapsActive = false; 
+  void capsButtonTap(){
+    if(isCapsActive){
+      isCapsActive = false; 
+    }else{
+      isCapsActive = true; 
+    }
+    setState(() {
+      
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final model = context.read<KeyboardModel>();
-    return Column(
+    late final Widget keyboard; 
+     if(!isCapsActive) {
+       keyboard= Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
@@ -161,6 +182,13 @@ class LatinAlphabetPageWidget extends StatelessWidget {
                     onPressed: () {model.textFieldService.addCharToTextField('p');},
                     style: _buttonStyle,
                     child: const Text('p'))),
+                    SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('q');},
+                    style: _buttonStyle,
+                    child: const Text('q'))),
           ],
         ),
         Row(
@@ -169,10 +197,10 @@ class LatinAlphabetPageWidget extends StatelessWidget {
             SizedBox(
                 width: buttonWidth,
                 height: buttonHeight,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('q');},
+                child: IconButton(
+                    onPressed: () {capsButtonTap();},
                     style: _buttonStyle,
-                    child: const Text('q'))),
+                    icon: const Icon(CustomMathIcons.shift))),
             SizedBox(
                 width: buttonWidth,
                 height: buttonHeight,
@@ -246,5 +274,246 @@ class LatinAlphabetPageWidget extends StatelessWidget {
         ),
       ],
     );
+     }else{
+      keyboard= Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: buttonWidth,
+              height: buttonHeight,
+              child: TextButton(
+                  onPressed: () {
+                    model.textFieldService.addCharToTextField('A');
+                  },
+                  style: _buttonStyle,
+                  child: const Text('A')),
+            ),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                  onPressed: () {
+                    model.textFieldService.addCharToTextField('B');
+                  },
+                  style: _buttonStyle,
+                  child: const Text('B'),
+                )),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('C');},
+                    style: _buttonStyle,
+                    child: const Text('C'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('D');},
+                    style: _buttonStyle,
+                    child: const Text('D'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('E');},
+                    style: _buttonStyle,
+                    child: const Text('E'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {
+                      model.textFieldService.addCharToTextField('F');
+                    },
+                    style: _buttonStyle,
+                    child: const Text('F'))),
+                                SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {
+                      // fracButtonTap(context);
+                      model.textFieldService.addCharToTextField('G');
+                    },
+                    style: _buttonStyle,
+                    child: const Text('G'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {
+                      // sqrtButtonTap(context);
+                      model.textFieldService.addCharToTextField('H');
+                    },
+                    style: _buttonStyle,
+                    child: const Text('H'))),
+            
+            
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('I');},
+                    style: _buttonStyle,
+                    child: const Text('I'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('J');},
+                    style: _buttonStyle,
+                    child: const Text('J'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('K');},
+                    style: _buttonStyle,
+                    child: const Text('K'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {
+                      // model.charButtonTap('×', context);
+                      model.textFieldService.addCharToTextField('L');
+                    },
+                    style: _buttonStyle,
+                    child: const Text('L'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {
+                      // toSquareTap(context);
+                      model.textFieldService.addCharToTextField('M');
+                    },
+                    style: _buttonStyle,
+                    child: const Text('M'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('N');},
+                    style: _buttonStyle,
+                    child: const Text('N'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('O');},
+                    style: _buttonStyle,
+                    child: const Text('O'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('P');},
+                    style: _buttonStyle,
+                    child: const Text('P'))),
+                    SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('Q');},
+                    style: _buttonStyle,
+                    child: const Text('Q'))),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: IconButton(
+                    onPressed: () {capsButtonTap();},
+                    style: _buttonStyle,
+                    icon:  const Icon(CustomMathIcons.shift_lock))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('R');},
+                    style: _buttonStyle,
+                    child: const Text('R'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('S');},
+                    style: _buttonStyle,
+                    child: const Text('S'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {
+                      model.textFieldService.addCharToTextField('U');
+                    },
+                    style: _buttonStyle,
+                    child: const Text('U'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {model.textFieldService.addCharToTextField('V');},
+                    style: _buttonStyle,
+                    child: const Text('V'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {
+                      model.textFieldService.addCharToTextField('W');
+                    },
+                    style: _buttonStyle,
+                    child: const Text('W'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {
+                      model.textFieldService.addCharToTextField('X');
+                    },
+                    style: _buttonStyle,
+                    child: const Text('X'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {
+                      // model.charButtonTap('+', context);
+                      model.textFieldService.addCharToTextField('Y');
+                      // model.selectNextNewFocus(context);
+                    },
+                    style: _buttonStyle,
+                    child: const Text('Y'))),
+            SizedBox(
+                width: buttonWidth,
+                height: buttonHeight,
+                child: TextButton(
+                    onPressed: () {
+                      model.textFieldService.addCharToTextField('Z');
+                    },
+                    style: _buttonStyle,
+                    child: const Text('Z'))),
+
+          ],
+        ),
+      ],
+    );
+     }
+     return keyboard; 
   }
+  
 } 
