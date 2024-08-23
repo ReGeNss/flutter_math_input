@@ -40,7 +40,7 @@ class KeyboardModel extends ChangeNotifier{
     }
   }
 
-  void NamedFunctionButtonTap(String functionName, ElementsType type){
+  void namedFunctionButtonTap(String functionName, ElementsType type){
     final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldControllerData.controller);
     final fracWidget = mathConstructionsBuildingService.createNamedFunctionWidget(functionName, type); 
     if(parsedWidgets != null){

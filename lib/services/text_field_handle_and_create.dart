@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:math_keyboard/services/formulas_tree_parsers_and_handler.dart';
 
 const textFieldDecoration = InputDecoration(
-    focusedBorder: OutlineInputBorder(), border: InputBorder.none);
+    focusedBorder: OutlineInputBorder(), border: InputBorder.none,contentPadding: EdgeInsets.all(5));
 // за активний контроллер поля вважається останнє створене поле
 // extension FocusNodeHasListeners on FocusNode {
 //   bool get hasListeners => hasListeners;
@@ -133,7 +133,13 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
 
   void addCharToTextField(String char) {
     final currentText = activeTextFieldControllerData.controller.text;
-    activeTextFieldControllerData.controller.text = currentText + char;
+    var currentCursorOffset = activeTextFieldControllerData.controller.selection.baseOffset; 
+    if(currentCursorOffset < 0){
+      currentCursorOffset = 0; 
+    }
+    activeTextFieldControllerData.controller.text = currentText.replaceRange(currentCursorOffset, currentCursorOffset, char);
+    activeTextFieldControllerData.controller.selection = TextSelection.fromPosition(TextPosition(offset: currentCursorOffset+1)); 
+
   }
 
   TextFieldControllerData _createTextFieldControllerData(

@@ -2,13 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:math_keyboard/custom_math_icons_icons.dart';
 import 'package:math_keyboard/keyboard_model.dart';
 import 'package:math_keyboard/widgets/keyboard.dart';
+import 'package:math_keyboard/widgets/keyboardPages.dart/latin_alphabet_page.dart';
 import 'package:provider/provider.dart';
 
-final _buttonStyle = ButtonStyle(
+final buttonStyle = ButtonStyle(
+    backgroundColor: WidgetStateProperty.all(Color.fromRGBO(211,211,211,0.3),),
     shape: WidgetStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
     foregroundColor: WidgetStateProperty.all(Colors.black),
     side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
+final _overlayButtonStyle = ButtonStyle(
+    backgroundColor: WidgetStateProperty.all(Colors.grey),
+    shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+    foregroundColor: WidgetStateProperty.all(Colors.black),
+    side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
+
+
 final _popButtonStyle = ButtonStyle(
     shape: WidgetStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
@@ -38,7 +48,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                   onPressed: () {
                     model.backetsButtonTap();
                   },
-                  style: _buttonStyle,
+                  style: buttonStyle,
                   child: const Text('( )')),
             ),
             SizedBox(
@@ -49,7 +59,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                     // model.('>', context);
                     model.createCharWidgets('>');
                   },
-                  style: _buttonStyle,
+                  style: buttonStyle,
                   child: const Text('>'),
                 )),
             SizedBox(
@@ -57,21 +67,21 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('7');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('7'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('8');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('8'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('9');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('9'))),
             SizedBox(
                 width: 50,
@@ -80,7 +90,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                     onPressed: () {
                       model.createCharWidgets('÷');
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('÷'))),
           ],
         ),
@@ -94,7 +104,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                     onPressed: () {
                       model.onFracButtonTap(); 
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     icon: const Icon(CustomMathIcons.frac,size: iconSize))),
             SizedBox(
                 width: 50,
@@ -104,28 +114,28 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                       // sqrtButtonTap(context);
                       model.sqrtButtonTap(); 
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     icon: const Icon(CustomMathIcons.sqrt,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('4');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('4'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('5');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('5'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('6');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('6'))),
             SizedBox(
                 width: 50,
@@ -135,7 +145,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                       // model.charButtonTap('×', context);
                       model.createCharWidgets('×');
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('×'))),
           ],
         ),
@@ -150,42 +160,42 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                       // toSquareTap(context);
                       model.onExpButtonTap(); 
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     icon: const Icon(CustomMathIcons.exp,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('x');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('x'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('1');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('1'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('2');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('2'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('3');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('3'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.createCharWidgets('-');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('-'))),
           ],
         ),
@@ -197,7 +207,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('π');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('π'))),
             SizedBox(
                 width: 50,
@@ -206,14 +216,14 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                     onPressed: () {
                       model.createCharWidgets('%');
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('%'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('0');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('0'))),
             SizedBox(
                 width: 50,
@@ -223,7 +233,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                       // formulaParseToString(context);
                       model.textFieldService.addCharToTextField(',');
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text(','))),
             SizedBox(
                 width: 50,
@@ -232,36 +242,86 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                     onPressed: () {
                       model.createCharWidgets('=');
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('='))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {
-                      // model.charButtonTap('+', context);
                       model.createCharWidgets('+');
-                      // model.selectNextNewFocus(context);
                     },
-                    // onLongPress: () {                   
-                    //   final overlay = Overlay.of(context); 
-                    //   final overlayEntry = OverlayEntry(builder: (context) {
-                    //     return Positioned(
-                    //         top: MediaQuery.of(context).size.height-100,
-                    //         left: MediaQuery.of(context).size.width-100,
-                    //         child: Row(
-                    //           children: [
-                    //             TextButton(onPressed: (){overlayEntry.remove();},style: _popButtonStyle, child: const Text('±'),),
-                    //           ],
-                    //         ));
-                    //   });
-                    //   overlay.insert(overlayEntry);
-                    // },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('+'))),
+            // SizedBox(
+            //     width: 50,
+            //     height: 50,
+            //     child: addButtonWidget(model: model)),
           ],
         ),
       ],
     );
   }
 }
+
+// class addButtonWidget extends StatefulWidget {
+//   const addButtonWidget({
+//     super.key,
+//     required this.model,
+//   });
+
+//   final KeyboardModel model;
+
+//   @override
+//   State<addButtonWidget> createState() => _addButtonWidgetState();
+// }
+
+// class _addButtonWidgetState extends State<addButtonWidget> {
+//   OverlayEntry? _overlayEntry;
+
+//   void createOverlay(LongPressStartDetails details){
+//     final overlay = Overlay.of(context);
+//     final renderBox = context.findRenderObject() as RenderBox; 
+//     final offset = renderBox.localToGlobal(Offset.zero);
+//     _overlayEntry = OverlayEntry(
+//         builder: (context) => Positioned(
+//             left: offset.dx,
+//             top: offset.dy - buttonHeight,
+//             child: Row(
+//               children: [
+//                 GestureDetector(
+//                   onPanStart: (_) => print('some'),
+//                   child: Container(
+//                       height: 50,
+//                       width: 50,
+//                       child: TextButton(
+//                           style: _overlayButtonStyle,
+//                           onPressed: () {
+//                             print('TAP');
+//                           },
+//                           child: Text('+-'))),
+//                 )
+//               ],
+//             )));
+//     overlay.insert(_overlayEntry!); 
+//   }
+
+//   void deleteOverlay(LongPressEndDetails details){
+//     _overlayEntry?.remove();
+//     _overlayEntry = null;
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onLongPressStart: createOverlay,
+//       onLongPressEnd: deleteOverlay,
+//       child: TextButton(
+//           onPressed: () {
+//             widget.model.createCharWidgets('+');
+//           },
+//           style: _buttonStyle,
+//           child: const Text('+')),
+//     );
+//   }
+// }

@@ -200,7 +200,7 @@ class _LatinAlphabetPageWidgetState extends State<LatinAlphabetPageWidget> {
                 child: IconButton(
                     onPressed: () {capsButtonTap();},
                     style: _buttonStyle,
-                    icon: const Icon(CustomMathIcons.shift))),
+                    icon: const Icon(CustomMathIcons.shift,size: 20,))),
             SizedBox(
                 width: buttonWidth,
                 height: buttonHeight,
@@ -438,7 +438,7 @@ class _LatinAlphabetPageWidgetState extends State<LatinAlphabetPageWidget> {
                 child: IconButton(
                     onPressed: () {capsButtonTap();},
                     style: _buttonStyle,
-                    icon:  const Icon(CustomMathIcons.shift_lock))),
+                    icon:  const Icon(CustomMathIcons.shift_lock,size: 20))),
             SizedBox(
                 width: buttonWidth,
                 height: buttonHeight,

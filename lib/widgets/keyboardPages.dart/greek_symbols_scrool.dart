@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/keyboard_model.dart';
+import 'package:math_keyboard/widgets/keyboardPages.dart/standart_numbers_page.dart';
 import 'package:provider/provider.dart';
 
-final _buttonStyle = ButtonStyle(
-    shape: WidgetStateProperty.all(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-    foregroundColor: WidgetStateProperty.all(Colors.black),
-    side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
+// final buttonStyle = ButtonStyle(
+//     shape: WidgetStateProperty.all(
+//         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+//     foregroundColor: WidgetStateProperty.all(Colors.black),
+//     side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
 
 const double spaceBetweenWidth = 10; 
 
@@ -31,7 +32,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
               model.formulaInTeX= model.texParsingService.start(model.formulaGroopWidgets);
               model.rebuildSreenState();
             },
-            style: _buttonStyle,
+            style: buttonStyle,
             child: const Text('α'),
           ),
         ),
@@ -43,7 +44,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             onPressed: () {
               model.textFieldService.addCharToTextField('β');
             },
-            style: _buttonStyle,
+            style: buttonStyle,
             child: const Text('β'),
           ),
         ),
@@ -55,7 +56,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             onPressed: () {
               model.textFieldService.addCharToTextField('γ');
             },
-            style: _buttonStyle,
+            style: buttonStyle,
             child: const Text('γ'),
           ),
         ),
@@ -67,7 +68,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             onPressed: () {
               model.textFieldService.addCharToTextField('Δ');
             },
-            style: _buttonStyle,
+            style: buttonStyle,
             child: const Text('Δ'),
           ),          
         ),
@@ -79,7 +80,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             onPressed: () {
               model.textFieldService.addCharToTextField('ε');
             },
-            style: _buttonStyle,
+            style: buttonStyle,
             child: const Text('ε'),
           ),
         ),
@@ -91,7 +92,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             onPressed: () {
               model.textFieldService.addCharToTextField('η');
             },
-            style: _buttonStyle,
+            style: buttonStyle,
             child: const Text('η'),
           ),
         ),
@@ -103,7 +104,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             onPressed: () {
               model.textFieldService.addCharToTextField('θ');
             },
-            style: _buttonStyle,
+            style: buttonStyle,
             child: const Text('θ'),
           ),
         ),
@@ -115,7 +116,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             onPressed: () {
               model.textFieldService.addCharToTextField('σ');
             },
-            style: _buttonStyle,
+            style: buttonStyle,
             child: const Text('σ'),
           ),
         ),
@@ -127,7 +128,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             onPressed: () {
               model.textFieldService.addCharToTextField('𝜏');
             },
-            style: _buttonStyle,
+            style: buttonStyle,
             child: const Text('𝜏'),
           ),
         ),
@@ -139,7 +140,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             onPressed: () {
               model.textFieldService.addCharToTextField('φ');
             },
-            style: _buttonStyle,
+            style: buttonStyle,
             child: const Text('φ'),
           ),
         ),
@@ -151,7 +152,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             onPressed: () {
               model.textFieldService.addCharToTextField('ψ');
             },
-            style: _buttonStyle,
+            style: buttonStyle,
             child: const Text('	ψ'),
           ),
         ),
@@ -163,7 +164,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             onPressed: () {
               model.textFieldService.addCharToTextField('ω');
             },
-            style: _buttonStyle,
+            style: buttonStyle,
             child: const Text('ω'),
           ),
         ),

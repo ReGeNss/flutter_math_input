@@ -3,14 +3,10 @@ import 'package:math_keyboard/custom_math_icons_icons.dart';
 import 'package:math_keyboard/keyboard_model.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
 import 'package:math_keyboard/widgets/keyboard.dart';
+import 'package:math_keyboard/widgets/keyboardPages.dart/standart_numbers_page.dart';
 import 'package:provider/provider.dart';
 
-final _buttonStyle = ButtonStyle(
-    shape: WidgetStateProperty.all(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-    foregroundColor: WidgetStateProperty.all(Colors.black),
-    side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
- 
+
 
 class FunctionPageWidget extends StatelessWidget {
   const FunctionPageWidget({
@@ -31,9 +27,9 @@ class FunctionPageWidget extends StatelessWidget {
               height: 50,
               child: TextButton(
                   onPressed: () {
-                    model.NamedFunctionButtonTap('cos',ElementsType.cosElement);
+                    model.namedFunctionButtonTap('cos',ElementsType.cosElement);
                   },
-                  style: _buttonStyle,
+                  style: buttonStyle,
                   child: const Text('cos')),
             ),
             SizedBox(
@@ -41,31 +37,31 @@ class FunctionPageWidget extends StatelessWidget {
                 height: 50,
                 child: TextButton(
                   onPressed: () {
-                    model.NamedFunctionButtonTap('arccos',ElementsType.arccosElement);
+                    model.namedFunctionButtonTap('arccos',ElementsType.arccosElement);
                   },
-                  style: _buttonStyle,
+                  style: buttonStyle,
                   child: const Text('arccos'),
                 )),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {model.NamedFunctionButtonTap('lg',ElementsType.decimalLogElement);},
-                    style: _buttonStyle,
+                    onPressed: () {model.namedFunctionButtonTap('lg',ElementsType.decimalLogElement);},
+                    style: buttonStyle,
                     child: const Text('lg'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: IconButton(
                     onPressed: () {model.absButtonTap();},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     icon: const Icon(CustomMathIcons.abs,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('!');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('!'))),
             SizedBox(
                 width: 50,
@@ -74,7 +70,7 @@ class FunctionPageWidget extends StatelessWidget {
                     onPressed: () {
                       model.textFieldService.addCharToTextField('e'); 
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('e'))),
           ],
         ),
@@ -87,9 +83,9 @@ class FunctionPageWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // fracButtonTap(context);
-                      model.NamedFunctionButtonTap('sin',ElementsType.sinElement);
+                      model.namedFunctionButtonTap('sin',ElementsType.sinElement);
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('sin'))),
             SizedBox(
                 width: 50,
@@ -97,30 +93,30 @@ class FunctionPageWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // sqrtButtonTap(context);
-                      model.NamedFunctionButtonTap('arcsin',ElementsType.arcsinElement);
+                      model.namedFunctionButtonTap('arcsin',ElementsType.arcsinElement);
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('arcsin'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {model.NamedFunctionButtonTap('log₂',ElementsType.logBaseTwoElement);},
-                    style: _buttonStyle,
+                    onPressed: () {model.namedFunctionButtonTap('log₂',ElementsType.logBaseTwoElement);},
+                    style: buttonStyle,
                     child: const Text('log₂'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: IconButton(
                     onPressed: () {model.limButtonTap(); },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     icon: const Icon(CustomMathIcons.lim,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {model.textFieldService.addCharToTextField('f(x)');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('f(x)'))),
             SizedBox(
                 width: 50,
@@ -129,7 +125,7 @@ class FunctionPageWidget extends StatelessWidget {
                     onPressed: () {
                       model.textFieldService.addCharToTextField('∞'); 
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('∞'))),
           ],
         ),
@@ -142,44 +138,44 @@ class FunctionPageWidget extends StatelessWidget {
                 child: TextButton(
                     onPressed: () {
                       // toSquareTap(context);
-                      model.NamedFunctionButtonTap('tan',ElementsType.tanElement);
+                      model.namedFunctionButtonTap('tan',ElementsType.tanElement);
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('tan'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {model.NamedFunctionButtonTap('arctan',ElementsType.arctanElement);},
-                    style: _buttonStyle,
+                    onPressed: () {model.namedFunctionButtonTap('arctan',ElementsType.arctanElement);},
+                    style: buttonStyle,
                     child: const Text('arctan'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: IconButton(
                     onPressed: () {model.logButtonTap() ;},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     icon: const Icon(CustomMathIcons.log,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: IconButton(
                     onPressed: () {model.integralButtonTap();},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     icon: const Icon(CustomMathIcons.integral,size: iconSize))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: IconButton(
                     onPressed: () {model.onDerevativeButtonTap(upperField: 'x',downField: 'y');},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     icon: const Icon(CustomMathIcons.dx_dy,size: iconSize,))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {},
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text(''))),
           ],
         ),
@@ -190,24 +186,24 @@ class FunctionPageWidget extends StatelessWidget {
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {model.NamedFunctionButtonTap('cot',ElementsType.cotElement);},
-                    style: _buttonStyle,
+                    onPressed: () {model.namedFunctionButtonTap('cot',ElementsType.cotElement);},
+                    style: buttonStyle,
                     child: const Text('cot'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
                     onPressed: () {
-                      model.NamedFunctionButtonTap('arcctg',ElementsType.arccotElement);
+                      model.namedFunctionButtonTap('arcctg',ElementsType.arccotElement);
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text('arcctg'))),
             SizedBox(
                 width: 50,
                 height: 50,
                 child: TextButton(
-                    onPressed: () {model.NamedFunctionButtonTap('ln',ElementsType.naturalLogElement);},
-                    style: _buttonStyle,
+                    onPressed: () {model.namedFunctionButtonTap('ln',ElementsType.naturalLogElement);},
+                    style: buttonStyle,
                     child: const Text('ln'))),
             SizedBox(
                 width: 50,
@@ -216,7 +212,7 @@ class FunctionPageWidget extends StatelessWidget {
                     onPressed: () {
                       model.undefinitintegralButtonTap();
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     icon: const Icon(CustomMathIcons.indefinite_integral,size: iconSize))),
             SizedBox(
                 width: 50,
@@ -225,7 +221,7 @@ class FunctionPageWidget extends StatelessWidget {
                     onPressed: () {
                       model.onDerevativeButtonTap(); 
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     icon: const Icon(CustomMathIcons.derevative,size: iconSize))),
             SizedBox(
                 width: 50,
@@ -234,7 +230,7 @@ class FunctionPageWidget extends StatelessWidget {
                     onPressed: () {
                       
                     },
-                    style: _buttonStyle,
+                    style: buttonStyle,
                     child: const Text(''))),
           ],
         ),
