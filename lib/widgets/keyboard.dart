@@ -17,12 +17,9 @@ final _buttonStyle = ButtonStyle(
 class KeyboardBottomSheet{
   final List<Widget> keyboardFormat = const [KeyboardNumbersButtomWidget(),FunctionPageWidget(),LatinAlphabetPageWidget()];
   int selectedKeyboardFormat = 0; 
-  Future<dynamic> keyboardBottomSheetWidget(BuildContext context) {
+  PersistentBottomSheetController keyboardBottomSheetWidget(BuildContext context) {
     final model = context.read<KeyboardModel>(); 
-    return showModalBottomSheet(
-      barrierColor: Colors.transparent,
-      context: context,
-      builder: (BuildContext context) {
+    return Scaffold.of(context).showBottomSheet((BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, setState) {
             return SizedBox(

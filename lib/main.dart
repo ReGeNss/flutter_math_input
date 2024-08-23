@@ -31,35 +31,46 @@ class MainScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var  a= context.read<KeyboardModel>().formulaGroopWidgets;
-    final model = context.read<KeyboardModel>();  
-    return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(height: 50,),
-          Math.tex(model.formulaInTeX ?? ''),
-          const Divider(color: Colors.black,),
-          Container(
-            color: Colors.grey,
-            height: 300,
-            width: double.infinity,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: model.update==true ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: context.watch<KeyboardModel>().formulaGroopWidgets,
-                ) : const Center(child: Text('LOAD')),
-              ),
+    return const Scaffold(
+      body: MainScreenColumnWidget()
+    );
+  }
+}
+
+class MainScreenColumnWidget extends StatelessWidget {
+  const MainScreenColumnWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) { 
+  final model = context.read<KeyboardModel>();  
+    return Column(
+      children: [
+        const SizedBox(height: 50,),
+        Math.tex(model.formulaInTeX ?? ''),
+        const Divider(color: Colors.black,),
+        Container(
+          color: Colors.grey,
+          height: 300,
+          width: double.infinity,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: model.update==true ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: context.watch<KeyboardModel>().formulaGroopWidgets,
+              ) : const Center(child: Text('LOAD')),
             ),
           ),
-          const Divider(color: Colors.black),
-          const SizedBox(height: 10,),
-          FilledButton(onPressed: (){KeyboardBottomSheet().keyboardBottomSheetWidget(context);}, child: const Text('Show keyboard'))
-
-        ],
-
-      )
+        ),
+        const Divider(color: Colors.black),
+        const SizedBox(height: 10,),
+        FilledButton(onPressed: (){KeyboardBottomSheet().keyboardBottomSheetWidget(context);}, child: const Text('Show keyboard'))
+    
+      ],
+    
     );
   }
 }
