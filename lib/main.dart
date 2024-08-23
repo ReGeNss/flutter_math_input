@@ -30,7 +30,7 @@ class MainScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var  a= context.read<KeyboardModel>().formulaGroopWidgets;
+    // var  a= context.read<KeyboardModel>().formulaGroopWidgets;
     return const Scaffold(
       body: MainScreenColumnWidget()
     );

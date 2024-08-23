@@ -58,7 +58,7 @@ class KeyboardModel extends ChangeNotifier{
     else{
         parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, activeTextFieldController);
         if(parsedWidgets?.index != null && parsedWidgets!.index! >= 1){
-          parsedWidgets!.index = parsedWidgets.index! - 1;
+          parsedWidgets.index = parsedWidgets.index! - 1;
         }
       
     }

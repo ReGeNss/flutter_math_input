@@ -265,6 +265,7 @@ class FormulaToTexParser {
       }
     }
     print(formulaInTeX);
+    return null;
   }
 
   String addToTeXData(

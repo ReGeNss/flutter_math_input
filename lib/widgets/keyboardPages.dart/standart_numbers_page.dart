@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:math_keyboard/custom_math_icons_icons.dart';
 import 'package:math_keyboard/keyboard_model.dart';
 import 'package:math_keyboard/widgets/keyboard.dart';
-import 'package:math_keyboard/widgets/keyboardPages.dart/latin_alphabet_page.dart';
 import 'package:provider/provider.dart';
 
 final buttonStyle = ButtonStyle(
