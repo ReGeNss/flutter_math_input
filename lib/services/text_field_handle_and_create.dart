@@ -80,21 +80,29 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
   }
 
   bool selectNextFocus() {
-    final currentIndex = selectedFieldIndex;
-    selectedFieldIndex = currentIndex + 1;
-    if (_focusNodes.length > selectedFieldIndex) {
-      if (_focusNodes[selectedFieldIndex].hasListeners == true) {
-        activeTextFieldControllerData =
-            _textFieldControllers[selectedFieldIndex];
-        _focusNodes[selectedFieldIndex].requestFocus();
-      } else {
-        // _focusNodes.removeAt(selectedFieldIndex);
+    final cursorPosition =
+        activeTextFieldControllerData.controller.selection.baseOffset;
+    final textLeght = activeTextFieldControllerData.controller.text.length;
+    if (cursorPosition == textLeght) {
+      final currentIndex = selectedFieldIndex;
+      selectedFieldIndex = currentIndex + 1;
+      if (_focusNodes.length > selectedFieldIndex) {
+        if (_focusNodes[selectedFieldIndex].hasListeners == true) {
+          activeTextFieldControllerData =
+              _textFieldControllers[selectedFieldIndex];
+          _focusNodes[selectedFieldIndex].requestFocus();
+        } else {
+          // _focusNodes.removeAt(selectedFieldIndex);
 
-        // проблема, що треба видаляти створені контролери, а не використовувати їх.
-        return true;
+          // проблема, що треба видаляти створені контролери, а не використовувати їх.
+          return true;
+        }
+      } else {
+        selectedFieldIndex = currentIndex;
       }
     } else {
-      selectedFieldIndex = currentIndex;
+      activeTextFieldControllerData.controller.selection =
+          TextSelection.fromPosition(TextPosition(offset: cursorPosition + 1));
     }
     return false;
   }
@@ -105,13 +113,21 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
   }
 
   void selectBackFocus() {
-    final currentIndex = selectedFieldIndex;
-    selectedFieldIndex = currentIndex - 1;
-    if (_focusNodes.length > selectedFieldIndex && selectedFieldIndex >= 0) {
-      _focusNodes[selectedFieldIndex].requestFocus();
-      activeTextFieldControllerData = _textFieldControllers[selectedFieldIndex];
-    } else {
-      selectedFieldIndex = currentIndex;
+    final cursorPosition =
+        activeTextFieldControllerData.controller.selection.baseOffset;
+    if (cursorPosition == 0) {
+      final currentIndex = selectedFieldIndex;
+      selectedFieldIndex = currentIndex - 1;
+      if (_focusNodes.length > selectedFieldIndex && selectedFieldIndex >= 0) {
+        _focusNodes[selectedFieldIndex].requestFocus();
+        activeTextFieldControllerData =
+            _textFieldControllers[selectedFieldIndex];
+      } else {
+        selectedFieldIndex = currentIndex;
+      }
+    }else{ 
+      activeTextFieldControllerData.controller.selection =
+          TextSelection.fromPosition(TextPosition(offset: cursorPosition - 1));
     }
   }
 
