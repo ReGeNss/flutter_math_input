@@ -4,6 +4,7 @@ import 'package:math_keyboard/keyboard_model.dart';
 import 'package:provider/provider.dart';
 
 final _buttonStyle = ButtonStyle(
+    backgroundColor: WidgetStateProperty.all(const Color.fromRGBO(211,211,211,0.3),),
     shape: WidgetStateProperty.all(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
     foregroundColor: WidgetStateProperty.all(Colors.black),

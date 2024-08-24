@@ -8,11 +8,7 @@ import 'package:provider/provider.dart';
 
 const double iconSize = 30;
 
-final _buttonStyle = ButtonStyle(
-    shape: WidgetStateProperty.all(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-    foregroundColor: WidgetStateProperty.all(Colors.black),
-    side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
+
 
 class KeyboardBottomSheet{
   final List<Widget> keyboardFormat = const [KeyboardNumbersButtomWidget(),FunctionPageWidget(),LatinAlphabetPageWidget()];
@@ -44,7 +40,7 @@ class KeyboardBottomSheet{
                         
                           },
                           icon: const Icon(Icons.arrow_back),
-                          style: _buttonStyle,
+                          style: buttonStyle,
                         ),
                       ),
                       SizedBox(
@@ -55,7 +51,7 @@ class KeyboardBottomSheet{
                             context.read<KeyboardModel>().selectNextFocus(); 
                           },
                           icon: const Icon(Icons.arrow_forward),
-                          style: _buttonStyle,
+                          style: buttonStyle,
                         ),
                       ),
                       SizedBox(
@@ -67,7 +63,7 @@ class KeyboardBottomSheet{
                             setState((){}); 
                           },
                           icon: const Icon(Icons.pin_outlined),
-                          style: _buttonStyle,
+                          style: buttonStyle,
                         ),
                       ),
                       SizedBox(
@@ -79,7 +75,7 @@ class KeyboardBottomSheet{
                             setState((){}); 
                           },
                           icon: const Icon(Icons.functions_outlined),
-                          style: _buttonStyle,
+                          style: buttonStyle,
                             ),
                           ),
                           SizedBox(
@@ -91,7 +87,7 @@ class KeyboardBottomSheet{
                                 setState(() {});
                               },
                               icon: const Icon(Icons.abc_outlined),
-                              style: _buttonStyle,
+                              style: buttonStyle,
                             ),
                           ),
                           SizedBox(
@@ -102,7 +98,7 @@ class KeyboardBottomSheet{
                                 model.backspaceButtonTap(); 
                               },
                               icon: const Icon(Icons.backspace_outlined),
-                              style: _buttonStyle,
+                              style: buttonStyle,
                             ),
                           ),
                           SizedBox(
@@ -113,7 +109,7 @@ class KeyboardBottomSheet{
                                 model.deleteAllButtonTap();
                               },
                               icon: const Icon(Icons.delete_outline),
-                              style: _buttonStyle,
+                              style: buttonStyle,
                             ),
                           )
                         ],
