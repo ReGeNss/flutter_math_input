@@ -7,8 +7,30 @@ import 'package:math_keyboard/widgets/keyboardPages.dart/standart_numbers_page.d
 import 'package:provider/provider.dart';
 
 const double iconSize = 30;
+final buttonStyle = ButtonStyle(
+    backgroundColor: WidgetStateProperty.all(
+      const Color.fromRGBO(211, 211, 211, 0.3),
+    ),
+    shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+    foregroundColor: WidgetStateProperty.all(Colors.black),
+    side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
 
+final overlayButtonStyle = ButtonStyle(
+    backgroundColor: WidgetStateProperty.all(Colors.cyan[100]),
+    shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+    foregroundColor: WidgetStateProperty.all(Colors.black),
+    side: WidgetStateProperty.all(const BorderSide(color: Colors.cyanAccent)));
 
+final buttonWithOverlayStyle = ButtonStyle(
+    backgroundColor: WidgetStateProperty.all(
+      const Color.fromRGBO(211, 211, 211, 0.3),
+    ),
+    shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+    foregroundColor: WidgetStateProperty.all(Colors.black),
+    side: WidgetStateProperty.all(const BorderSide(color: Colors.cyanAccent)));
 
 class KeyboardBottomSheet{
   final List<Widget> keyboardFormat = const [KeyboardNumbersButtomWidget(),FunctionPageWidget(),LatinAlphabetPageWidget()];

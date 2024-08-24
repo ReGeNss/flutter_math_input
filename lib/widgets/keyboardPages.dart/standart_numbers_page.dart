@@ -2,27 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:math_keyboard/custom_math_icons_icons.dart';
 import 'package:math_keyboard/keyboard_model.dart';
 import 'package:math_keyboard/widgets/keyboard.dart';
-import 'package:math_keyboard/widgets/keyboardPages.dart/latin_alphabet_page.dart';
 import 'package:provider/provider.dart';
 
-final buttonStyle = ButtonStyle(
-    backgroundColor: WidgetStateProperty.all(const Color.fromRGBO(211,211,211,0.3),),
-    shape: WidgetStateProperty.all(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-    foregroundColor: WidgetStateProperty.all(Colors.black),
-    side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
-final _overlayButtonStyle = ButtonStyle(
-    backgroundColor: WidgetStateProperty.all(Colors.cyan[100]),
-    shape: WidgetStateProperty.all(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-    foregroundColor: WidgetStateProperty.all(Colors.black),
-    side: WidgetStateProperty.all(const BorderSide(color: Colors.cyanAccent)));
-final _buttonWithOverlayStyle = ButtonStyle(
-    backgroundColor: WidgetStateProperty.all(const Color.fromRGBO(211,211,211,0.3),),
-    shape: WidgetStateProperty.all(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-    foregroundColor: WidgetStateProperty.all(Colors.black),
-    side: WidgetStateProperty.all(const BorderSide(color: Colors.cyanAccent)));
+
+
+
+
 
 
 class KeyboardNumbersButtomWidget extends StatelessWidget {
@@ -49,7 +34,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                   onLongPress: (){
                     FloatButtonOverlay().createOverlay(context,buttonsData:[FloatButtonData(buttonFuction: (){model.textFieldService.addCharToTextField('(');}, buttonWidget: const Text('(')),FloatButtonData(buttonFuction: (){model.textFieldService.addCharToTextField(')');}, buttonWidget:const Text(')'))] );
                   }, 
-                  style: _buttonWithOverlayStyle,
+                  style: buttonWithOverlayStyle,
                   child: const Text('( )')),
             ),
             SizedBox(
@@ -104,7 +89,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                           buttonWidget: const Text('≤'))
                     ]);
                   },
-                  style: _buttonWithOverlayStyle,
+                  style: buttonWithOverlayStyle,
                   child: const Text('>,<'),
                 )),
             SizedBox(
@@ -157,13 +142,13 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                     width: 50,
                     height: 50,
                     child: TextButton(
-                        onLongPress: (){
-                          FloatButtonOverlay().createOverlay(context, buttonsData: [FloatButtonData(buttonFuction: (){}, buttonWidget: const Icon(CustomMathIcons.sqrt_extended))]);
-                        }, 
+                        // onLongPress: (){
+                        //   FloatButtonOverlay().createOverlay(context, buttonsData: [FloatButtonData(buttonFuction: (){}, buttonWidget: const Icon(CustomMathIcons.sqrt_extended))]);
+                        // }, 
                         onPressed: () {
                           model.sqrtButtonTap(); 
                         },
-                        style: _buttonWithOverlayStyle,
+                        style: buttonStyle,
                         child: const Icon(CustomMathIcons.sqrt,size: iconSize)));
               }
             ),
@@ -301,7 +286,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                                   buttonWidget: const Text('≠'))
                             ]);
                           },
-                        style: _buttonWithOverlayStyle,
+                        style: buttonWithOverlayStyle,
                         child: const Text('=')));
               }
             ),
@@ -323,7 +308,7 @@ class KeyboardNumbersButtomWidget extends StatelessWidget {
                         onPressed: () {
                           model.createCharWidgets('+');
                         },
-                        style: _buttonWithOverlayStyle,
+                        style: buttonWithOverlayStyle,
                         child: const Text('+')));
               }
             ),
@@ -351,7 +336,7 @@ class FloatButtonOverlay{
                     height: 50,
                     width: 50,
                     child: TextButton(
-                        style: _overlayButtonStyle,
+                        style: overlayButtonStyle,
                         onPressed: () {
                           buttonsData[index].buttonFuction();
                           _deleteOverlay(); 

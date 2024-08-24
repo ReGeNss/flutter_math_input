@@ -67,7 +67,24 @@ class MainScreenColumnWidget extends StatelessWidget {
         ),
         const Divider(color: Colors.black),
         const SizedBox(height: 10,),
-        FilledButton(onPressed: (){KeyboardBottomSheet().keyboardBottomSheetWidget(context);}, child: const Text('Show keyboard'))
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FilledButton(
+                onPressed: () {
+                  KeyboardBottomSheet().keyboardBottomSheetWidget(context);
+                },
+                child: const Text('Show keyboard')),
+            const SizedBox(width: 10,),
+            FilledButton(
+                onPressed: () {
+                  model.formulaInTeX =
+                      model.texParsingService.start(model.formulaGroopWidgets);
+                  model.rebuildSreenState();
+                },
+                child: const Text("Translate formula to KaTeX"))
+          ],
+        )
     
       ],
     

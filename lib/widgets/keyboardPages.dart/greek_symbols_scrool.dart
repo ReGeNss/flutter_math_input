@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/keyboard_model.dart';
-import 'package:math_keyboard/widgets/keyboardPages.dart/standart_numbers_page.dart';
+import 'package:math_keyboard/widgets/keyboard.dart';
 import 'package:provider/provider.dart';
 
-// final buttonStyle = ButtonStyle(
-//     shape: WidgetStateProperty.all(
-//         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-//     foregroundColor: WidgetStateProperty.all(Colors.black),
-//     side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
 
-const double spaceBetweenWidth = 10; 
+
+const double _spaceBetweenWidth = 10; 
 
 class scroolGreekSymbolsWidget extends StatelessWidget {
   const scroolGreekSymbolsWidget({
@@ -28,15 +24,13 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('α');
-              model.formulaInTeX= model.texParsingService.start(model.formulaGroopWidgets);
-              model.rebuildSreenState();
+              model.textFieldService.addCharToTextField('α');              
             },
             style: buttonStyle,
             child: const Text('α'),
           ),
         ),
-        const SizedBox(width: spaceBetweenWidth,),
+        const SizedBox(width: _spaceBetweenWidth,),
         SizedBox(
           width: 50,
           height: 50,
@@ -48,7 +42,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             child: const Text('β'),
           ),
         ),
-        const SizedBox(width: spaceBetweenWidth,),
+        const SizedBox(width: _spaceBetweenWidth,),
         SizedBox(
           width: 50,
           height: 50,
@@ -60,7 +54,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             child: const Text('γ'),
           ),
         ),
-        const SizedBox(width: spaceBetweenWidth,),
+        const SizedBox(width: _spaceBetweenWidth,),
         SizedBox(
           width: 50,
           height: 50,
@@ -72,7 +66,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             child: const Text('Δ'),
           ),          
         ),
-        const SizedBox(width: spaceBetweenWidth,),
+        const SizedBox(width: _spaceBetweenWidth,),
         SizedBox(
           width: 50,
           height: 50,
@@ -84,7 +78,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             child: const Text('ε'),
           ),
         ),
-        const SizedBox(width: spaceBetweenWidth,),
+        const SizedBox(width: _spaceBetweenWidth,),
         SizedBox(
           width: 50,
           height: 50,
@@ -96,7 +90,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             child: const Text('η'),
           ),
         ),
-        const SizedBox(width: spaceBetweenWidth,),
+        const SizedBox(width: _spaceBetweenWidth,),
         SizedBox(
           width: 50,
           height: 50,
@@ -108,7 +102,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             child: const Text('θ'),
           ),
         ),
-        const SizedBox(width: spaceBetweenWidth,),
+        const SizedBox(width: _spaceBetweenWidth,),
         SizedBox(
           width: 50,
           height: 50,
@@ -120,7 +114,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             child: const Text('σ'),
           ),
         ),
-        const SizedBox(width: spaceBetweenWidth,),
+        const SizedBox(width: _spaceBetweenWidth,),
         SizedBox(
           width: 50,
           height: 50,
@@ -132,7 +126,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             child: const Text('𝜏'),
           ),
         ),
-        const SizedBox(width: spaceBetweenWidth,),
+        const SizedBox(width: _spaceBetweenWidth,),
         SizedBox(
           width: 50,
           height: 50,
@@ -144,7 +138,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             child: const Text('φ'),
           ),
         ),
-        const SizedBox(width: spaceBetweenWidth,),
+        const SizedBox(width: _spaceBetweenWidth,),
         SizedBox(
           width: 50,
           height: 50,
@@ -156,7 +150,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
             child: const Text('	ψ'),
           ),
         ),
-        const SizedBox(width: spaceBetweenWidth,),
+        const SizedBox(width: _spaceBetweenWidth,),
         SizedBox(
           width: 50,
           height: 50,

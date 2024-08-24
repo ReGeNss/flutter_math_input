@@ -387,7 +387,7 @@ class MathConstructionsBuilding {
     final textField = textFieldService.createTextField(
         isReplaceOperation: false,
         isActiveTextField: true,
-        addAdictionalFocusNode: true,
+        addAdictionalFocusNode: false,
         textFieldSelectedFormat: TextFieldFormat.standart);
     return textField;
   }
