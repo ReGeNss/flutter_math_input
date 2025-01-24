@@ -41,7 +41,7 @@ class MathConstructionsBuilding {
     final upperField = textFieldService.createTextField(
         isReplaceOperation: true, isActiveTextField: true);
     final downField = textFieldService.createTextField(
-        isReplaceOperation: false, addAdictionalFocusNode: true);
+        isReplaceOperation: false, performAdictionalTextField: true);
     final upperGlobalKey = GlobalKey();
     final downGlobalKey = GlobalKey();
     final fracWidget = SizedBox(
@@ -83,7 +83,7 @@ class MathConstructionsBuilding {
     final textField = textFieldService.createTextField(
         isReplaceOperation: false,
         isActiveTextField: true,
-        textFieldSelectedFormat: TextFieldFormat.small);
+        selectedTextFieldFormat: TextFieldFormat.small);
     final widget = ExpRowWidget(
       baseWidget: baseWidget,
       expGlobalKey: expGlobalKey,
@@ -141,7 +141,7 @@ class MathConstructionsBuilding {
     final baseField = textFieldService.createTextField(
         isReplaceOperation: true,
         isActiveTextField: true,
-        textFieldSelectedFormat: TextFieldFormat.small);
+        selectedTextFieldFormat: TextFieldFormat.small);
     final logWidget = SizedBox(
       child: Stack(
         key: const ValueKey(ElementsType.logElement),
@@ -174,14 +174,14 @@ class MathConstructionsBuilding {
 
   Widget createLimitWidget() {
     final argField = textFieldService.createTextField(
-        isReplaceOperation: false, addAdictionalFocusNode: true);
+        isReplaceOperation: false, performAdictionalTextField: true);
     final firstDownField = textFieldService.createTextField(
         isReplaceOperation: true,
         isActiveTextField: true,
-        textFieldSelectedFormat: TextFieldFormat.small);
+        selectedTextFieldFormat: TextFieldFormat.small);
     final secondDownField = textFieldService.createTextField(
         isReplaceOperation: false,
-        textFieldSelectedFormat: TextFieldFormat.small);
+        selectedTextFieldFormat: TextFieldFormat.small);
     final globalKey = GlobalKey();
     final limitWidget = LimStackWidget(
       argField: argField,
@@ -196,7 +196,7 @@ class MathConstructionsBuilding {
     final textFieldWidget = textFieldService.createTextField(
         isReplaceOperation: true,
         isActiveTextField: true,
-        addAdictionalFocusNode: true);
+        performAdictionalTextField: true);
     final widget = SizedBox(
       child: Row(
         key: ValueKey(type),
@@ -222,7 +222,7 @@ class MathConstructionsBuilding {
     final textFieldWidget = textFieldService.createTextField(
         isReplaceOperation: true,
         isActiveTextField: true,
-        addAdictionalFocusNode: false);
+        performAdictionalTextField: false);
     final adictionalField =
         textFieldService.createTextField(isReplaceOperation: false);
 
@@ -284,7 +284,7 @@ class MathConstructionsBuilding {
       isReplaceOperation: false,
     );
     final derevativeField = textFieldService.createTextField(
-        isReplaceOperation: false, addAdictionalFocusNode: false);
+        isReplaceOperation: false, performAdictionalTextField: false);
 
     final integralWidget = Row(
       children: [
@@ -315,7 +315,7 @@ class MathConstructionsBuilding {
     final upperField = textFieldService.createTextField(
         isReplaceOperation: true, isActiveTextField: true);
     final downField = textFieldService.createTextField(
-        isReplaceOperation: false, addAdictionalFocusNode: true);
+        isReplaceOperation: false, performAdictionalTextField: true);
     if (upperFieldText != null && downFieldText != null) {
       upperField as SizedBox;
       (upperField.child as TextFieldWidgetHandler).initTextInField =
@@ -359,19 +359,19 @@ class MathConstructionsBuilding {
     final startPointField = textFieldService.createTextField(
         isReplaceOperation: true,
         isActiveTextField: true,
-        addAdictionalFocusNode: false,
-        textFieldSelectedFormat: TextFieldFormat.small);
+        performAdictionalTextField: false,
+        selectedTextFieldFormat: TextFieldFormat.small);
     final derevativeField = textFieldService.createTextField(
         isReplaceOperation: false,
-        addAdictionalFocusNode: true,
-        textFieldSelectedFormat: TextFieldFormat.standart);
+        performAdictionalTextField: true,
+        selectedTextFieldFormat: TextFieldFormat.standart);
     final argFieldWidget = textFieldService.createTextField(
         isReplaceOperation: false,
-        textFieldSelectedFormat: TextFieldFormat.standart);
+        selectedTextFieldFormat: TextFieldFormat.standart);
     final finishPointField = textFieldService.createTextField(
         isReplaceOperation: false,
-        addAdictionalFocusNode: false,
-        textFieldSelectedFormat: TextFieldFormat.small);
+        performAdictionalTextField: false,
+        selectedTextFieldFormat: TextFieldFormat.small);
     final globalKey = GlobalKey();
 
     final integralWidget = IntegralWidget(
@@ -387,8 +387,8 @@ class MathConstructionsBuilding {
     final textField = textFieldService.createTextField(
         isReplaceOperation: false,
         isActiveTextField: true,
-        addAdictionalFocusNode: false,
-        textFieldSelectedFormat: TextFieldFormat.standart);
+        performAdictionalTextField: false,
+        selectedTextFieldFormat: TextFieldFormat.standart);
     return textField;
   }
 }
@@ -657,7 +657,6 @@ class _AbsLineWidgetState extends State<AbsLineWidget> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     WidgetsBinding.instance.addPersistentFrameCallback((_) => getSize());
   }
@@ -674,7 +673,6 @@ class _AbsLineWidgetState extends State<AbsLineWidget> {
 
 class _SqrtCustomPaint extends StatefulWidget {
   const _SqrtCustomPaint({
-    super.key,
     required this.globalKey,
   });
   final GlobalKey globalKey;
