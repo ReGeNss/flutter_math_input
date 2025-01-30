@@ -1,219 +1,184 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import 'package:math_keyboard/services/formulas_tree_parsers_and_handler.dart';
-
 const textFieldDecoration = InputDecoration(
     focusedBorder: OutlineInputBorder(), border: InputBorder.none,contentPadding: EdgeInsets.all(5));
 // за активний контроллер поля вважається останнє створене поле
-// extension FocusNodeHasListeners on FocusNode {
-//   bool get hasListeners => hasListeners;
-// }
 
 class TextFieldHandleAndCreateService extends ChangeNotifier {
-  List<FocusNode> _focusNodes = [];
-  List<TextFieldControllerData> _textFieldControllers = [];
-  late TextFieldControllerData activeTextFieldControllerData;
+  final List<TextFieldData> _textFieildsData = []; 
+  late TextFieldData activeTextFieldData;
   late int selectedFieldIndex = 0;
-  final parsingService = FormulasTreeParsersService();
 
-  Widget createTextField(
-      {required bool isReplaceOperation,
-      TextFieldFormat? textFieldSelectedFormat,
+  Widget createTextField({
+      required bool isReplaceOperation,
+      TextFieldFormat? selectedTextFieldFormat,
       bool isActiveTextField = false,
-      bool addAdictionalFocusNode = false}) {
-    final focusNode = _createFocusNode();
+      bool performAdictionalTextField = false
+    }) {
     late final TextFieldFormat textFieldFormat;
-    Size size;
 
-    if (textFieldSelectedFormat != null) {
-      textFieldFormat = textFieldSelectedFormat;
+    if (selectedTextFieldFormat != null) {
+      textFieldFormat = selectedTextFieldFormat;
     } else {
-      textFieldFormat = activeTextFieldControllerData.format;
+      textFieldFormat = activeTextFieldData.format;
     }
-
-    final textFieldControllerData =
-        _createTextFieldControllerData(textFieldFormat);
-    final textFieldController = textFieldControllerData.controller;
+    final textFieldData = _createTextFieldData(textFieldFormat);
 
     if (isReplaceOperation) {
-      _focusNodes[selectedFieldIndex].dispose();
-      _textFieldControllers[selectedFieldIndex].controller.dispose();
-      _focusNodes =
-          _addAndRemoveInList(selectedFieldIndex, _focusNodes, focusNode);
-      _textFieldControllers = _addAndRemoveInList(
-          selectedFieldIndex, _textFieldControllers, textFieldControllerData);
+      _replaceActiveTextFieldByThis(textFieldData);
     } else {
-      _focusNodes = _addToList(selectedFieldIndex, _focusNodes, focusNode);
-      _textFieldControllers = _addToList(
-          selectedFieldIndex, _textFieldControllers, textFieldControllerData);
+      _insertToList(_textFieildsData, textFieldData, selectedFieldIndex);
     }
 
-    if (addAdictionalFocusNode) {
-      final adictionalFocusNode = _createFocusNode();
-      final controller =
-          _createTextFieldControllerData(TextFieldFormat.standart);
-      final index = _focusNodes.indexOf(focusNode);
-      _textFieldControllers =
-          _addToList(index, _textFieldControllers, controller);
-      _focusNodes = _addToList(index, _focusNodes, adictionalFocusNode);
+    if (performAdictionalTextField) {
+      _addFocusNodeAfterThis(textFieldData);
     }
 
     if (isActiveTextField) {
-      activeTextFieldControllerData = textFieldControllerData;
-      selectedFieldIndex =
-          _textFieldControllers.indexOf(activeTextFieldControllerData);
-      focusNode.requestFocus();
+      _makeThisTextFieldActive(textFieldData);
     }
 
-    if (textFieldFormat == TextFieldFormat.standart) {
+    final size = _selectTextFieldFormat(textFieldFormat);
+
+    final Widget textFiledWidget = SizedBox(
+    height: size.height,
+    child: TextFieldWidgetHandler(
+      key: UniqueKey(),
+      textFieldData: textFieldData,
+      onTextFieldTap: onTextFieldTap,
+    ));
+    return textFiledWidget;
+  }
+
+  void _insertToList<T> (List<T> list, T element, int index) {
+    if (list.isNotEmpty) {
+        list.insert(index+1, element);
+      } else {
+        list.add(element);
+      }
+  }
+
+  void _replaceActiveTextFieldByThis(TextFieldData textFieldData) {
+    _textFieildsData[selectedFieldIndex].focusNode.dispose();
+    _textFieildsData[selectedFieldIndex].controller.dispose();
+
+    _textFieildsData.replaceRange(selectedFieldIndex, selectedFieldIndex+1, [textFieldData]);
+  }
+
+  Size _selectTextFieldFormat(TextFieldFormat format ) {
+    final Size size; 
+    if (format == TextFieldFormat.standart) {
       size = const Size(60, 50);
-    } else if (textFieldFormat == TextFieldFormat.small) {
+    } else if (format == TextFieldFormat.small) {
       size = const Size(40, 30);
     } else {
       size = const Size(60, 50);
     }
-    final Widget textFiledWidget = SizedBox(
-        height: size.height,
-        child: TextFieldWidgetHandler(focusNode: focusNode, textFieldController: textFieldController, textFieldControllerData: textFieldControllerData,onTextFieldTap: onTextFieldTap,));
-    return textFiledWidget;
+    return size; 
   }
 
-  bool selectNextFocus() {
-    final cursorPosition =
-        activeTextFieldControllerData.controller.selection.baseOffset;
-    final textLeght = activeTextFieldControllerData.controller.text.length;
-    if (cursorPosition == textLeght) {
-      final currentIndex = selectedFieldIndex;
-      selectedFieldIndex = currentIndex + 1;
-      if (_focusNodes.length > selectedFieldIndex) {
-        if (_focusNodes[selectedFieldIndex].hasListeners == true) {
-          activeTextFieldControllerData =
-              _textFieldControllers[selectedFieldIndex];
-          _focusNodes[selectedFieldIndex].requestFocus();
-        } else {
-          // _focusNodes.removeAt(selectedFieldIndex);
+  void _addFocusNodeAfterThis(TextFieldData textFieldData) { 
+    final addictionalTextFieldData = _createTextFieldData(TextFieldFormat.standart);
+    final index = _textFieildsData.indexOf(textFieldData);
+    _textFieildsData.insert(index+1, addictionalTextFieldData); 
+  }
 
-          // проблема, що треба видаляти створені контролери, а не використовувати їх.
-          return true;
+  void _makeThisTextFieldActive(TextFieldData textFieldData) {
+    activeTextFieldData = textFieldData;
+    selectedFieldIndex = _textFieildsData.indexOf(activeTextFieldData);
+    textFieldData.focusNode.requestFocus();
+  }
+
+  bool trySelectNextFocus() {
+    final cursorPosition = activeTextFieldData.controller.selection.baseOffset;
+    final textLeght = activeTextFieldData.controller.text.length;
+    if (cursorPosition == textLeght) {
+      final previousIndex = selectedFieldIndex;
+      selectedFieldIndex = previousIndex + 1;
+      if (_textFieildsData.length > selectedFieldIndex) {
+        final focusNode = _textFieildsData[selectedFieldIndex].focusNode;
+        if (focusNode.hasListeners == true) {
+          activeTextFieldData = _textFieildsData[selectedFieldIndex];
+          focusNode.requestFocus();
+        } else {
+          return false;
         }
       } else {
-        selectedFieldIndex = currentIndex;
+        selectedFieldIndex = previousIndex;
       }
     } else {
-      activeTextFieldControllerData.controller.selection =
-          TextSelection.fromPosition(TextPosition(offset: cursorPosition + 1));
+      activeTextFieldData.controller.selection = TextSelection.fromPosition(TextPosition(offset: cursorPosition + 1));
     }
-    return false;
+    return true;
   }
 
-  void onTextFieldTap(FocusNode focusNode,TextFieldControllerData textFieldControllerData){
-    selectedFieldIndex = _focusNodes.indexOf(focusNode);
-          activeTextFieldControllerData = textFieldControllerData;
+  void onTextFieldTap(TextFieldData textFieldData){
+    selectedFieldIndex = _textFieildsData.indexOf(textFieldData);
+    activeTextFieldData = textFieldData;
   }
 
   void selectBackFocus() {
-    final cursorPosition =
-        activeTextFieldControllerData.controller.selection.baseOffset;
+    final cursorPosition = activeTextFieldData.controller.selection.baseOffset;
     if (cursorPosition == 0) {
-      final currentIndex = selectedFieldIndex;
-      selectedFieldIndex = currentIndex - 1;
-      if (_focusNodes.length > selectedFieldIndex && selectedFieldIndex >= 0) {
-        _focusNodes[selectedFieldIndex].requestFocus();
-        activeTextFieldControllerData =
-            _textFieldControllers[selectedFieldIndex];
+      final previousIndex = selectedFieldIndex;
+      selectedFieldIndex = previousIndex - 1;
+      if (_textFieildsData.length > selectedFieldIndex && selectedFieldIndex >= 0) {
+        _textFieildsData[selectedFieldIndex].focusNode.requestFocus();
+        activeTextFieldData =
+            _textFieildsData[selectedFieldIndex];
       } else {
-        selectedFieldIndex = currentIndex;
+        selectedFieldIndex = previousIndex;
       }
-    }else{ 
-      activeTextFieldControllerData.controller.selection =
-          TextSelection.fromPosition(TextPosition(offset: cursorPosition - 1));
+    } else { 
+      activeTextFieldData.controller.selection = TextSelection.fromPosition(TextPosition(offset: cursorPosition - 1));
     }
   }
 
   void addCharToTextField(String char) {
-    final currentText = activeTextFieldControllerData.controller.text;
-    var currentCursorOffset = activeTextFieldControllerData.controller.selection.baseOffset; 
-    if(currentCursorOffset < 0){
-      currentCursorOffset = 0; 
-    }
-    activeTextFieldControllerData.controller.text = currentText.replaceRange(currentCursorOffset, currentCursorOffset, char);
-    activeTextFieldControllerData.controller.selection = TextSelection.fromPosition(TextPosition(offset: currentCursorOffset+1)); 
-
+    final currentText = activeTextFieldData.controller.text;
+    final currentCursorOffset = activeTextFieldData.controller.selection.baseOffset; 
+    // if (currentCursorOffset < 0) {
+    //   currentCursorOffset = 0; 
+    // }
+    activeTextFieldData.controller.text = currentText.replaceRange(currentCursorOffset, currentCursorOffset, char);
+    activeTextFieldData.controller.selection = TextSelection.fromPosition(TextPosition(offset: currentCursorOffset+1)); 
   }
 
-  TextFieldControllerData _createTextFieldControllerData(
-      TextFieldFormat format) {
+  TextFieldData _createTextFieldData(TextFieldFormat format) {
     final controller = TextEditingController();
-    final data =
-        TextFieldControllerData(controller: controller, format: format);
+    final focusNode = FocusNode();
+    final data = TextFieldData(controller: controller,focusNode: focusNode , format: format);
     return data;
   }
 
-  FocusNode _createFocusNode() {
-    final focusNode = FocusNode();
-    return focusNode;
-  }
-
-  void clearAllData() {
-    _focusNodes.forEach((e) => e.dispose());
-    _textFieldControllers.forEach((e) => e.controller.dispose());
-    _focusNodes.clear();
-    _textFieldControllers.clear();
+  void deleteAllTextFields() {
+    for(final textFieldData in _textFieildsData){
+      textFieldData.controller.dispose();
+      textFieldData.focusNode.dispose();
+    }
+    _textFieildsData.clear();
     selectedFieldIndex = 0;
   }
 
-  List<T> _addAndRemoveInList<T>(int addIndex, List<T> list, T replaceData) {
-    final newList = <T>[];
-    if (list.isEmpty && addIndex == 0) {
-      return [replaceData];
-    }
-    for (int index = 0; list.length > index; index += 1) {
-      if (index != addIndex) {
-        newList.add(list[index]);
-      } else {
-        newList.add(replaceData);
-      }
-    }
-    return newList;
-  }
-
-  List<T> _addToList<T>(int addIndex, List<T> list, T replaceData,) {
-    final newList = <T>[];
-    if (list.isEmpty && addIndex == 0) {
-      return [replaceData];
-    }
-    for (int index = 0; list.length > index; index += 1) {
-      if (index != addIndex) {
-        newList.add(list[index]);
-      } else {
-          newList.addAll([list[index], replaceData]);
-       
-        
-      }
-    }
-    return newList;
-  }
-
-  bool deleteCurrentState() {
-    if (_textFieldControllers.length >= 2) {
+  bool deleteCurrentActiceField() {
+    if (_textFieildsData.length >= 2) {
       if (selectedFieldIndex - 1 >= 0) {
-        _focusNodes.removeAt(selectedFieldIndex);
-        _textFieldControllers.removeAt(selectedFieldIndex);
+        _textFieildsData[selectedFieldIndex].controller.dispose();
+        _textFieildsData[selectedFieldIndex].focusNode.dispose();
+        _textFieildsData.removeAt(selectedFieldIndex);
         selectedFieldIndex -= 1;
-        activeTextFieldControllerData =
-            _textFieldControllers[selectedFieldIndex];
-        _focusNodes[selectedFieldIndex].requestFocus();
+        activeTextFieldData = _textFieildsData[selectedFieldIndex];
+        _textFieildsData[selectedFieldIndex].focusNode.requestFocus();
         return true;
       } else {
         // selectedFieldIndex += 1;
-        
-        _focusNodes.removeAt(selectedFieldIndex);
-        _textFieldControllers.removeAt(selectedFieldIndex);
-        activeTextFieldControllerData =
-            _textFieldControllers[selectedFieldIndex];
+        _textFieildsData[selectedFieldIndex].controller.dispose();
+        _textFieildsData[selectedFieldIndex].focusNode.dispose();
+        _textFieildsData.removeAt(selectedFieldIndex);
+        activeTextFieldData =_textFieildsData[selectedFieldIndex];
 
-        _focusNodes[selectedFieldIndex].requestFocus();
+        _textFieildsData[selectedFieldIndex].focusNode.requestFocus();
         return true;
       }
     }
@@ -225,14 +190,12 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
 class TextFieldWidgetHandler extends StatefulWidget {
   TextFieldWidgetHandler({
     Key? key,
-    required this.focusNode,
-    required this.textFieldController, required this.textFieldControllerData, required this.onTextFieldTap,
+    required this.textFieldData,
+    required this.onTextFieldTap,
   }) : super(key: key);
 
-  final FocusNode focusNode;
-  final TextEditingController textFieldController;
-  final TextFieldControllerData textFieldControllerData;
-  final Function(FocusNode focusNode,TextFieldControllerData textFieldControllerData) onTextFieldTap;
+  final TextFieldData textFieldData;
+  final Function(TextFieldData textFieldControllerData) onTextFieldTap;
   TextField? textField; 
   String? initTextInField; 
 
@@ -243,24 +206,25 @@ class TextFieldWidgetHandler extends StatefulWidget {
 class _TextFieldWidgetHandlerState extends State<TextFieldWidgetHandler> {
   @override
   Widget build(BuildContext context) {
-    if(widget.textField == null){ widget.textField = TextField(
+    if (widget.textField == null) { 
+      widget.textField = TextField(
         textAlign: TextAlign.left,
-        focusNode: widget.focusNode,
+        focusNode: widget.textFieldData.focusNode,
         style: const TextStyle(
           fontSize: 20
         ),
         keyboardType: TextInputType.none,
         decoration: textFieldDecoration,
-        controller: widget.textFieldController,
+        controller: widget.textFieldData.controller,
         onChanged: (_){setState(() {});},
         onTap: () {
-          widget.onTextFieldTap(widget.focusNode,widget.textFieldControllerData);
-          // selectedFieldIndex = _focusNodes.indexOf(focusNode);
-          // activeTextFieldControllerData = textFieldControllerData;
+          widget.onTextFieldTap(
+            widget.textFieldData
+          );
         },
       );
-      if(widget.initTextInField != null){
-        widget.textFieldController.text = widget.initTextInField!;
+      if (widget.initTextInField != null) {
+        widget.textFieldData.controller.text = widget.initTextInField!;
       }
     }
     final fieldWidget= IntrinsicWidth(
@@ -275,9 +239,10 @@ enum TextFieldFormat {
   small,
 }
 
-class TextFieldControllerData {
+class TextFieldData {
   final TextEditingController controller;
+  final FocusNode focusNode;
   final TextFieldFormat format;
 
-  TextFieldControllerData({required this.controller, required this.format});
+  TextFieldData({required this.controller, required this.format, required this.focusNode});
 }
