@@ -17,118 +17,22 @@ class FormulaToTexParser {
         case const (Row):
           {
             element as Row;
-            // for(final e in element.children)
             if (element.key != null &&
-                element.key.runtimeType !=
-                    LabeledGlobalKey<State<StatefulWidget>>) {
+                element.key.runtimeType != LabeledGlobalKey<State<StatefulWidget>>) {
               final keyValue = (element.key as ValueKey).value;
               switch (keyValue) {
                 case (ElementsType.exponentiationElement):
                   {
                     return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunction: expParser);
-                  }
-                case (ElementsType.sqrtElement):
-                  {
-                    return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunction: sqrtParser);
-                  }
-                case (ElementsType.cosElement):
-                  {
-                    return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunctionWithTeXFormula: trigonometricParser,
-                        teXFormula: '\\cos');
-                  }
-                case (ElementsType.sinElement):
-                  {
-                    return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunctionWithTeXFormula: trigonometricParser,
-                        teXFormula: '\\sin');
-                  }
-                case (ElementsType.tanElement):
-                  {
-                    return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunctionWithTeXFormula: trigonometricParser,
-                        teXFormula: '\\tan');
-                  }
-                case (ElementsType.cotElement):
-                  {
-                    return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunctionWithTeXFormula: trigonometricParser,
-                        teXFormula: '\\cot');
-                  }
-                case (ElementsType.arccosElement):
-                  {
-                    return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunctionWithTeXFormula: trigonometricParser,
-                        teXFormula: '\\arccos');
-                  }
-                case (ElementsType.arcsinElement):
-                  {
-                    return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunctionWithTeXFormula: trigonometricParser,
-                        teXFormula: '\\arcsin');
-                  }
-                case (ElementsType.arctanElement):
-                  {
-                    return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunctionWithTeXFormula: trigonometricParser,
-                        teXFormula: '\\arctan');
-                  }
-                case (ElementsType.arccotElement):
-                  {
-                    return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunctionWithTeXFormula: trigonometricParser,
-                        teXFormula: '\\arcctg');
-                  }
-                case (ElementsType.naturalLogElement):
-                  {
-                    return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunctionWithTeXFormula: trigonometricParser,
-                        teXFormula: '\\ln');
-                  }
-                case (ElementsType.logBaseTwoElement):
-                  {
-                    return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunctionWithTeXFormula: trigonometricParser,
-                        teXFormula: '\\log_2');
-                  }
-                case (ElementsType.decimalLogElement):
-                  {
-                    return addToTeXData(
-                        widgetsData: element.children,
-                        parseFunctionWithTeXFormula: trigonometricParser,
-                        teXFormula: '\\lg');
+                        widgets: element.children,
+                        parseFunctionByChildren: expParser);
                   }
                 case (ElementsType.indefiniteIntegralElement):
                   {
                     addToTeXData(
-                        widgetsData: element.children,
-                        parseFunction: undefinitIntegralParser);
-                    // final integralString = undefinitIntegralParser(element.children);
-                    // formulaInTeX = formulaInTeX + integralString;
-                    // return formulaInTeX;
+                        widgets: element.children,
+                        parseFunctionByChildren: undefinitIntegralParser);
                   }
-                // default:
-                //   {
-                //     final intermediateTeXData = formulaInTeX;
-                //     formulaInTeX = '';
-                //     _formulaParser(element.children);
-                //     formulaInTeX = intermediateTeXData + formulaInTeX;
-                //     return formulaInTeX;
-                //   }
               }
             } else {
               final intermediateTeXData = formulaInTeX;
@@ -148,11 +52,7 @@ class FormulaToTexParser {
                 final fracString = fracParser(element.children);
                 formulaInTeX = formulaInTeX + fracString;
                 // return formulaInTeX;
-              } else if (key.value == ElementsType.derevativeElement) {
-                final derevativeString = derevativeParser(element.children);
-                formulaInTeX = formulaInTeX + derevativeString;
-                // return formulaInTeX;
-              }
+              } 
             }
 
             break;
@@ -163,28 +63,11 @@ class FormulaToTexParser {
             if (element.key != null) {
               final key = element.key as ValueKey;
               switch (key.value) {
-                case (ElementsType.logElement):
-                  {
-                    final logString = logParser(element.children);
-                    formulaInTeX = formulaInTeX + logString;
-                    return formulaInTeX;
-                  }
-                case (ElementsType.limitElement):
-                  {
-                    final limitString = limitParser(element.children);
-                    formulaInTeX = formulaInTeX + limitString;
-                    return formulaInTeX;
-                  }
-                case (ElementsType.integralElement):
-                  {
-                    final intString = integralParser(element.children);
-                    formulaInTeX = formulaInTeX + intString;
-                    return formulaInTeX;
-                  }
               }
             } else {
               if (element.children.isNotEmpty) {
-                return _formulaParser(element.children);
+                _formulaParser(element.children);
+                return formulaInTeX ;
               }
             }
 
@@ -204,6 +87,111 @@ class FormulaToTexParser {
                       formulaInTeX = formulaInTeX + absString;
                       // return formulaInTeX;
                     }
+                  case (ElementsType.logElement):
+                  {
+                    addToTeXData(widget: element.child!, parseFunctionByChild: logParser);
+                  }
+                  case (ElementsType.sqrtElement):
+                    {
+                      if(element.child != null){
+                        addToTeXData(
+                          widgets: [element.child!],
+                          parseFunctionByChildren: sqrtParser
+                        );
+                      }
+                    }
+                    case (ElementsType.cosElement):
+                  {
+                    addToTeXData(
+                      widgets: [element.child!],
+                      parseFunctionWithTeXFormula: trigonometricParser,
+                      teXFormula: '\\cos'
+                    );
+                  }
+                case (ElementsType.sinElement):
+                  {
+                    addToTeXData(
+                      widgets: [element.child!],
+                      parseFunctionWithTeXFormula: trigonometricParser,
+                      teXFormula: '\\sin'
+                    );
+                  }
+                case (ElementsType.tanElement):
+                  {
+                    addToTeXData(
+                      widgets: [element.child!],
+                      parseFunctionWithTeXFormula: trigonometricParser,
+                      teXFormula: '\\tan'
+                    );
+                  }
+                case (ElementsType.cotElement):
+                  {
+                    addToTeXData(
+                      widgets: [element.child!],
+                      parseFunctionWithTeXFormula: trigonometricParser,
+                      teXFormula: '\\cot'
+                    );
+                  }
+                case (ElementsType.arccosElement):
+                  {
+                    addToTeXData(
+                      widgets: [element.child!],
+                      parseFunctionWithTeXFormula: trigonometricParser,
+                      teXFormula: '\\arccos'
+                    );
+                  }
+                case (ElementsType.arcsinElement):
+                  {
+                    addToTeXData(
+                      widgets: [element.child!],
+                      parseFunctionWithTeXFormula: trigonometricParser,
+                      teXFormula: '\\arcsin'
+                    );
+                  }
+                case (ElementsType.arctanElement):
+                  {
+                    addToTeXData(
+                      widgets: [element.child!],
+                      parseFunctionWithTeXFormula: trigonometricParser,
+                      teXFormula: '\\arctan'
+                    );
+                  }
+                case (ElementsType.arccotElement):
+                  {
+                    addToTeXData(
+                      widgets: [element.child!],
+                      parseFunctionWithTeXFormula: trigonometricParser,
+                      teXFormula: '\\arcctg'
+                    );
+                  }
+                case (ElementsType.naturalLogElement):
+                  {
+                    addToTeXData(
+                      widgets: [element.child!],
+                      parseFunctionWithTeXFormula: trigonometricParser,
+                      teXFormula: '\\ln'
+                    );
+                  }
+                case (ElementsType.logBaseTwoElement):
+                  {
+                    addToTeXData(
+                      widgets: [element.child!],
+                      parseFunctionWithTeXFormula: trigonometricParser,
+                      teXFormula: '\\log_2'
+                    );
+                  }
+                case (ElementsType.decimalLogElement):
+                  {
+                    addToTeXData(
+                      widgets: [element.child!],
+                      parseFunctionWithTeXFormula: trigonometricParser,
+                      teXFormula: '\\lg'
+                    );
+                  }
+                case (ElementsType.derevativeElement):
+                  {
+                    addToTeXData(widget: element.child!, parseFunctionByChild: derevativeParser);
+                  }
                 }
               } else {
                 _formulaParser([element.child!]);
@@ -229,7 +217,14 @@ class FormulaToTexParser {
         case const (IntegralWidget):
           {
             element as IntegralWidget;
-            _formulaParser([element.child!]);
+              addToTeXData(widget: element, parseFunctionByChild: integralParser);
+              break; 
+          }
+        case const (BacketsWidget):
+          {
+            element as BacketsWidget;
+            addToTeXData(
+                widgets: [element.child!], parseFunctionByChildren: backetsParer);
             break;
           }
         case const (ArgumentWidget):
@@ -244,13 +239,6 @@ class FormulaToTexParser {
             _formulaParser([element.child!]);
             break;
           }
-        case const (BacketsWidget):
-          {
-            element as BacketsWidget;
-            addToTeXData(
-                widgetsData: [element.child!], parseFunction: backetsParer);
-            break;
-          }
         case const (TextFieldWidgetHandler):
           {
             element as TextFieldWidgetHandler;
@@ -259,7 +247,7 @@ class FormulaToTexParser {
         case const (LimStackWidget):
           {
             element as LimStackWidget;
-            _formulaParser([element.child!]);
+            addToTeXData(widget: element.child!, parseFunctionByChild: limitParser);
             break;
           }
       }
@@ -268,19 +256,23 @@ class FormulaToTexParser {
     return null;
   }
 
-  String addToTeXData(
-      {Function(List<Widget>)? parseFunction,
-      required List<Widget> widgetsData,
+  String addToTeXData({
+      Function(List<Widget>)? parseFunctionByChildren,
+      Function(Widget)? parseFunctionByChild,
+      List<Widget>? widgets,
+      Widget? widget,
       Function(List<Widget>, String)? parseFunctionWithTeXFormula,
-      String? teXFormula}) {
+      String? teXFormula
+    }) {
     final intermediateTeXData = formulaInTeX;
     var teXData = '';
-    if (parseFunction != null) {
-      teXData = parseFunction(widgetsData) as String;
-    } else if (teXFormula != null && parseFunctionWithTeXFormula != null) {
-      teXData = parseFunctionWithTeXFormula(widgetsData, teXFormula) as String;
+    if (parseFunctionByChildren != null && widgets != null) {
+      teXData = parseFunctionByChildren(widgets) as String;
+    } else if (teXFormula != null && parseFunctionWithTeXFormula != null && widgets != null) {
+      teXData = parseFunctionWithTeXFormula(widgets, teXFormula) as String;
+    } else if( parseFunctionByChild != null && widget != null){
+      teXData = parseFunctionByChild(widget) as String;
     }
-
     formulaInTeX = intermediateTeXData + teXData;
     print(formulaInTeX);
     return formulaInTeX;
@@ -333,11 +325,6 @@ class FormulaToTexParser {
         element as Stack;
         final data = _formulaParser([element]);
         textData = '$textData$data';
-      // }else if(element is SingleChildRenderObjectWidget ||
-      // element is ParentDataWidget ||
-      // element is ProxyWidget){
-      //   element as SingleChildRenderObjectWidget; 
-      //   print(element.child); 
       }else if(element is MultiChildRenderObjectWidget){
         _formulaParser(element.children);
         textData = '$textData$formulaInTeX';
@@ -369,8 +356,9 @@ class FormulaToTexParser {
     return fracStringData;
   }
 
-  String derevativeParser(List<Widget> widgets) {
+  String derevativeParser(Widget widget) {
     final List<String> derevativeData = ['', ''];
+    final widgets = (widget as Column).children;
     for (final element in widgets) {
       if (element.runtimeType == SizedBox) {
         element as SizedBox;
@@ -390,30 +378,32 @@ class FormulaToTexParser {
     return derevativeString;
   }
 
-// String absParser(List<Widget> widgets){
-//   final List<String>>
-// }
-
-  String logParser(List<Widget> widgets) {
+  String logParser(Widget widget) {
     final List<String> logData = ['', ''];
-    for (final element in widgets) {
-      if (element is Positioned) {
-        final fieldData = _formulaParser([element.child]);
-        if (logData[0].isEmpty) {
-          logData[0] = fieldData ?? '';
-        } else if (logData[1].isEmpty) {
-          logData[1] = fieldData ?? '';
+    if (widget is Stack) {
+        for (final element in widget.children) {
+          if (element is Positioned) {
+            final fieldData = _formulaParser([element.child]);
+            if (logData[0].isEmpty) {
+              logData[0] = fieldData ?? '';
+            } else if (logData[1].isEmpty) {
+              logData[1] = fieldData ?? '';
+            }
+            formulaInTeX = '';
+          }
         }
-        formulaInTeX = '';
-      }
     }
+
     final logStringData = '\\log_{${logData[1]}}${logData[0]} ';
     return logStringData;
   }
 
-  String integralParser(List<Widget> widgets) {
+  String integralParser(Widget widget) {
     final List<String> integralData = ['', '', '', ''];
-    for (final element in widgets) {
+    final integralWidget = widget as IntegralWidget;
+    final sizedBox = integralWidget.child as SizedBox;
+    final stack = sizedBox.child as Stack;
+    for (final element in stack.children) {
       if (element.runtimeType == Positioned) {
         element as Positioned;
         _formulaParser([element.child]);
@@ -464,9 +454,10 @@ class FormulaToTexParser {
     return '';
   }
 
-  String limitParser(List<Widget> widgets) {
+  String limitParser(Widget widget) {
     final List<String> limitData = ['', '', ''];
-    for (final element in widgets) {
+    final stack = widget as Stack;
+    for (final element in stack.children) {
       if (element is Positioned) {
         final fieldData = _formulaParser([element.child]);
         if (limitData[0].isEmpty) {
@@ -484,26 +475,19 @@ class FormulaToTexParser {
     return limitStringData;
   }
 
-  String trigonometricParser(List<Widget> widgets, String TeXFormula) {
+  String trigonometricParser(List<Widget> widgets, String teXFormula) {
     var stringData = '';
+    formulaInTeX = '';
     for (final element in widgets) {
-      if (element is SizedBox && element.child != null) {
-        final data = _formulaParser([element.child!]);
-        if (data != null) {
-          stringData = '$stringData$data ';
-        }
-        formulaInTeX = '';
+      if (element is MultiChildRenderObjectWidget) {
+        _formulaParser(element.children);
+          stringData = '$stringData$formulaInTeX ';
+      }else if(element is SingleChildRenderObjectWidget) {
+        _formulaParser([element.child!]);
+          stringData = '$stringData$formulaInTeX';
       }
+      formulaInTeX = '';
     }
-    return '$TeXFormula$stringData';
-
-    // if(widgets[2] is SizedBox && (widgets[2] as SizedBox).child != null)
-    // {
-    //   final sizedBox = widgets[2] as SizedBox;
-    //   final stringData = _formulaParser([sizedBox.child!]);
-    //   formulaInTeX = '';
-    //   return '$TeXFormula $stringData';
-    // }
-    // return '';
+    return '$teXFormula$stringData';
   }
 }
