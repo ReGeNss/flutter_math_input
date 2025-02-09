@@ -24,16 +24,28 @@ enum ElementsType {
   arccotElement,
   indefiniteIntegralElement,
   integralElement,
-  derevativeElement
+  derevativeElement,
+  backetsWidget,
 }
 
 class MathConstructionsBuilding {
   final TextFieldHandleAndCreateService textFieldService;
 
   MathConstructionsBuilding({required this.textFieldService});
-  Widget createTextField({bool replaceOldFocus = false}) {
-    final textField = textFieldService.createTextField(
-        isReplaceOperation: replaceOldFocus, isActiveTextField: true);
+  Widget createTextField({bool replaceOldFocus = false, bool? standartSize}) {
+    late final Widget textField;  
+    if(standartSize == null){
+      textField = textFieldService.createTextField(
+        isReplaceOperation: replaceOldFocus, 
+        isActiveTextField: true,
+      );
+    } else { 
+      textField = textFieldService.createTextField(
+        isReplaceOperation: replaceOldFocus, 
+        isActiveTextField: true,
+        selectedTextFieldFormat: standartSize ? TextFieldFormat.standart : TextFieldFormat.small
+      );
+    }
     return textField;
   }
 
@@ -42,6 +54,7 @@ class MathConstructionsBuilding {
         isReplaceOperation: true, isActiveTextField: true);
     final downField = textFieldService.createTextField(
         isReplaceOperation: false, performAdictionalTextField: true);
+    textFieldService.markAsGrop(upperField, downField);
     final upperGlobalKey = GlobalKey();
     final downGlobalKey = GlobalKey();
     final fracWidget = SizedBox(
@@ -77,17 +90,19 @@ class MathConstructionsBuilding {
     return fracWidget;
   }
 
-  Widget createExpWidget(Widget baseWidget) {
+  Widget createExpWidget(Widget baseWidget, TextFieldData baseFieldData) {
     final expGlobalKey = GlobalKey();
     final baseGlobalKey = GlobalKey();
     final textField = textFieldService.createTextField(
-        isReplaceOperation: false,
-        isActiveTextField: true,
-        selectedTextFieldFormat: TextFieldFormat.small);
+      isReplaceOperation: false,
+      isActiveTextField: true,
+      selectedTextFieldFormat: TextFieldFormat.small);
+    textFieldService.markAsGrop(baseFieldData, textField);
     final widget = ExpRowWidget(
       baseWidget: baseWidget,
       expGlobalKey: expGlobalKey,
-      textField: textField, baseGlobalKey: baseGlobalKey,
+      textField: textField,
+      baseGlobalKey: baseGlobalKey,
     );
     return widget;
   }
@@ -107,6 +122,7 @@ class MathConstructionsBuilding {
     final sqrtWidget = Row(
       children: [
         SizedBox(
+          key: const ValueKey(ElementsType.sqrtElement),
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -115,7 +131,6 @@ class MathConstructionsBuilding {
                 top: 5,
                 left: 25,
                 child: Row(
-                  key: const ValueKey(ElementsType.sqrtElement),
                   children: [
                     textFieldWidget,
                   ],
@@ -142,9 +157,10 @@ class MathConstructionsBuilding {
         isReplaceOperation: true,
         isActiveTextField: true,
         selectedTextFieldFormat: TextFieldFormat.small);
+    textFieldService.markAsGrop(baseField, argField);
     final logWidget = SizedBox(
+      key: const ValueKey(ElementsType.logElement),
       child: Stack(
-        key: const ValueKey(ElementsType.logElement),
         clipBehavior: Clip.none,
         children: [
           const SizedBox(
@@ -184,6 +200,7 @@ class MathConstructionsBuilding {
         selectedTextFieldFormat: TextFieldFormat.small);
     final globalKey = GlobalKey();
     final limitWidget = LimStackWidget(
+      key: const ValueKey(ElementsType.limitElement),
       argField: argField,
       firstDownField: firstDownField,
       secondDownField: secondDownField,
@@ -198,8 +215,8 @@ class MathConstructionsBuilding {
         isActiveTextField: true,
         performAdictionalTextField: true);
     final widget = SizedBox(
+      key: ValueKey(type),
       child: Row(
-        key: ValueKey(type),
         children: [
           Text(
             functionName,
@@ -285,7 +302,7 @@ class MathConstructionsBuilding {
     );
     final derevativeField = textFieldService.createTextField(
         isReplaceOperation: false, performAdictionalTextField: false);
-
+    textFieldService.markAsGrop(argFieldWidget, derevativeField); 
     final integralWidget = Row(
       children: [
         Row(
@@ -302,7 +319,11 @@ class MathConstructionsBuilding {
               'd',
               style: TextStyle(fontSize: 20),
             ),
-            derevativeField,
+            Row(
+              children: [
+                derevativeField,
+              ],
+            ),
           ],
         ),
         addictionalField
@@ -324,9 +345,10 @@ class MathConstructionsBuilding {
       (downField.child as TextFieldWidgetHandler).initTextInField =
           downFieldText;
     }
+    textFieldService.markAsGrop(upperField, downField);
     final derevativeWidget = SizedBox(
+      key: const ValueKey(ElementsType.derevativeElement),
       child: Column(
-        key: const ValueKey(ElementsType.derevativeElement),
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
@@ -374,7 +396,9 @@ class MathConstructionsBuilding {
         selectedTextFieldFormat: TextFieldFormat.small);
     final globalKey = GlobalKey();
 
+    textFieldService.markAsGrop(startPointField, derevativeField);
     final integralWidget = IntegralWidget(
+        key: ValueKey(ElementsType.integralElement),
         startPointField: startPointField,
         finishPointField: finishPointField,
         argFieldWidget: argFieldWidget,
@@ -434,7 +458,6 @@ class _LimStackWidgetState extends State<LimStackWidget> {
   @override
   Widget build(BuildContext context) {
     widget.child ??= Stack(
-      key: const ValueKey(ElementsType.limitElement),
       clipBehavior: Clip.none,
       // alignment: Alignment.centerLeft,
       children: [
@@ -544,7 +567,6 @@ class _IntegralWidgetState extends State<IntegralWidget> {
       stack = box.child as Stack;
     } else {
       stack = Stack(
-        key: const ValueKey(ElementsType.integralElement),
         clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
@@ -585,7 +607,7 @@ class _IntegralWidgetState extends State<IntegralWidget> {
 }
 
 class ArgumentWidget extends StatefulWidget {
-  ArgumentWidget({Key? key, required this.argumentWidget}) : super(key: key);
+  ArgumentWidget({super.key, required this.argumentWidget});
   final Widget argumentWidget;
   Widget? child;
   @override
@@ -609,7 +631,7 @@ class _ArgumentWidgetState extends State<ArgumentWidget> {
 
 class BacketsWidget extends StatefulWidget {
   BacketsWidget({
-    Key? key,
+    key = const ValueKey(ElementsType.backetsWidget),
     required this.textFieldWidget,
   }) : super(key: key);
   final Widget textFieldWidget;
@@ -638,7 +660,7 @@ class _BacketsWidgetState extends State<BacketsWidget> {
 }
 
 class AbsLineWidget extends StatefulWidget {
-  const AbsLineWidget({Key? key, required this.globalKey}) : super(key: key);
+  const AbsLineWidget({super.key, required this.globalKey});
   final GlobalKey globalKey;
 
   @override
@@ -742,12 +764,11 @@ class _SqrtPainter extends CustomPainter {
 // ignore: must_be_immutable
 class ExpRowWidget extends StatefulWidget {
   ExpRowWidget(
-      {Key? key,
+      {super.key,
       required this.baseWidget,
       required this.expGlobalKey,
       this.child,
-      required this.textField, required this.baseGlobalKey})
-      : super(key: key);
+      required this.textField, required this.baseGlobalKey});
   final Widget baseWidget;
   final GlobalKey expGlobalKey;
   final GlobalKey baseGlobalKey;
@@ -807,7 +828,11 @@ class _ExpRowWidgetState extends State<ExpRowWidget> {
         key: widget.baseGlobalKey,
         left: 0,
         bottom: 0,
-        child: widget.baseWidget);
+        child: Row(
+          children: [
+            widget.baseWidget,
+          ],
+        ));
     Widget secondPositioned = Positioned(
         key: widget.expGlobalKey,
         top: -5,

@@ -382,22 +382,22 @@ class FormulasTreeParsersService {
             }
             break;
           }
-        case const (BacketsWidget):
-        {
-          final widget = (array[index] as BacketsWidget).child as Row;
-          data = _widgetTreeParser(
-                widget.children, activeTextFieldController,
-                isFromRowOrColumn: true);
-            if (data?.widget is TextField) {
-              final textField = data!.widget as TextField;
-              if (_parsedData == null &&
-                  textField.controller == activeTextFieldController) {
-                _parsedData = ReturnData(wigetData: array,index: index);
-              }
-            }
-            isFromRowOrColumn = false;
-            break;
-        }
+        // case const (BacketsWidget):
+        // {
+        //   final widget = (array[index] as BacketsWidget).child as Row;
+        //   data = _widgetTreeParser(
+        //         widget.children, activeTextFieldController,
+        //         isFromRowOrColumn: true);
+        //     if (data?.widget is TextField) {
+        //       final textField = data!.widget as TextField;
+        //       if (_parsedData == null &&
+        //           textField.controller == activeTextFieldController) {
+        //         _parsedData = ReturnData(wigetData: array,index: index);
+        //       }
+        //     }
+        //     isFromRowOrColumn = false;
+        //     break;
+        // }
         case const (ArgumentWidget):
         {
           final widget = (array[index] as ArgumentWidget).child as Row; 
@@ -552,21 +552,14 @@ class FormulasTreeParsersService {
       }
     }
     return null;
-  }
-
-
-
-
-
-  
-
-  
+  }  
 }
 
 class ReturnData {
   List<Widget>? wigetData;
+  bool? isGroop;
   int? index;
   Widget? widget;
   GlobalKey? globalKey;
-  ReturnData({this.wigetData, this.index, this.widget, this.globalKey});
+  ReturnData({this.wigetData, this.index, this.widget, this.globalKey, this.isGroop});
 }
