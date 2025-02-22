@@ -93,18 +93,55 @@ class MathConstructionsBuilding {
   MathConstructionData createExpWidget(Widget baseWidget, TextFieldData baseFieldData) {
     final expGlobalKey = GlobalKey();
     final baseGlobalKey = GlobalKey();
+    final addictionalTextField = textFieldService.createTextField(
+      isReplaceOperation: false,
+      isActiveTextField: false,
+      selectedTextFieldFormat: TextFieldFormat.standart);
     final textField = textFieldService.createTextField(
       isReplaceOperation: false,
       isActiveTextField: true,
       selectedTextFieldFormat: TextFieldFormat.small);
     textFieldService.markAsGrop(baseFieldData, textField);
-    final widget = ExpRowWidget(
-      baseWidget: baseWidget,
-      expGlobalKey: expGlobalKey,
-      textField: textField,
-      baseGlobalKey: baseGlobalKey,
+    // final widget = ExpRowWidget(
+    //   baseWidget: baseWidget,
+    //   expGlobalKey: expGlobalKey,
+    //   textField: textField,
+    //   baseGlobalKey: baseGlobalKey,
+    // );
+    final widget = WidgetDynamicSizeWrapper(
+      defaultHeight: 50,
+      connectedKeysToHeight: [],
+      connectedKeysToWidth: [expGlobalKey, baseGlobalKey],
+      wrappedWidget: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned(
+            key: baseGlobalKey,
+            // connectedWidgetKeys: [expGlobalKey],
+            left: 0,
+            bottom: 0,
+            child: Row(
+              children: [
+                baseWidget,
+              ],
+            ),
+          ),
+          RelayedPositioned(
+            key: expGlobalKey,
+            right:  10,
+            offsetByHeight: RelayedPositionedType.fromBottom,
+            connectedWidgetKeys: [baseGlobalKey],
+            widgetToWrap: Row(
+              key: const ValueKey(ElementsType.exponentiationElement),
+              children: [
+                textField,
+              ],
+            ),
+          )
+        ],
+      ),
     );
-    return MathConstructionData(construction: widget);
+    return MathConstructionData(construction: widget, addictionalWidget: addictionalTextField);
   }
 
   Widget createCharWidget({required bool isActiveTextField}) {
@@ -146,6 +183,8 @@ class MathConstructionsBuilding {
   }
 
   MathConstructionData createLogWidget() {
+    final addictionalField = textFieldService.createTextField(
+        isReplaceOperation: false);
     final argField =
         textFieldService.createTextField(isReplaceOperation: false);
     final baseField = textFieldService.createTextField(
@@ -153,39 +192,49 @@ class MathConstructionsBuilding {
         isActiveTextField: true,
         selectedTextFieldFormat: TextFieldFormat.small);
     textFieldService.markAsGrop(baseField, argField);
-    final logWidget = SizedBox(
+    final baseFieldKey = GlobalKey();
+    final argFieldKey = GlobalKey();
+    final logWidget = WidgetDynamicSizeWrapper(
       key: const ValueKey(ElementsType.logElement),
-      child: Stack(
+      defaultHeight: 50,
+      defaultWidth: 40,
+      connectedKeysToHeight: [],
+      connectedKeysToWidth: [baseFieldKey, argFieldKey],
+      wrappedWidget: Stack(
         clipBehavior: Clip.none,
         children: [
-          const SizedBox(
-              height: 50,
-              child:
-                  Center(child: Text('log', style: TextStyle(fontSize: 25)))),
           Positioned(
-              left: 40,
-              child: Row(
-                children: [
-                  argField,
-                ],
-              )),
-          Positioned(
-              bottom: -5,
-              left: 30,
-              child: Row(
-                children: [
-                  baseField,
-                ],
-              )),
+            left: 0,
+            child: const SizedBox(
+                height: 50,
+                child:
+                    Center(child: Text('log', style: TextStyle(fontSize: 25)))),
+          ),
+          RelayedPositioned(
+            key: argFieldKey,
+            connectedWidgetKeys: [baseFieldKey], 
+            widgetToWrap: argField, 
+            left: 40,
+            offsetByWidth: RelayedPositionedType.fromLeft,
+          ),
+          RelayedPositioned(
+            key: baseFieldKey,
+            left: 30,
+            top: 30,
+            widgetToWrap: baseField, 
+            connectedWidgetKeys: [baseFieldKey]
+          )
         ],
       ),
     );
-    return MathConstructionData(construction: logWidget);
+    return MathConstructionData(construction: logWidget, addictionalWidget: addictionalField);
   }
 
   MathConstructionData createLimitWidget() {
+    final addictionalField = textFieldService.createTextField(
+        isReplaceOperation: false);
     final argField = textFieldService.createTextField(
-        isReplaceOperation: false, performAdictionalTextField: true);
+        isReplaceOperation: false);
     final firstDownField = textFieldService.createTextField(
         isReplaceOperation: true,
         isActiveTextField: true,
@@ -193,15 +242,67 @@ class MathConstructionsBuilding {
     final secondDownField = textFieldService.createTextField(
         isReplaceOperation: false,
         selectedTextFieldFormat: TextFieldFormat.small);
-    final globalKey = GlobalKey();
-    final limitWidget = LimStackWidget(
-      key: const ValueKey(ElementsType.limitElement),
-      argField: argField,
-      firstDownField: firstDownField,
-      secondDownField: secondDownField,
-      globalKey: globalKey,
-    );
-    return MathConstructionData(construction: limitWidget);
+    final argWidgetKey = GlobalKey();
+    final firstDownFieldKey = GlobalKey();
+    final secondDownFieldKey = GlobalKey();
+    final limitWidget = WidgetDynamicSizeWrapper(
+          connectedKeysToHeight: [],
+          defaultHeight: 50,
+          defaultWidth: 50,
+          connectedKeysToWidth: [firstDownFieldKey, secondDownFieldKey, argWidgetKey],
+          key: const ValueKey(ElementsType.limitElement),
+          wrappedWidget: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              RelayedPositioned(
+                left: 0,
+                divideOffset: true,
+                offsetByWidth: RelayedPositionedType.fromLeft,
+                connectedWidgetKeys: [firstDownFieldKey,secondDownFieldKey],
+                widgetToWrap: SizedBox(
+                  height: 50,
+                  child: Center(
+                    child: Text(
+                      'lim',
+                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                ),
+              ),
+              RelayedPositioned(
+                key: argWidgetKey,
+                left: 45,
+                offsetByWidth: RelayedPositionedType.fromLeft,
+                connectedWidgetKeys: [firstDownFieldKey, secondDownFieldKey],
+                widgetToWrap: argField,
+              ),
+              Positioned(
+                key: firstDownFieldKey,
+                bottom: -20,
+                left: 0,
+                child: Row(
+                  children: [firstDownField],
+                ),
+              ),
+              RelayedPositioned(
+                bottom: -20, 
+                left: 5,
+                offsetByWidth: RelayedPositionedType.fromLeft,
+                connectedWidgetKeys: [firstDownFieldKey],
+                widgetToWrap: Icon(Icons.arrow_forward_outlined)
+              ),
+              RelayedPositioned(
+                key: secondDownFieldKey,
+                offsetByWidth: RelayedPositionedType.fromLeft,
+                connectedWidgetKeys: [firstDownFieldKey],
+                bottom: -20,
+                left: 40,
+                widgetToWrap: secondDownField,
+              ),
+            ],
+          ),
+        );
+    return MathConstructionData(construction: limitWidget, addictionalWidget: addictionalField);
   }
 
   MathConstructionData createNamedFunctionWidget(String functionName, ElementsType type) {
@@ -374,16 +475,64 @@ class MathConstructionsBuilding {
         isReplaceOperation: false,
         performAdictionalTextField: false,
         selectedTextFieldFormat: TextFieldFormat.small);
-    final globalKey = GlobalKey();
-
+    final argumentKey = GlobalKey();
+    final finishPointKey = GlobalKey();
+    final derevativeKey = GlobalKey();
     textFieldService.markAsGrop(startPointField, derevativeField);
-    final integralWidget = IntegralWidget(
-        key: ValueKey(ElementsType.integralElement),
-        startPointField: startPointField,
-        finishPointField: finishPointField,
-        argFieldWidget: argFieldWidget,
-        derevativeField: derevativeField,
-        globalKey: globalKey);
+    final integralWidget = WidgetDynamicSizeWrapper(
+      key: const ValueKey(ElementsType.integralElement),
+      connectedKeysToHeight: [],
+      connectedKeysToWidth: [finishPointKey, argumentKey, derevativeKey],
+      defaultHeight: 60,
+      defaultWidth: 25,
+      wrappedWidget: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            const Positioned(
+              left: 0,
+              child: Center(
+                  child: Text(
+                '∫',
+                style: TextStyle(fontSize: 30),
+              )),
+            ),
+      
+            Positioned(bottom: -5, left: 5, child: Row(
+              children: [
+                startPointField,
+              ],
+            )),
+            Positioned(key: finishPointKey, top: -10, left: 10, child: Row(
+              children: [
+                finishPointField,
+              ],
+            )),
+            RelayedPositioned(
+                key: argumentKey,
+                connectedWidgetKeys: [finishPointKey],
+                offsetByWidth: RelayedPositionedType.fromLeft,
+                left: 10,
+                widgetToWrap: ArgumentWidget(argumentWidget: argFieldWidget)),
+            RelayedPositioned(
+              left: 10,
+              offsetByWidth: RelayedPositionedType.fromLeft,
+              connectedWidgetKeys: [finishPointKey, argumentKey],
+              widgetToWrap: Text(
+                'd',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            RelayedPositioned(
+              key: derevativeKey,
+              left: 20,
+              widgetToWrap: derevativeField,
+              connectedWidgetKeys: [argumentKey, finishPointKey],
+              offsetByWidth: RelayedPositionedType.fromLeft,
+            ),
+          ],
+        ),
+    );
     return MathConstructionData(construction: integralWidget);
   }
 
@@ -397,136 +546,58 @@ class MathConstructionsBuilding {
   }
 }
 
-class LimStackWidget extends StatefulWidget {
-  LimStackWidget({
+class RelayedPositioned extends StatefulWidget {
+  RelayedPositioned({
     super.key,
-    required this.argField,
-    required this.firstDownField,
-    required this.secondDownField,
-    required this.globalKey,
+    required this.widgetToWrap,
+    required this.connectedWidgetKeys,
+    this.offsetByHeight,
+    this.offsetByWidth,
+    this.right,
+    this.left,
+    this.top,
+    this.bottom,
+    this.divideOffset = false,
   });
 
-  final Widget argField;
-  final Widget firstDownField;
-  final Widget secondDownField;
-  final GlobalKey globalKey;
-  Widget? child;
+  Widget widgetToWrap;
+  final bool divideOffset; 
+  final List<GlobalKey> connectedWidgetKeys;
+  final double? right; 
+  final double? left;
+  final double? top;
+  final double? bottom;
+  final RelayedPositionedType? offsetByHeight;
+  final RelayedPositionedType? offsetByWidth;
+  Widget? wrappedWidget; 
 
   @override
-  State<LimStackWidget> createState() => _LimStackWidgetState();
+  State<RelayedPositioned> createState() => _RelayedPositionedState();
 }
 
-class _LimStackWidgetState extends State<LimStackWidget> {
-  Size? size;
-  getSize() {
-    final renderBox = widget.globalKey.currentContext?.findRenderObject();
-    if (renderBox is RenderBox) {
-      if (size == null || size != renderBox.size) {
-        size = renderBox.size;
-        // pi
-        setState(() {});
-      }
-    }
-  }
-
-  @override
-  void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
-    super.didChangeDependencies();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    widget.child ??= Stack(
-      clipBehavior: Clip.none,
-      // alignment: Alignment.centerLeft,
-      children: [
-        const Positioned(
-          left: 0,
-          child: SizedBox(
-            height: 50,
-            child: Center(
-              child: Text(
-                'lim',
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          key: widget.globalKey,
-          left: 45,
-          child: Row(
-            children: [
-              widget.argField,
-            ],
-          ),
-        ),
-        Positioned(
-          bottom: -20,
-          left: 0,
-          child: Row(
-            children: [widget.firstDownField],
-          ),
-        ),
-        const Positioned(
-            bottom: -20, left: 20, child: Icon(Icons.arrow_forward_outlined)),
-        Positioned(
-          bottom: -20,
-          left: 40,
-          child: Row(
-            children: [widget.secondDownField],
-          ),
-        ),
-      ],
-    );
-    return SizedBox(
-      width: 70 + (size?.width ?? 0),
-      height: size?.height ?? 50,
-      child: widget.child,
-    );
-  }
-}
-
-class IntegralWidget extends StatefulWidget {
-  IntegralWidget({
-    super.key,
-    required this.startPointField,
-    required this.finishPointField,
-    required this.argFieldWidget,
-    required this.derevativeField,
-    required this.globalKey,
-  });
-
-  final Widget startPointField;
-  final Widget finishPointField;
-  final Widget argFieldWidget;
-  final Widget derevativeField;
-  final GlobalKey globalKey;
-  Widget? child;
-  @override
-  State<IntegralWidget> createState() => _IntegralWidgetState();
-}
-
-class _IntegralWidgetState extends State<IntegralWidget> {
-  Size? size;
+class _RelayedPositionedState extends State<RelayedPositioned> {
+  double? widthOffset; 
+  double? heightOffset;
 
   void getSize(List<FrameTiming> frameTiming) {
-    if (widget.globalKey.currentContext != null) {
-      final renderBox =
-          widget.globalKey.currentContext?.findRenderObject() as RenderBox;
-      if (size == null || size!.width != renderBox.size.width) {
-        size = Size(renderBox.size.width + 70, renderBox.size.height);
-        setState(() {});
+    widthOffset = 0;
+    heightOffset = 0;
+    for (final key in widget.connectedWidgetKeys) {
+      if (key.currentContext != null) {
+        final renderBox = key.currentContext
+            ?.findRenderObject() as RenderBox;
+        if (widthOffset == null ||
+            widthOffset != renderBox.size.width ||
+            heightOffset == null ||
+            heightOffset != renderBox.size.height) {
+          widthOffset = (widthOffset ?? 0) + renderBox.size.width;
+          heightOffset = (heightOffset ?? 0) + renderBox.size.height;
+          setState(() {});
+        }
       }
     }
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
-  // }
   @override
   void dispose() {
     WidgetsBinding.instance.removeTimingsCallback(getSize);
@@ -535,54 +606,86 @@ class _IntegralWidgetState extends State<IntegralWidget> {
 
   @override
   void initState() {
+    if(widget.widgetToWrap is! Row){
+      widget.widgetToWrap = Row(
+        children: [
+          widget.widgetToWrap,
+        ],
+      );
+    }
     WidgetsBinding.instance.addTimingsCallback(getSize);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    late final Stack stack;
-    if (widget.child != null) {
-      final box = widget.child as SizedBox;
-      stack = box.child as Stack;
-    } else {
-      stack = Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
-        children: [
-          const Positioned(
-            left: 0,
-            child: Center(
-                child: Text(
-              '∫',
-              style: TextStyle(fontSize: 30),
-            )),
-          ),
-          Positioned(bottom: 0, left: 5, child: widget.startPointField),
-          Positioned(top: 0, left: 10, child: widget.finishPointField),
-          Positioned(
-              key: widget.globalKey,
-              left: 30,
-              child: ArgumentWidget(argumentWidget: widget.argFieldWidget)),
-          const Positioned(
-            right: 30,
-            child: Text(
-              'd',
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-          Positioned(right: 10, child: widget.derevativeField),
-        ],
-      );
+    double? topOffset = widget.top;
+    double? bottomOffset = widget.bottom;
+    double? leftOffset = widget.left;
+    double? rightOffset = widget.right;
+
+    if(widget.offsetByHeight != null){
+      switch(widget.offsetByHeight!) {
+        case RelayedPositionedType.fromBottom:
+          if(bottomOffset != null){
+            bottomOffset += heightOffset ?? 0;
+          }else{
+            bottomOffset = heightOffset ?? 0;
+          }
+          if(widget.divideOffset == true){
+            bottomOffset = bottomOffset / 2;
+          }
+          break;
+        case RelayedPositionedType.fromTop:
+          if(topOffset != null){
+            topOffset += heightOffset ?? 0;
+          }else{
+            topOffset = heightOffset ?? 0;
+          }
+          if(widget.divideOffset == true){
+            topOffset = topOffset / 2;
+          }
+          break;
+        default:
+          break;
+      }
     }
 
-    final child = SizedBox(
-      width: size?.width ?? 150,
-      height: 60,
-      child: stack,
+    if(widget.offsetByWidth != null){
+      switch(widget.offsetByWidth!) {
+        case RelayedPositionedType.fromLeft:
+          if(leftOffset != null){
+            leftOffset += widthOffset ?? 0;
+          }else{
+            leftOffset = widthOffset ?? 0;
+          }
+          if(widget.divideOffset == true){
+            leftOffset = leftOffset / 2;
+          }
+          break;
+        case RelayedPositionedType.fromRight:
+          if(rightOffset != null){
+            rightOffset += widthOffset ?? 0;
+          }else{
+            rightOffset = widthOffset ?? 0;
+          }
+          if(widget.divideOffset == true){
+            rightOffset = rightOffset / 2;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    widthOffset ??= 0;
+    widget.wrappedWidget = Positioned(
+      top: topOffset,
+      left: leftOffset,
+      right: rightOffset,
+      bottom: bottomOffset,
+      child: widget.widgetToWrap,
     );
-    widget.child = child;
-    return child;
+    return widget.wrappedWidget!;
   }
 }
 
@@ -695,11 +798,6 @@ class _SqrtCustomPaintState extends State<_SqrtCustomPaint> {
     }
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
-  // }
   @override
   void initState() {
     WidgetsBinding.instance.addTimingsCallback(getSize);
@@ -715,7 +813,7 @@ class _SqrtCustomPaintState extends State<_SqrtCustomPaint> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-        size: Size((size?.width ?? 80) + 30, 50), painter: _SqrtPainter());
+        size: Size((size?.width ?? 80) + 30, size?.height ?? 50), painter: _SqrtPainter());
   }
 }
 
@@ -741,112 +839,6 @@ class _SqrtPainter extends CustomPainter {
   }
 }
 
-// ignore: must_be_immutable
-class ExpRowWidget extends StatefulWidget {
-  ExpRowWidget(
-      {super.key,
-      required this.baseWidget,
-      required this.expGlobalKey,
-      this.child,
-      required this.textField, required this.baseGlobalKey});
-  final Widget baseWidget;
-  final GlobalKey expGlobalKey;
-  final GlobalKey baseGlobalKey;
-  Widget? child;
-  final Widget textField;
-
-  @override
-  State<ExpRowWidget> createState() => _ExpRowWidgetState();
-}
-
-class _ExpRowWidgetState extends State<ExpRowWidget> {
-  Size size = const Size(120, 60);
-  void getSize(List<FrameTiming> frameTiming) {
-    final expRenderBox =
-        widget.expGlobalKey.currentContext?.findRenderObject() as RenderBox;
-    final baseRenderBox =
-        widget.baseGlobalKey.currentContext?.findRenderObject() as RenderBox;
-    late final double newHeight; 
-    late final double newWidth; 
-    if(expRenderBox.size.height > baseRenderBox.size.height){
-      newHeight = expRenderBox.size.height + 15; 
-    }else{ 
-      newHeight = baseRenderBox.size.height + 15; 
-    }
-    if(expRenderBox.size.width > baseRenderBox.size.width){
-      newWidth = expRenderBox.size.width + 25; 
-    }else{ 
-      newWidth = baseRenderBox.size.width + 20; 
-    }
-    if (size != Size(newWidth,newHeight) ) {
-      // print('adadadadadadada');
-      size = Size(newWidth,newHeight);
-      setState(() {});
-    }
-  }
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) => getSize());
-  // }
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeTimingsCallback(getSize);
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addTimingsCallback(getSize);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Widget firstPositioned = Positioned(
-        key: widget.baseGlobalKey,
-        left: 0,
-        bottom: 0,
-        child: Row(
-          children: [
-            widget.baseWidget,
-          ],
-        ));
-    Widget secondPositioned = Positioned(
-        key: widget.expGlobalKey,
-        top: -5,
-        right: 0,
-        child: Row(
-          key: const ValueKey(ElementsType.exponentiationElement),
-          children: [
-            SizedBox(height: 30, child: widget.textField),
-          ],
-        ));
-    if (widget.child != null) {
-      // final row = widget.child as Row;
-      final sizedBox = widget.child as SizedBox;
-      final stack = sizedBox.child! as Stack;
-      firstPositioned = stack.children[0];
-      secondPositioned = stack.children[1];
-    }
-    final child = SizedBox(
-      width: size.width,
-      height: size.height,
-      child: Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.topRight,
-        children: [
-          firstPositioned,
-          secondPositioned,
-        ],
-      ),
-    );
-    widget.child = child;
-    return child;
-  }
-}
-
 class FracDividerWidget extends StatefulWidget {
   const FracDividerWidget({
     super.key,
@@ -862,8 +854,6 @@ class FracDividerWidget extends StatefulWidget {
 
 class _FracDividerWidgetState extends State<FracDividerWidget> {
   Size? size;
-  final trimingCallBack = TimingsCallback;
-
   void getSize(List<FrameTiming> timings) {
     final upperRenderBox =
         widget.upperGlobalKey.currentContext?.findRenderObject() as RenderBox;
@@ -900,9 +890,79 @@ class _FracDividerWidgetState extends State<FracDividerWidget> {
   }
 }
 
+class WidgetDynamicSizeWrapper extends StatefulWidget {
+  WidgetDynamicSizeWrapper({
+    super.key,
+    required this.connectedKeysToWidth,
+    required this.wrappedWidget, 
+    required this.connectedKeysToHeight,
+    this.defaultWidth, 
+    this.defaultHeight,
+  });
+
+  final List<GlobalKey> connectedKeysToWidth;
+  final List<GlobalKey> connectedKeysToHeight;
+  final double? defaultWidth;
+  final double? defaultHeight; 
+  Widget wrappedWidget; 
+
+  @override
+  State<WidgetDynamicSizeWrapper> createState() => _WidgetDynamicSizeWrapperState();
+}
+
+class _WidgetDynamicSizeWrapperState extends State<WidgetDynamicSizeWrapper> {
+  double width = 0; 
+  double height = 0;
+
+  void getSize(List<FrameTiming> timings) {
+    height = 0; 
+    width = 0;
+    for(final key in widget.connectedKeysToWidth) { 
+      if(key.currentContext != null){
+        final renderBox = key.currentContext?.findRenderObject() as RenderBox;
+        if(width != renderBox.size.width || height != renderBox.size.height){
+          width += renderBox.size.width;
+          if(height < renderBox.size.height){
+            height = renderBox.size.height;
+          }
+        }
+      }
+    }
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeTimingsCallback(getSize);
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addTimingsCallback(getSize);
+    super.initState();
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: widget.defaultHeight,
+      width: width + (widget.defaultWidth ?? 0),
+      child: widget.wrappedWidget,
+    );
+  }
+}
+
 class MathConstructionData {
   final Widget? addictionalWidget;
   final Widget construction;
 
   MathConstructionData({required this.construction, this.addictionalWidget});
+}
+
+enum RelayedPositionedType {
+  fromRight,
+  fromLeft,
+  fromTop,
+  fromBottom,
 }

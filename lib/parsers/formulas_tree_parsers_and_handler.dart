@@ -110,22 +110,6 @@ class FormulasTreeParsersService {
             }
             break;
           }
-        case const (ExpRowWidget) :
-        {
-          final widget = array[index] as ExpRowWidget;
-            if(widget.child != null){
-              data = _textControllerWidgetParser(widget.child!, activeTextFieldController);
-            }
-            if (data != null) {
-              data.index = index; // костилі
-              data.wigetData = array;
-              if (_parsedData == null) {
-                _parsedData = data;
-                return data;
-              }
-            }
-          break;
-        }
         case const (BacketsWidget):
         {
           final widget = (array[index] as BacketsWidget).child as Row; 
@@ -144,18 +128,37 @@ class FormulasTreeParsersService {
             }
             break; 
         }
-        case const (IntegralWidget): 
+        case const (RelayedPositioned):
         {
-            final widget =
-                (array[index] as IntegralWidget).child as SizedBox;
-            if (widget.child != null) {
-              data = _parseWidgetWithPeplacment(
-                  [widget.child!], activeTextFieldController);
-              if (data != null) {
-                return data;
-              }
+          final widget = array[index] as RelayedPositioned;
+          data = _textControllerWidgetParser(widget.widgetToWrap, activeTextFieldController);
+          if (data != null) {
+            if(data.index == null && data.wigetData == null){
+              data.index = 0; 
+              data.wigetData = [widget.widgetToWrap]; 
             }
-            break; 
+            if (_parsedData == null) {
+              _parsedData = data;
+              return null;
+            }
+          }
+          break;
+        }
+        case const (WidgetDynamicSizeWrapper):
+        {
+          final widget = array[index] as WidgetDynamicSizeWrapper;
+          data = _textControllerWidgetParser(widget.wrappedWidget, activeTextFieldController);
+          if (data != null) {
+            if(data.index == null && data.wigetData == null){
+              data.index = 0; 
+              data.wigetData = [widget.wrappedWidget]; 
+            }
+            if (_parsedData == null) {
+              _parsedData = data;
+              return null;
+            }
+          }
+          break;
         }
         case const (TextFieldWidgetHandler):
         {
@@ -163,18 +166,6 @@ class FormulasTreeParsersService {
                 (array[index] as TextFieldWidgetHandler).textField as TextField;
               data = _textControllerWidgetParser(
                   widget, activeTextFieldController);
-              if (data != null) {
-                return data;
-              }
-            
-          break; 
-        }
-        case const (LimStackWidget):
-        {
-          final widget =
-                (array[index] as LimStackWidget).child;
-              data = _textControllerWidgetParser(
-                  widget!, activeTextFieldController);
               if (data != null) {
                 return data;
               }
@@ -239,12 +230,6 @@ class FormulasTreeParsersService {
               stack.children, activeTextFieldController);
           return data;
         }
-      case const (IntegralWidget):
-      {
-        final integralWiget = widget as IntegralWidget;
-        data = _textControllerWidgetParser(integralWiget.child!, activeTextFieldController);
-        return data; 
-      }
       case const (ArgumentWidget):
       {
         final integralArg = widget as ArgumentWidget;
@@ -254,16 +239,11 @@ class FormulasTreeParsersService {
       case const (TextFieldWidgetHandler):
       {
         final textFieldWidget = widget as TextFieldWidgetHandler;
-        data = _textControllerWidgetParser(textFieldWidget.textField!, activeTextFieldController);
+        if(textFieldWidget.textField != null){
+          data = _textControllerWidgetParser(textFieldWidget.textField!, activeTextFieldController);
+        }
         return data;  
       }
-      case const (LimStackWidget): 
-      {
-        final limStackWidget = widget as LimStackWidget;
-        data = _textControllerWidgetParser(limStackWidget.child! , activeTextFieldController);
-        return data; 
-      }
-
     }
     return null;
   }
@@ -344,7 +324,7 @@ class FormulasTreeParsersService {
               data = _widgetParser(
                   widget.child!, activeTextFieldController);
             }
-            if (data != null) {
+            if (data != null && _parsedData == null) {
               data.index = index; // костилі
               if (isFromRowOrColumn == false) {
                 data.wigetData = array;
@@ -367,7 +347,7 @@ class FormulasTreeParsersService {
               data = _widgetParser(
                   widget.child, activeTextFieldController);
             }
-            if (data != null) {
+            if (data != null && _parsedData == null) {
               // data.index = index; // костилі
               if (isFromRowOrColumn == false) {
                 data.wigetData = array;
@@ -414,29 +394,6 @@ class FormulasTreeParsersService {
             isFromRowOrColumn = false;
             break;
         }
-        case const (IntegralWidget):
-        {
-            final widget = array[index] as IntegralWidget;
-            if (widget.child != null) {
-              data = _widgetParser(
-                  widget.child!, activeTextFieldController);
-            }
-            if (data != null) {
-              data.index = index; // костилі
-              if (isFromRowOrColumn == false) {
-                data.wigetData = array;
-              }
-              if (data.widget is TextField && isFromRowOrColumn == false) {
-                final controller = (data.widget as TextField).controller;
-                if (controller == activeTextFieldController) {
-                  _parsedData = data;
-                }
-              }
-              return data;
-            }
-            // isFromRowOrColumn = false;
-            break;
-        }
         case const (TextFieldWidgetHandler):
         {
           final textFieldWidget = array[index] as TextFieldWidgetHandler;
@@ -446,14 +403,12 @@ class FormulasTreeParsersService {
             }
             break;
         }
-        case const (LimStackWidget):
-        {
-          final widget  = array[index] as LimStackWidget; 
-            if (widget.child != null) {
+        case const (RelayedPositioned): 
+        {   
+          final widget = array[index] as RelayedPositioned;
               data = _widgetParser(
-                  widget.child!, activeTextFieldController);
-            }
-            if (data != null) {
+                  widget.widgetToWrap, activeTextFieldController);
+            if (data != null && _parsedData == null) {
               data.index = index; // костилі
               if (isFromRowOrColumn == false) {
                 data.wigetData = array;
@@ -466,10 +421,26 @@ class FormulasTreeParsersService {
               }
               return data;
             }
-            // isFromRowOrColumn = false;
-            break;
         }
-        
+        case const (WidgetDynamicSizeWrapper): 
+        {
+          final widget = array[index] as WidgetDynamicSizeWrapper;
+              data = _widgetParser(
+                  widget.wrappedWidget, activeTextFieldController);
+            if (data != null && _parsedData == null) {
+              data.index = index; // костилі
+              if (isFromRowOrColumn == false) {
+                data.wigetData = array;
+              }
+              if (data.widget is TextField && isFromRowOrColumn == false) {
+                final controller = (data.widget as TextField).controller;
+                if (controller == activeTextFieldController) {
+                  _parsedData = data;
+                }
+              }
+              return data;
+            }
+        } 
       }
     }
     return null;
@@ -480,6 +451,12 @@ class FormulasTreeParsersService {
     ReturnData? data;
     final widgetRunType = widget.runtimeType;
     switch (widgetRunType) {
+      case const (RelayedPositioned): 
+        {   
+          final relayedPositioned = widget as RelayedPositioned; 
+          data = _widgetParser(relayedPositioned.widgetToWrap, activeTextFieldController);
+          return data;
+        } 
       case const (TextField):
         {
           final textFieldWidget = widget as TextField;
@@ -526,28 +503,22 @@ class FormulasTreeParsersService {
           widget.child!, activeTextFieldController);
       return data;
       }
-      case const (IntegralWidget):
-      {
-        final integralWiget = widget as IntegralWidget;
-        data = _widgetParser(integralWiget.child!, activeTextFieldController);
-        return data; 
-      }
       case const (ArgumentWidget):
       {
         final integralArg = widget as ArgumentWidget;
         data = _widgetParser(integralArg.child!, activeTextFieldController);
         return data;  
       }
+      case const (WidgetDynamicSizeWrapper): 
+      {
+        final widgetDynamicSizeWrapper = widget as WidgetDynamicSizeWrapper; 
+        data = _widgetParser(widgetDynamicSizeWrapper.wrappedWidget, activeTextFieldController);
+        return data;
+      }
       case const (TextFieldWidgetHandler):
       {
         final textFieldHandler = widget as TextFieldWidgetHandler; 
         data = _widgetParser(textFieldHandler.textField!, activeTextFieldController);
-        return data; 
-      }
-      case const(LimStackWidget):
-      {
-        final limStackWidget = widget as LimStackWidget; 
-        data = _widgetParser(limStackWidget.child!, activeTextFieldController);
         return data; 
       }
     }

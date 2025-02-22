@@ -12,6 +12,7 @@ class FormulaToTexParser {
   }
 
   String? _formulaParser(List<Widget> widgetList) {
+    print('GOOL');
     for (final element in widgetList) {
       switch (element.runtimeType) {
         case const (Row):
@@ -70,7 +71,6 @@ class FormulaToTexParser {
                 return formulaInTeX ;
               }
             }
-
             break;
           }
         case const (SizedBox):
@@ -88,10 +88,6 @@ class FormulaToTexParser {
                         parseFunctionByChild: absParser
                       );
                     }
-                  case (ElementsType.logElement):
-                  {
-                    addToTeXData(widget: element.child!, parseFunctionByChild: logParser);
-                  }
                   case (ElementsType.sqrtElement):
                     {
                       if(element.child != null){
@@ -215,12 +211,6 @@ class FormulaToTexParser {
             return element.controller?.text;
             // break;
           }
-        case const (IntegralWidget):
-          {
-            element as IntegralWidget;
-              addToTeXData(widget: element, parseFunctionByChild: integralParser);
-              break; 
-          }
         case const (BacketsWidget):
           {
             element as BacketsWidget;
@@ -234,23 +224,47 @@ class FormulaToTexParser {
             _formulaParser([element.child!]);
             break;
           }
-        case const (ExpRowWidget):
-          {
-            element as ExpRowWidget;
-            _formulaParser([element.child!]);
-            break;
-          }
         case const (TextFieldWidgetHandler):
           {
             element as TextFieldWidgetHandler;
             return _formulaParser([element.textField!]);
           }
-        case const (LimStackWidget):
+        case const (RelayedPositioned):
           {
-            element as LimStackWidget;
-            addToTeXData(widget: element.child!, parseFunctionByChild: limitParser);
+            element as RelayedPositioned;
+            _formulaParser([element.wrappedWidget!]);
             break;
           }
+        case const (WidgetDynamicSizeWrapper): 
+        {
+          element as WidgetDynamicSizeWrapper;
+          if(element.key != null && element.key is ValueKey){
+            final key = element.key as ValueKey;
+            switch(key.value){
+              case (ElementsType.limitElement):
+              {
+                addToTeXData(
+                  widget: element.wrappedWidget,
+                  parseFunctionByChild: limitParser
+                );
+              }
+              case (ElementsType.integralElement):
+              {
+                addToTeXData(
+                  widget: element.wrappedWidget,
+                  parseFunctionByChild: integralParser
+                );
+              }
+              case (ElementsType.logElement):
+              {
+                addToTeXData(widget: element.wrappedWidget, parseFunctionByChild: logParser);
+              }
+            }
+          }else{
+            _formulaParser([element.wrappedWidget]);
+          }
+          break;
+        }
       }
     }
     print(formulaInTeX);
@@ -384,12 +398,12 @@ class FormulaToTexParser {
     final List<String> logData = ['', ''];
     if (widget is Stack) {
         for (final element in widget.children) {
-          if (element is Positioned) {
-            final fieldData = _formulaParser([element.child]);
+          if (element is RelayedPositioned) {
+            _formulaParser([element.wrappedWidget!]);
             if (logData[0].isEmpty) {
-              logData[0] = fieldData ?? '';
+              logData[0] = formulaInTeX;
             } else if (logData[1].isEmpty) {
-              logData[1] = fieldData ?? '';
+              logData[1] = formulaInTeX;
             }
             formulaInTeX = '';
           }
@@ -402,24 +416,19 @@ class FormulaToTexParser {
 
   String integralParser(Widget widget) {
     final List<String> integralData = ['', '', '', ''];
-    final integralWidget = widget as IntegralWidget;
-    final sizedBox = integralWidget.child as SizedBox;
-    final stack = sizedBox.child as Stack;
-    for (final element in stack.children) {
-      if (element.runtimeType == Positioned) {
-        element as Positioned;
-        _formulaParser([element.child]);
-        if (integralData[0].isEmpty) {
-          integralData[0] = formulaInTeX;
-        } else if (integralData[1].isEmpty) {
-          integralData[1] = formulaInTeX;
-        } else if (integralData[2].isEmpty) {
-          integralData[2] = formulaInTeX;
-        } else if (integralData[3].isEmpty) {
-          integralData[3] = formulaInTeX;
-        }
-        formulaInTeX = '';
+    final stack = widget as Stack;
+    for (final child in stack.children) {
+      _formulaParser([child]);
+      if (integralData[0].isEmpty) {
+        integralData[0] = formulaInTeX;
+      } else if (integralData[1].isEmpty) {
+        integralData[1] = formulaInTeX;
+      } else if (integralData[2].isEmpty) {
+        integralData[2] = formulaInTeX;
+      } else if (integralData[3].isEmpty) {
+        integralData[3] = formulaInTeX;
       }
+      formulaInTeX = '';
     }
     formulaInTeX = '';
     final integralString =
@@ -459,20 +468,17 @@ class FormulaToTexParser {
     final List<String> limitData = ['', '', ''];
     final stack = widget as Stack;
     for (final element in stack.children) {
-      if (element is Positioned) {
-        final fieldData = _formulaParser([element.child]);
-        if (limitData[0].isEmpty) {
-          limitData[0] = fieldData ?? '';
-        } else if (limitData[1].isEmpty) {
-          limitData[1] = fieldData ?? '';
-        } else if (limitData[2].isEmpty) {
-          limitData[2] = fieldData ?? '';
-        }
-        formulaInTeX = '';
+      _formulaParser([element]);
+      if (limitData[0].isEmpty) {
+        limitData[0] = formulaInTeX;
+      } else if (limitData[1].isEmpty) {
+        limitData[1] = formulaInTeX;
+      } else if (limitData[2].isEmpty) {
+        limitData[2] = formulaInTeX;
       }
+      formulaInTeX = '';
     }
-    final limitStringData =
-        '\\lim_{${limitData[1]}\\to ${limitData[2]}} ${limitData[0]} ';
+    final limitStringData = '\\lim_{${limitData[1]}\\to ${limitData[2]}} ${limitData[0]} ';
     return limitStringData;
   }
 
