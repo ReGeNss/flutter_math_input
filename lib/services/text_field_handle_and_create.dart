@@ -145,7 +145,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
 
   void selectBackFocus() {
     final cursorPosition = activeTextFieldData.controller.selection.baseOffset;
-    if (cursorPosition == 0) {
+    if (cursorPosition <= 0) {
       final previousIndex = selectedFieldIndex;
       selectedFieldIndex = previousIndex - 1;
       if (_textFieildsData.length > selectedFieldIndex &&

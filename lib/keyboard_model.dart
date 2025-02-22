@@ -170,7 +170,6 @@ class KeyboardModel extends ChangeNotifier{
       textFieldService.activeTextFieldData.controller.text = char; 
       textField.add(mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
     }else{
-
       textField.add(mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
       textFieldService.activeTextFieldData.controller.text = char; 
       textField.add(mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
@@ -257,7 +256,7 @@ class KeyboardModel extends ChangeNotifier{
     update = false; 
     notifyListeners();
     Future.delayed(
-      !hard ? const Duration(milliseconds: 20) : const Duration(milliseconds: 50),
+      !hard ? const Duration(milliseconds: 50) : const Duration(milliseconds: 50),
       (){
         update = true; 
         notifyListeners();

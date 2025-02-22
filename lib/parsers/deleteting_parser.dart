@@ -126,18 +126,6 @@ class FormulasTreeDeletingParser {
             }
             break;
           }
-        case const (ExpRowWidget) :
-        {
-          final widget = array[index] as ExpRowWidget;
-            if(widget.child != null){
-              _parseWidgets([widget.child!], activeTextFieldController);
-            }
-            if(_isReverse){
-              _isReverse = false;
-              _parsedData = ReturnData(index: index, wigetData: array, isGroop: true);
-            }
-          break;
-        }
         case const (BacketsWidget):
         {
           final widget = (array[index] as BacketsWidget).child as Row; 
@@ -147,6 +135,26 @@ class FormulasTreeDeletingParser {
               _parsedData = ReturnData(index: index, wigetData: array);
             }
           break;
+        }
+        case const (RelayedPositioned):
+        {
+          final widget = array[index] as RelayedPositioned;
+          _parseWidgets([widget.wrappedWidget!], activeTextFieldController);
+          if(_isReverse && widget.key != null && widget.key is ValueKey){
+            _isReverse = false;
+            _parsedData = ReturnData(index: index, wigetData: array);
+          }
+          break;
+        }
+        case const (WidgetDynamicSizeWrapper): 
+        {
+          final widget = array[index] as WidgetDynamicSizeWrapper;
+          _parseWidgets([widget.wrappedWidget], activeTextFieldController);
+          if(_isReverse && widget.key != null && widget.key is ValueKey){
+            _isReverse = false;
+            _parsedData = ReturnData(index: index, wigetData: array);
+          }
+          break; 
         }
         case const (ArgumentWidget): 
         {
@@ -158,22 +166,6 @@ class FormulasTreeDeletingParser {
           }
           break; 
         }
-        case const (IntegralWidget): 
-        {
-            final widget =
-                (array[index] as IntegralWidget).child as SizedBox;
-            if (widget.child != null) {
-              _parseWidgets(
-                [widget.child!], 
-                activeTextFieldController
-              );
-            }
-            if(_isReverse){
-              _isReverse = false;
-              _parsedData = ReturnData(index: index, wigetData: array, isGroop: true);
-            }
-            break; 
-        }
         case const (TextFieldWidgetHandler):
         {
            final widget =
@@ -183,16 +175,6 @@ class FormulasTreeDeletingParser {
             _isReverse = false;
             _parsedData = ReturnData(index: index, wigetData: array);
           } 
-          break; 
-        }
-        case const (LimStackWidget):
-        {
-          final widget = (array[index] as LimStackWidget).child;
-          _parseWidgets([widget!], activeTextFieldController);
-          if(_isReverse){
-            _isReverse = false; 
-            _parsedData = ReturnData(index: index, wigetData: array, isGroop: true);
-          }
           break; 
         }
       }
@@ -258,14 +240,6 @@ class FormulasTreeDeletingParser {
             _parseCountOfTextFields([widget.child], activeTextFieldController);
             break;
           }
-        case const (ExpRowWidget):
-        {
-          final widget = array[index] as ExpRowWidget;
-            if(widget.child != null){
-              _parseCountOfTextFields([widget.child!], activeTextFieldController);
-            }
-          break;
-        }
         case const (BacketsWidget):
         {
           final widget = (array[index] as BacketsWidget).child as Row; 
@@ -278,24 +252,22 @@ class FormulasTreeDeletingParser {
           _parseCountOfTextFields(widget.children, activeTextFieldController); 
           break; 
         }
-        case const (IntegralWidget): 
+        case const (RelayedPositioned):
         {
-            final widget = (array[index] as IntegralWidget).child as SizedBox;
-            if (widget.child != null) {
-              _parseCountOfTextFields([widget.child!], activeTextFieldController);
-            }
-            break; 
+          final widget = array[index] as RelayedPositioned;
+          _parseCountOfTextFields([widget.wrappedWidget!], activeTextFieldController);
+          break;
+        }
+        case const (WidgetDynamicSizeWrapper): 
+        {
+          final widget = array[index] as WidgetDynamicSizeWrapper;
+          _parseCountOfTextFields([widget.wrappedWidget], activeTextFieldController);
+          break;
         }
         case const (TextFieldWidgetHandler):
         {
           final widget = (array[index] as TextFieldWidgetHandler).textField as TextField;
           _parseCountOfTextFields([widget], activeTextFieldController);    
-          break; 
-        }
-        case const (LimStackWidget):
-        {
-          final widget = (array[index] as LimStackWidget).child;
-          _parseCountOfTextFields([widget!], activeTextFieldController);
           break; 
         }
       }
