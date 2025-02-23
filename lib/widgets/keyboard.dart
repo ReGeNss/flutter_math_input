@@ -33,7 +33,7 @@ final buttonWithOverlayStyle = ButtonStyle(
     side: WidgetStateProperty.all(const BorderSide(color: Colors.cyanAccent)));
 
 class KeyboardBottomSheet{
-  final List<Widget> keyboardFormat = const [KeyboardNumbersButtomWidget(),FunctionPageWidget(),LatinAlphabetPageWidget()];
+  final List<Widget> keyboardFormat = const [NumbersPageWidget(),FunctionPageWidget(),LatinAlphabetPageWidget()];
   int selectedKeyboardFormat = 0; 
   PersistentBottomSheetController keyboardBottomSheetWidget(BuildContext context) {
     final model = context.read<KeyboardModel>(); 
@@ -49,96 +49,101 @@ class KeyboardBottomSheet{
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  flex: 1,
                   child: Row(
+                    spacing: 5,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        width: 45,
-                        height: 50,
-                        child: IconButton(
+                        Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: IconButton(
                           onPressed: () {
                             context.read<KeyboardModel>().selectBackFocus();
-                        
                           },
                           icon: const Icon(Icons.arrow_back),
                           style: buttonStyle,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 45,
-                        height: 50,
-                        child: IconButton(
+                        ),
+                        Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: IconButton(
                           onPressed: () {
-                            context.read<KeyboardModel>().selectNextFocus(); 
+                            context.read<KeyboardModel>().selectNextFocus();
                           },
                           icon: const Icon(Icons.arrow_forward),
                           style: buttonStyle,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 45,
-                        height: 50,
-                        child: IconButton(
+                        ),
+                        Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: IconButton(
                           onPressed: () {
-                            selectedKeyboardFormat = 0; 
-                            setState((){}); 
+                            selectedKeyboardFormat = 0;
+                            setState(() {});
                           },
                           icon: const Icon(Icons.pin_outlined),
                           style: buttonStyle,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 45,
-                        height: 50,
-                        child: IconButton(
+                        ),
+                        Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: IconButton(
                           onPressed: () {
-                            selectedKeyboardFormat = 1; 
-                            setState((){}); 
+                            selectedKeyboardFormat = 1;
+                            setState(() {});
                           },
                           icon: const Icon(Icons.functions_outlined),
                           style: buttonStyle,
-                            ),
                           ),
-                          SizedBox(
-                            width: 45,
-                            height: 50,
-                            child: IconButton(
-                              onPressed: () {
-                                selectedKeyboardFormat = 2;
-                                setState(() {});
-                              },
-                              icon: const Icon(Icons.abc_outlined),
-                              style: buttonStyle,
-                            ),
+                        ),
+                        ),
+                        Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: IconButton(
+                          onPressed: () {
+                            selectedKeyboardFormat = 2;
+                            setState(() {});
+                          },
+                          icon: const Icon(Icons.abc_outlined),
+                          style: buttonStyle,
                           ),
-                          SizedBox(
-                            width: 45,
-                            height: 50,
-                            child: IconButton(
-                              onPressed: () {
-                                model.backspaceButtonTap(); 
-                              },
-                              icon: const Icon(Icons.backspace_outlined),
-                              style: buttonStyle,
-                            ),
+                        ),
+                        ),
+                        Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: IconButton(
+                          onPressed: () {
+                            model.backspaceButtonTap();
+                          },
+                          icon: const Icon(Icons.backspace_outlined),
+                          style: buttonStyle,
                           ),
-                          SizedBox(
-                            width: 45,
-                            height: 50,
-                            child: IconButton(
-                              onPressed: () {
-                                model.deleteAllButtonTap();
-                              },
-                              icon: const Icon(Icons.delete_outline),
-                              style: buttonStyle,
-                            ),
-                          )
+                        ),
+                        ),
+                        Expanded(
+                        child: SizedBox(
+                          height: 50,
+                          child: IconButton(
+                          onPressed: () {
+                            model.deleteAllButtonTap();
+                          },
+                          icon: const Icon(Icons.delete_outline),
+                          style: buttonStyle,
+                          ),
+                        ),
+                        )
                         ],
                       ),
                     ),
                     const Expanded(
-                      flex: 1,
                       child: scroolGreekSymbolsWidget(),
                     ),
                     const SizedBox(
@@ -159,5 +164,34 @@ class KeyboardBottomSheet{
   }
 }
 
+final keyboardPaddings = 20;
+final double keyboardSpacing = 5;
 
 
+class KeyboardPage extends StatelessWidget {
+  const KeyboardPage({super.key, required this.pageRows});
+  
+  final List<List<Widget>> pageRows;
+
+  @override
+  Widget build(BuildContext context) {
+    final rows = pageRows
+        .map((row) {
+          final fullWidth = MediaQuery.of(context).size.width;
+          final buttonWidth = (fullWidth - keyboardPaddings - (row.length -1) * keyboardSpacing) / row.length;
+          return Expanded(
+            child: Row(
+                spacing: keyboardSpacing,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: row
+                    .map((button) =>
+                        SizedBox(height: double.infinity, width: buttonWidth, child: button))
+                    .toList()));})
+        .toList();
+    return Column(
+      spacing: 5,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: rows,
+    );
+  }
+}

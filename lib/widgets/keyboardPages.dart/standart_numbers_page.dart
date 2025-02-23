@@ -5,343 +5,276 @@ import 'package:math_keyboard/widgets/keyboard.dart';
 import 'package:provider/provider.dart';
 
 
-
-
-
-
-
-class KeyboardNumbersButtomWidget extends StatelessWidget {
-  const KeyboardNumbersButtomWidget({
+class NumbersPageWidget extends StatelessWidget {
+  const NumbersPageWidget({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     final model = context.read<KeyboardModel>();
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: 50,
-              height: 50,
-              child: TextButton(
-                  onPressed: () {
-                    model.backetsButtonTap();
+    final List<List<Widget>> rows = [
+      [
+        TextButton(
+            onPressed: () {
+              model.backetsButtonTap();
+            },
+            onLongPress: () {
+              FloatButtonOverlay().createOverlay(context, buttonsData: [
+                FloatButtonData(
+                    buttonFuction: () {
+                      model.textFieldService.addCharToTextField('(');
+                    },
+                    buttonWidget: const Text('(')),
+                FloatButtonData(
+                    buttonFuction: () {
+                      model.textFieldService.addCharToTextField(')');
+                    },
+                    buttonWidget: const Text(')'))
+              ]);
+            },
+            style: buttonWithOverlayStyle,
+            child: const Text('( )')),
+        TextButton(
+          onPressed: () {
+            FloatButtonOverlay().createOverlay(context, buttonsData: [
+              FloatButtonData(
+                  buttonFuction: () {
+                    model.textFieldService.addCharToTextField('>');
                   },
-                  onLongPress: (){
-                    FloatButtonOverlay().createOverlay(context,buttonsData:[FloatButtonData(buttonFuction: (){model.textFieldService.addCharToTextField('(');}, buttonWidget: const Text('(')),FloatButtonData(buttonFuction: (){model.textFieldService.addCharToTextField(')');}, buttonWidget:const Text(')'))] );
-                  }, 
-                  style: buttonWithOverlayStyle,
-                  child: const Text('( )')),
-            ),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                  onPressed: () {
-                    FloatButtonOverlay().createOverlay(context, buttonsData: [
-                      FloatButtonData(
-                          buttonFuction: () {
-                            model.textFieldService.addCharToTextField('>');
-                          },
-                          buttonWidget:const Text('>')),
-                      FloatButtonData(
-                          buttonFuction: () {
-                            model.textFieldService.addCharToTextField('<');
-                          },
-                          buttonWidget:const Text('<')),
-                      FloatButtonData(
-                          buttonFuction: () {
-                            model.textFieldService.addCharToTextField('≥');
-                          },
-                          buttonWidget:const Text('≥')),
-                      FloatButtonData(
-                          buttonFuction: () {
-                            model.textFieldService.addCharToTextField('≤');
-                          },
-                          buttonWidget:const Text('≤'))
-                    ]);
+                  buttonWidget: const Text('>')),
+              FloatButtonData(
+                  buttonFuction: () {
+                    model.textFieldService.addCharToTextField('<');
                   },
-                  onLongPress: () {
-                    FloatButtonOverlay().createOverlay(context, buttonsData: [
-                      FloatButtonData(
-                          buttonFuction: () {
-                            model.textFieldService.addCharToTextField('>');
-                          },
-                          buttonWidget: const Text('>')),
-                      FloatButtonData(
-                          buttonFuction: () {
-                            model.textFieldService.addCharToTextField('<');
-                          },
-                          buttonWidget: const Text('<')),
-                      FloatButtonData(
-                          buttonFuction: () {
-                            model.textFieldService.addCharToTextField('≥');
-                          },
-                          buttonWidget: const Text('≥')),
-                      FloatButtonData(
-                          buttonFuction: () {
-                            model.textFieldService.addCharToTextField('≤');
-                          },
-                          buttonWidget: const Text('≤'))
-                    ]);
+                  buttonWidget: const Text('<')),
+              FloatButtonData(
+                  buttonFuction: () {
+                    model.textFieldService.addCharToTextField('≥');
                   },
-                  style: buttonWithOverlayStyle,
-                  child: const Text('>,<'),
-                )),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('7');},
-                    style: buttonStyle,
-                    child: const Text('7'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('8');},
-                    style: buttonStyle,
-                    child: const Text('8'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('9');},
-                    style: buttonStyle,
-                    child: const Text('9'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      model.createCharWidgets('÷');
-                    },
-                    style: buttonStyle,
-                    child: const Text('÷'))),
-          ],
+                  buttonWidget: const Text('≥')),
+              FloatButtonData(
+                  buttonFuction: () {
+                    model.textFieldService.addCharToTextField('≤');
+                  },
+                  buttonWidget: const Text('≤'))
+            ]);
+          },
+          onLongPress: () {
+            FloatButtonOverlay().createOverlay(context, buttonsData: [
+              FloatButtonData(
+                  buttonFuction: () {
+                    model.textFieldService.addCharToTextField('>');
+                  },
+                  buttonWidget: const Text('>')),
+              FloatButtonData(
+                  buttonFuction: () {
+                    model.textFieldService.addCharToTextField('<');
+                  },
+                  buttonWidget: const Text('<')),
+              FloatButtonData(
+                  buttonFuction: () {
+                    model.textFieldService.addCharToTextField('≥');
+                  },
+                  buttonWidget: const Text('≥')),
+              FloatButtonData(
+                  buttonFuction: () {
+                    model.textFieldService.addCharToTextField('≤');
+                  },
+                  buttonWidget: const Text('≤'))
+            ]);
+          },
+          style: buttonWithOverlayStyle,
+          child: const Text('>,<'),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: IconButton(
-                    onPressed: () {
-                      model.onFracButtonTap(); 
-                    },
-                    style: buttonStyle,
-                    icon: const Icon(CustomMathIcons.frac,size: iconSize))),
-            Builder(
-              builder: (context) {
-                return SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: TextButton(
-                        // onLongPress: (){
-                        //   FloatButtonOverlay().createOverlay(context, buttonsData: [FloatButtonData(buttonFuction: (){}, buttonWidget: const Icon(CustomMathIcons.sqrt_extended))]);
-                        // }, 
-                        onPressed: () {
-                          model.sqrtButtonTap(); 
-                        },
-                        style: buttonStyle,
-                        child: const Icon(CustomMathIcons.sqrt,size: iconSize)));
-              }
-            ),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('4');},
-                    style: buttonStyle,
-                    child: const Text('4'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('5');},
-                    style: buttonStyle,
-                    child: const Text('5'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('6');},
-                    style: buttonStyle,
-                    child: const Text('6'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      // model.charButtonTap('×', context);
-                      model.createCharWidgets('×');
-                    },
-                    style: buttonStyle,
-                    child: const Text('×'))),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: IconButton(
-                    onPressed: () {
-                      // toSquareTap(context);
-                      model.onExpButtonTap(); 
-                    },
-                    style: buttonStyle,
-                    icon: const Icon(CustomMathIcons.exp,size: iconSize))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('x');},
-                    style: buttonStyle,
-                    child: const Text('x'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('1');},
-                    style: buttonStyle,
-                    child: const Text('1'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('2');},
-                    style: buttonStyle,
-                    child: const Text('2'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('3');},
-                    style: buttonStyle,
-                    child: const Text('3'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.createCharWidgets('-');},
-                    style: buttonStyle,
-                    child: const Text('-'))),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('π');},
-                    style: buttonStyle,
-                    child: const Text('π'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      model.createCharWidgets('%');
-                    },
-                    style: buttonStyle,
-                    child: const Text('%'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {model.textFieldService.addCharToTextField('0');},
-                    style: buttonStyle,
-                    child: const Text('0'))),
-            SizedBox(
-                width: 50,
-                height: 50,
-                child: TextButton(
-                    onPressed: () {
-                      // formulaParseToString(context);
-                      model.textFieldService.addCharToTextField(',');
-                    },
-                    style: buttonStyle,
-                    child: const Text(','))),
-            Builder(
-              builder: (context) {
-                return SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: TextButton(
-                        onPressed: () {
-                            FloatButtonOverlay().createOverlay(context, buttonsData: [
-                              FloatButtonData(
-                                  buttonFuction: () {
-                                    model.textFieldService.addCharToTextField('≠');
-                                  },
-                                  buttonWidget: const Text('≠'))
-                            ]);
-                          },
-                        style: buttonWithOverlayStyle,
-                        child: const Text('=')));
-              }
-            ),
-            Builder(
-              builder: (context) {
-                return SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: TextButton(
-                      onLongPress: () {
-                        FloatButtonOverlay().createOverlay(context, buttonsData: [
-                          FloatButtonData(
-                              buttonFuction: () {
-                                model.textFieldService.addCharToTextField('±');
-                              },
-                              buttonWidget: const Text('±'))
-                        ]);
-                      },
-                        onPressed: () {
-                          model.createCharWidgets('+');
-                        },
-                        style: buttonWithOverlayStyle,
-                        child: const Text('+')));
-              }
-            ),
-            // SizedBox(
-            //     width: 50,
-            //     height: 50,
-            //     child: floatButtonsWidget(model: model)),
-          ],
-        ),
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField('7');
+            },
+            style: buttonStyle,
+            child: const Text('7')),
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField('8');
+            },
+            style: buttonStyle,
+            child: const Text('8')),
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField('9');
+            },
+            style: buttonStyle,
+            child: const Text('9')),
+        TextButton(
+            onPressed: () {
+              model.createCharWidgets('÷');
+            },
+            style: buttonStyle,
+            child: const Text('÷')),
       ],
-    );
+      [
+        TextButton(
+            onPressed: () {
+              model.onFracButtonTap();
+            },
+            style: buttonStyle,
+            child: const Icon(CustomMathIcons.frac, color: Colors.black, size: iconSize)),
+        Builder(builder: (context) {
+          return TextButton(
+              onPressed: () {
+                model.sqrtButtonTap();
+              },
+              style: buttonStyle,
+              child: const Icon(CustomMathIcons.sqrt, color: Colors.black,size: iconSize));
+        }),
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField('4');
+            },
+            style: buttonStyle,
+            child: const Text('4')),
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField('5');
+            },
+            style: buttonStyle,
+            child: const Text('5')),
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField('6');
+            },
+            style: buttonStyle,
+            child: const Text('6')),
+        TextButton(
+            onPressed: () {
+              model.createCharWidgets('×');
+            },
+            style: buttonStyle,
+            child: const Text('×')),
+      ],
+      [
+        TextButton(
+            onPressed: () {
+              // toSquareTap(context);
+              model.onExpButtonTap();
+            },
+            style: buttonStyle,
+            child: const Icon(CustomMathIcons.exp, color: Colors.black, size: iconSize)),
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField('x');
+            },
+            style: buttonStyle,
+            child: const Text('x')),
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField('1');
+            },
+            style: buttonStyle,
+            child: const Text('1')),
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField('2');
+            },
+            style: buttonStyle,
+            child: const Text('2')),
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField('3');
+            },
+            style: buttonStyle,
+            child: const Text('3')),
+        TextButton(
+            onPressed: () {
+              model.createCharWidgets('-');
+            },
+            style: buttonStyle,
+            child: const Text('-')),
+      ],
+      [
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField('π');
+            },
+            style: buttonStyle,
+            child: const Text('π')),
+        TextButton(
+            onPressed: () {
+              model.createCharWidgets('%');
+            },
+            style: buttonStyle,
+            child: const Text('%')),
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField('0');
+            },
+            style: buttonStyle,
+            child: const Text('0')),
+        TextButton(
+            onPressed: () {
+              model.textFieldService.addCharToTextField(',');
+            },
+            style: buttonStyle,
+            child: const Text(',')),
+        Builder(builder: (context) {
+          return TextButton(
+              onLongPress: () {
+                FloatButtonOverlay().createOverlay(context, buttonsData: [
+                  FloatButtonData(
+                      buttonFuction: () {
+                        model.createCharWidgets('≠');
+                      },
+                      buttonWidget: const Text('≠'))
+                ]);
+              },
+              onPressed: () {
+                model.createCharWidgets('=');
+              },
+              style: buttonWithOverlayStyle,
+              child: const Text('='));
+        }),
+        Builder(builder: (context) {
+          return TextButton(
+              onLongPress: () {
+                FloatButtonOverlay().createOverlay(context, buttonsData: [
+                  FloatButtonData(
+                      buttonFuction: () {
+                        model.createCharWidgets('±');
+                      },
+                      buttonWidget: const Text('±'))
+                ]);
+              },
+              onPressed: () {
+                model.createCharWidgets('+');
+              },
+              style: buttonWithOverlayStyle,
+              child: const Text('+'));
+        }),
+      ],
+    ]; 
+    
+    return KeyboardPage(pageRows: rows);
   }
 }
 
 class FloatButtonOverlay{
-    OverlayEntry? _overlayEntry;
-    void createOverlay(BuildContext context, {required List<FloatButtonData> buttonsData}){
-
+  OverlayEntry? _overlayEntry;
+  void createOverlay(BuildContext context, {required List<FloatButtonData> buttonsData}){
     final overlay = Overlay.of(context);
     final renderBox = context.findRenderObject() as RenderBox; 
     final offset = renderBox.localToGlobal(Offset.zero);
     final List<Widget >buttonsWidgets = [];
     for(int index= 0; index < buttonsData.length; index++){
       buttonsWidgets.add(SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: TextButton(
-                        style: overlayButtonStyle,
-                        onPressed: () {
-                          buttonsData[index].buttonFuction();
-                          _deleteOverlay(); 
-                        },
-                        child: buttonsData[index].buttonWidget)),);
+        height: 50,
+        child: TextButton(
+            style: overlayButtonStyle,
+            onPressed: () {
+              buttonsData[index].buttonFuction();
+              _deleteOverlay(); 
+            },
+            child: buttonsData[index].buttonWidget),
+      ),);
       buttonsWidgets.add(const SizedBox(width: 5,));
     } 
     late final double offestDx;
