@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 
 
-const double _spaceBetweenWidth = 10; 
+const double _spaceBetweenWidth = 5; 
 
 class scroolGreekSymbolsWidget extends StatelessWidget {
   const scroolGreekSymbolsWidget({
@@ -120,10 +120,10 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('𝜏');
+              model.textFieldService.addCharToTextField('τ');
             },
             style: buttonStyle,
-            child: const Text('𝜏'),
+            child: const Text('τ'),
           ),
         ),
         const SizedBox(width: _spaceBetweenWidth,),
