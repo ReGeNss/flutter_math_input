@@ -60,7 +60,7 @@ class MainScreenColumnWidget extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: model.update==true ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: context.watch<KeyboardModel>().formulaGroopWidgets,
+                children: context.watch<KeyboardModel>().getFormulaWidgets(),
               ) : const Center(child: Text('LOAD')),
             ),
           ),
@@ -79,7 +79,7 @@ class MainScreenColumnWidget extends StatelessWidget {
             FilledButton(
                 onPressed: () {
                   model.formulaInTeX =
-                      model.texParsingService.start(model.formulaGroopWidgets);
+                      model.texParsingService.start(model.getFormulaWidgets());
                   model.rebuildSreenState();
                 },
                 child: const Text("Translate formula to KaTeX"))

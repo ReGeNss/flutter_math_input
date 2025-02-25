@@ -1,18 +1,29 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-const textFieldDecoration = InputDecoration(
-    focusedBorder: OutlineInputBorder(),
-    border: InputBorder.none,
-    contentPadding: EdgeInsets.all(5));
-// за активний контроллер поля вважається останнє створене поле
 const minTextFieldCountToStapBack = 2;
 
 class TextFieldHandleAndCreateService extends ChangeNotifier {
   final List<TextFieldData> _textFieildsData = [];
   final List<TextFieldGroop> _textFieldGroops = [];
-  late TextFieldData activeTextFieldData;
-  late int selectedFieldIndex = 0;
+  late TextFieldData _activeTextFieldData;
+  late int _selectedFieldIndex = 0;
+
+  TextEditingController getActiveTextFieldController() {
+    return _activeTextFieldData.controller;
+  }
+
+  TextFieldData getPreviousTextFieldDataToActive() {
+    return _textFieildsData[_selectedFieldIndex - 1];
+  }
+
+  TextFieldData getActiveTextFieldData() {
+    return _activeTextFieldData;
+  }
+
+  void requestFocusToActiveTextField() {
+    _activeTextFieldData.focusNode.requestFocus();
+  }
 
   Widget createTextField(
       {required bool isReplaceOperation,
@@ -24,14 +35,14 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     if (selectedTextFieldFormat != null) {
       textFieldFormat = selectedTextFieldFormat;
     } else {
-      textFieldFormat = activeTextFieldData.format;
+      textFieldFormat = _activeTextFieldData.format;
     }
     final textFieldData = _createTextFieldData(textFieldFormat);
 
     if (isReplaceOperation) {
       _replaceActiveTextFieldByThis(textFieldData);
     } else {
-      _insertToList(_textFieildsData, textFieldData, selectedFieldIndex);
+      _insertToList(_textFieildsData, textFieldData, _selectedFieldIndex);
     }
 
     if (performAdictionalTextField) {
@@ -54,6 +65,24 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     return textFiledWidget;
   }
 
+  TextFieldData _createTextFieldData(TextFieldFormat format) {
+    final controller = TextEditingController();
+    final focusNode = FocusNode();
+    final data = TextFieldData(
+        controller: controller, focusNode: focusNode, format: format);
+    return data;
+  }
+
+  void _replaceActiveTextFieldByThis(TextFieldData textFieldData) {
+    _textFieildsData[_selectedFieldIndex].focusNode.dispose();
+    _textFieildsData[_selectedFieldIndex].controller.dispose();
+
+    checkGroops(textFieldData);
+
+    _textFieildsData.replaceRange(
+        _selectedFieldIndex, _selectedFieldIndex + 1, [textFieldData]);
+  }
+
   void _insertToList<T>(List<T> list, T element, int index) {
     if (list.isNotEmpty) {
       list.insert(index + 1, element);
@@ -62,14 +91,18 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     }
   }
 
-  void _replaceActiveTextFieldByThis(TextFieldData textFieldData) {
-    _textFieildsData[selectedFieldIndex].focusNode.dispose();
-    _textFieildsData[selectedFieldIndex].controller.dispose();
+  void _addFocusNodeAfterThis(TextFieldData textFieldData) {
+    final addictionalTextFieldData =
+        _createTextFieldData(TextFieldFormat.standart);
+    final index = _textFieildsData.indexOf(textFieldData);
+    _textFieildsData.insert(index + 1, addictionalTextFieldData);
+  }
 
-    checkGroops(textFieldData);
-
-    _textFieildsData.replaceRange(
-        selectedFieldIndex, selectedFieldIndex + 1, [textFieldData]);
+  void _makeThisTextFieldActive(TextFieldData textFieldData) {
+    _activeTextFieldData = textFieldData;
+    _selectedFieldIndex = _textFieildsData.indexOf(_activeTextFieldData);
+    Future.delayed(const Duration(milliseconds: 20),
+        () => textFieldData.focusNode.requestFocus());
   }
 
   Size _selectTextFieldFormat(TextFieldFormat format) {
@@ -84,6 +117,11 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     return size;
   }
 
+  void onTextFieldTap(TextFieldData textFieldData) {
+    _selectedFieldIndex = _textFieildsData.indexOf(textFieldData);
+    _activeTextFieldData = textFieldData;
+  }
+
   void markAsGrop(dynamic startFieldData, Widget endFieldBox) {
     late final int startIndex;
     if (startFieldData is SizedBox) {
@@ -94,92 +132,67 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     }
     final endField = (endFieldBox as SizedBox).child as TextFieldWidgetHandler;
     final endIndex = _textFieildsData.indexOf(endField.textFieldData);
-    _textFieldGroops.add(TextFieldGroop(
+    _textFieldGroops.add(
+      TextFieldGroop(
         startField: _textFieildsData[startIndex],
-        endField: _textFieildsData[endIndex]));
-  }
-
-  void _addFocusNodeAfterThis(TextFieldData textFieldData) {
-    final addictionalTextFieldData =
-        _createTextFieldData(TextFieldFormat.standart);
-    final index = _textFieildsData.indexOf(textFieldData);
-    _textFieildsData.insert(index + 1, addictionalTextFieldData);
-  }
-
-  void _makeThisTextFieldActive(TextFieldData textFieldData) {
-    activeTextFieldData = textFieldData;
-    selectedFieldIndex = _textFieildsData.indexOf(activeTextFieldData);
-    print('selectedFieldIndex: $selectedFieldIndex');
-    Future.delayed(const Duration(milliseconds: 20),
-        () => textFieldData.focusNode.requestFocus());
+        endField: _textFieildsData[endIndex]
+      )
+    );
   }
 
   bool trySelectNextFocus() {
-    final cursorPosition = activeTextFieldData.controller.selection.baseOffset;
-    final textLeght = activeTextFieldData.controller.text.length;
-    if (cursorPosition == textLeght) {
-      final previousIndex = selectedFieldIndex;
-      selectedFieldIndex = previousIndex + 1;
-      if (_textFieildsData.length > selectedFieldIndex) {
-        final focusNode = _textFieildsData[selectedFieldIndex].focusNode;
+    final cursorPosition = _activeTextFieldData.controller.selection.baseOffset;
+    final textLength = _activeTextFieldData.controller.text.length;
+    if (cursorPosition == textLength) {
+      final previousIndex = _selectedFieldIndex;
+      _selectedFieldIndex = previousIndex + 1;
+      if (_textFieildsData.length > _selectedFieldIndex) {
+        final focusNode = _textFieildsData[_selectedFieldIndex].focusNode;
         if (focusNode.hasListeners == true) {
-          activeTextFieldData = _textFieildsData[selectedFieldIndex];
+          _activeTextFieldData = _textFieildsData[_selectedFieldIndex];
           focusNode.requestFocus();
         } else {
           return false;
         }
       } else {
-        selectedFieldIndex = previousIndex;
+        _selectedFieldIndex = previousIndex;
       }
     } else {
-      activeTextFieldData.controller.selection =
+      _activeTextFieldData.controller.selection =
           TextSelection.fromPosition(TextPosition(offset: cursorPosition + 1));
     }
     return true;
   }
 
-  void onTextFieldTap(TextFieldData textFieldData) {
-    selectedFieldIndex = _textFieildsData.indexOf(textFieldData);
-    activeTextFieldData = textFieldData;
-  }
-
   void selectBackFocus() {
-    final cursorPosition = activeTextFieldData.controller.selection.baseOffset;
+    final cursorPosition = _activeTextFieldData.controller.selection.baseOffset;
     if (cursorPosition <= 0) {
-      final previousIndex = selectedFieldIndex;
-      selectedFieldIndex = previousIndex - 1;
-      if (_textFieildsData.length > selectedFieldIndex &&
-          selectedFieldIndex >= 0) {
-        _textFieildsData[selectedFieldIndex].focusNode.requestFocus();
-        activeTextFieldData = _textFieildsData[selectedFieldIndex];
+      final previousIndex = _selectedFieldIndex;
+      _selectedFieldIndex = previousIndex - 1;
+      if (_textFieildsData.length > _selectedFieldIndex &&
+          _selectedFieldIndex >= 0) {
+        _textFieildsData[_selectedFieldIndex].focusNode.requestFocus();
+        _activeTextFieldData = _textFieildsData[_selectedFieldIndex];
       } else {
-        selectedFieldIndex = previousIndex;
+        _selectedFieldIndex = previousIndex;
       }
     } else {
-      activeTextFieldData.controller.selection =
+      _activeTextFieldData.controller.selection =
           TextSelection.fromPosition(TextPosition(offset: cursorPosition - 1));
     }
   }
 
   void addCharToTextField(String char) {
-    final currentText = activeTextFieldData.controller.text;
+    final currentText = _activeTextFieldData.controller.text;
     int currentCursorOffset =
-        activeTextFieldData.controller.selection.baseOffset;
+        _activeTextFieldData.controller.selection.baseOffset;
     if (currentCursorOffset < 0) {
       currentCursorOffset = 0;
     }
-    activeTextFieldData.controller.text = currentText.replaceRange(
+    _activeTextFieldData.controller.text = currentText.replaceRange(
         currentCursorOffset, currentCursorOffset, char);
-    activeTextFieldData.controller.selection = TextSelection.fromPosition(
+    _activeTextFieldData.controller.selection = TextSelection.fromPosition(
         TextPosition(offset: currentCursorOffset + 1));
-  }
-
-  TextFieldData _createTextFieldData(TextFieldFormat format) {
-    final controller = TextEditingController();
-    final focusNode = FocusNode();
-    final data = TextFieldData(
-        controller: controller, focusNode: focusNode, format: format);
-    return data;
   }
 
   void deleteAllTextFields() {
@@ -189,7 +202,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     }
     _textFieldGroops.clear();
     _textFieildsData.clear();
-    selectedFieldIndex = 0;
+    _selectedFieldIndex = 0;
   }
 
   bool deleteElementFields(bool? checkGroops) {
@@ -198,12 +211,12 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
       if (_textFieildsData.isEmpty) {
         return false;
       } else {
-        if (selectedFieldIndex >= 1 && firstDeletedIndex >= 1) {
-          selectedFieldIndex = firstDeletedIndex - 1;
-          activeTextFieldData = _textFieildsData[selectedFieldIndex];
+        if (_selectedFieldIndex >= 1 && firstDeletedIndex >= 1) {
+          _selectedFieldIndex = firstDeletedIndex - 1;
+          _activeTextFieldData = _textFieildsData[_selectedFieldIndex];
         } else {
-          selectedFieldIndex = firstDeletedIndex;
-          activeTextFieldData = _textFieildsData[selectedFieldIndex];
+          _selectedFieldIndex = firstDeletedIndex;
+          _activeTextFieldData = _textFieildsData[_selectedFieldIndex];
         }
         return true;
       }
@@ -227,9 +240,8 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
       _textFieldGroops.remove(findedGroops.first.keys.first);
       return start;
     } else {
-      _removeActiveTextField(null);
-      // selectedFieldIndex -=1;
-      return selectedFieldIndex;
+      _replaceActiveTextField(null);
+      return _selectedFieldIndex;
     }
   }
 
@@ -239,7 +251,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
       final startIndex =
           _textFieildsData.indexOf(textFieldGroop.startField);
       final endIndex = _textFieildsData.indexOf(textFieldGroop.endField);
-      if (selectedFieldIndex >= startIndex && selectedFieldIndex <= endIndex) {
+      if (_selectedFieldIndex >= startIndex && _selectedFieldIndex <= endIndex) {
         findedGroops.add({textFieldGroop: endIndex - startIndex});
       }
     }
@@ -251,34 +263,24 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     if (_textFieildsData.length <= 1) {
       return false;
     } else {
-      if (selectedFieldIndex >= 1) {
-        if(fieldLocation == 1) {
-          _removeActiveTextField(_textFieildsData[selectedFieldIndex+1]);
-        } else { 
-          _removeActiveTextField(null);
-          selectedFieldIndex -= 1;
-        } 
-        activeTextFieldData = _textFieildsData[selectedFieldIndex];
+      if (fieldLocation == 1) {
+        _replaceActiveTextField(_textFieildsData[_selectedFieldIndex+1]);
       } else {
-        if(fieldLocation == 1) {
-          _removeActiveTextField(_textFieildsData[selectedFieldIndex+1]);
-        } else { 
-          _removeActiveTextField(null);
-        }
-        selectedFieldIndex = 0;
-        activeTextFieldData = _textFieildsData[selectedFieldIndex];
+        _replaceActiveTextField(null);
+        _selectedFieldIndex -= 1;
       }
+      _activeTextFieldData = _textFieildsData[_selectedFieldIndex];
     }
     return true;
   }
 
-  void _removeActiveTextField(TextFieldData? newFieldData) {
-    activeTextFieldData.controller.dispose();
-    activeTextFieldData.focusNode.dispose();
+  void _replaceActiveTextField(TextFieldData? newFieldData) {
+    _activeTextFieldData.controller.dispose();
+    _activeTextFieldData.focusNode.dispose();
     if( newFieldData != null){
       checkGroops(newFieldData);
     }
-    _textFieildsData.remove(activeTextFieldData);
+    _textFieildsData.remove(_activeTextFieldData);
   }
 
   TextFieldData getTextFieldDataByIndex(int index) {
@@ -291,14 +293,19 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
       if (findedGroops.isNotEmpty) {
         final startField = findedGroops.first.keys.first.startField;
         final endField = findedGroops.first.keys.first.endField;
-        if( startField == activeTextFieldData){
+        if( startField == _activeTextFieldData){
           findedGroops.first.keys.first.startField = newFieldData;
-        } else if( endField == activeTextFieldData){
+        } else if( endField == _activeTextFieldData){
           findedGroops.first.keys.first.endField = newFieldData;
         }
       }
     }
   }
+
+  void deleteLastChar() {
+    final textLength = _activeTextFieldData.controller.text.length;
+    _activeTextFieldData.controller.text = _activeTextFieldData.controller.text.substring(0, textLength - 1);
+  } 
 }
 
 class TextFieldWidgetHandler extends StatefulWidget {
@@ -345,6 +352,12 @@ class _TextFieldWidgetHandlerState extends State<TextFieldWidgetHandler> {
     return fieldWidget;
   }
 }
+
+const textFieldDecoration = InputDecoration(
+  focusedBorder: OutlineInputBorder(),
+  border: InputBorder.none,
+  contentPadding: EdgeInsets.all(5)
+);
 
 enum TextFieldFormat {
   standart,

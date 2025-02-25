@@ -26,16 +26,19 @@ class KeyboardModel extends ChangeNotifier{
     deletingParserService = FormulasTreeDeletingParser(); 
     initialization();
   }
-  List<Widget> formulaGroopWidgets =[];
+  final List<Widget> _formulaGroopWidgets = [];
 
+  List<Widget> getFormulaWidgets(){
+    return _formulaGroopWidgets.toList(); 
+  }
 
   void initialization(){
     final defaultTextField = mathConstructionsBuildingService.initialization(); 
-    formulaGroopWidgets.add(defaultTextField); 
+    _formulaGroopWidgets.add(defaultTextField); 
     // notifyListeners();
   }
   void onFracButtonTap(){
-    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldData.controller);
+    final parsedWidgets = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, textFieldService.getActiveTextFieldController());
     final fracWidget = mathConstructionsBuildingService.createFracWidget();
     if(parsedWidgets != null){
       dataHandler.replaceWidgetInTree(parsedWidgets, fracWidget);
@@ -44,7 +47,7 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void namedFunctionButtonTap(String functionName, ElementsType type){
-    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldData.controller);
+    final parsedWidgets = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, textFieldService.getActiveTextFieldController());
     final fracWidget = mathConstructionsBuildingService.createNamedFunctionWidget(functionName, type); 
     if(parsedWidgets != null){
       dataHandler.replaceWidgetInTree(parsedWidgets, fracWidget); 
@@ -54,17 +57,17 @@ class KeyboardModel extends ChangeNotifier{
 
   void onExpButtonTap(){
     ReturnData? parsedWidgets;  
-    final activeTextFieldController = textFieldService.activeTextFieldData.controller;
+    final activeTextFieldController = textFieldService.getActiveTextFieldController();
     late final TextFieldData baseField; 
     if(activeTextFieldController.text.isNotEmpty){
-      parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, activeTextFieldController); 
-      baseField = textFieldService.activeTextFieldData;
+      parsedWidgets = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, activeTextFieldController); 
+      baseField = textFieldService.getActiveTextFieldData();
     }
     else{
-      parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, activeTextFieldController);
+      parsedWidgets = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, activeTextFieldController);
       if(parsedWidgets?.index != null && parsedWidgets!.index! >= 1){
         parsedWidgets.index = parsedWidgets.index! - 1;
-        baseField = textFieldService.getTextFieldDataByIndex(textFieldService.selectedFieldIndex - 1);
+        baseField = textFieldService.getPreviousTextFieldDataToActive();
       }
     }
     if(parsedWidgets != null && parsedWidgets.index != null){
@@ -76,7 +79,7 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void sqrtButtonTap(){
-    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldData.controller);
+    final parsedWidgets = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, textFieldService.getActiveTextFieldController());
     final sqrtWidget = mathConstructionsBuildingService.createSqrtWidget(); 
     if(parsedWidgets != null){
       dataHandler.replaceWidgetInTree(parsedWidgets, sqrtWidget);
@@ -85,8 +88,8 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void logButtonTap(){
-    final activeTextFieldController = textFieldService.activeTextFieldData.controller;
-    final parsedWidgets = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, activeTextFieldController);
+    final activeTextFieldController = textFieldService.getActiveTextFieldController();
+    final parsedWidgets = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, activeTextFieldController);
     final logWidget = mathConstructionsBuildingService.createLogWidget(); 
     if(parsedWidgets != null){
       dataHandler.replaceWidgetInTree(parsedWidgets, logWidget);
@@ -95,7 +98,7 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void limButtonTap(){
-    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldData.controller);
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, textFieldService.getActiveTextFieldController());
     final limitWidget = mathConstructionsBuildingService.createLimitWidget(); 
     if(parsedWidgetData != null){
       dataHandler.replaceWidgetInTree(parsedWidgetData, limitWidget);
@@ -104,7 +107,7 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void absButtonTap(){
-    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldData.controller);
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, textFieldService.getActiveTextFieldController());
     final absWidet = mathConstructionsBuildingService.createAbsWidget();
     if(parsedWidgetData != null){
       dataHandler.replaceWidgetInTree(parsedWidgetData, absWidet);
@@ -113,7 +116,7 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void backetsButtonTap(){
-    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldData.controller);
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, textFieldService.getActiveTextFieldController());
     final backetsWidget = mathConstructionsBuildingService.createBracketsWidget();
     if(parsedWidgetData != null){
       dataHandler.replaceWidgetInTree(parsedWidgetData, backetsWidget);
@@ -122,7 +125,7 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void undefinitintegralButtonTap(){
-    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldData.controller);
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, textFieldService.getActiveTextFieldController());
     final integralWidget = mathConstructionsBuildingService.createUndefinitIntegralWidget();
     if(parsedWidgetData != null){
       dataHandler.replaceWidgetInTree(parsedWidgetData, integralWidget);
@@ -131,7 +134,7 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void integralButtonTap(){
-    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldData.controller );
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, textFieldService.getActiveTextFieldController() );
     final integralWidget = mathConstructionsBuildingService.createIntegralWidget();
     if(parsedWidgetData!= null){
       dataHandler.replaceWidgetInTree(parsedWidgetData, integralWidget);
@@ -139,7 +142,7 @@ class KeyboardModel extends ChangeNotifier{
     }
   }
   void onDerevativeButtonTap({String? upperField, String? downField}){
-    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, textFieldService.activeTextFieldData.controller );
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, textFieldService.getActiveTextFieldController() );
     final derevativeWidget = mathConstructionsBuildingService.createDerevativeWidget(upperField,downField);
     if(parsedWidgetData!= null){
       dataHandler.replaceWidgetInTree(parsedWidgetData, derevativeWidget);
@@ -150,28 +153,26 @@ class KeyboardModel extends ChangeNotifier{
   void selectNextFocus(){
     final shouldNotCreateNewField = textFieldService.trySelectNextFocus();
     if(!shouldNotCreateNewField){
-      final parsedWidgetData = parsersService.parseWidgetList(formulaGroopWidgets, textFieldService.activeTextFieldData.controller);
+      final parsedWidgetData = parsersService.parseWidgetList(_formulaGroopWidgets, textFieldService.getActiveTextFieldController());
       final textFieldConstruction = mathConstructionsBuildingService.createTextField(replaceOldFocus: true);
         if(parsedWidgetData != null){
           dataHandler.addToWidgetTree(parsedWidgetData, [textFieldConstruction.construction]); 
           rebuildSreenState();
         }
-      // notifyListeners();
-      
     } 
   }
 
   void createCharWidgets(String char){
     // один сплошной костыль 
-    final activeTextFieldController = textFieldService.activeTextFieldData.controller;
-    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(formulaGroopWidgets, activeTextFieldController);
+    final activeTextFieldController = textFieldService.getActiveTextFieldController();
+    final parsedWidgetData = parsersService.parseWidgetListWithReplacment(_formulaGroopWidgets, activeTextFieldController);
     List<Widget> textField=[];
-    if(textFieldService.activeTextFieldData.controller.text.isEmpty){
-      textFieldService.activeTextFieldData.controller.text = char; 
+    if(textFieldService.getActiveTextFieldController().text.isEmpty){
+      textFieldService.getActiveTextFieldController().text = char; 
       textField.add(mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
     }else{
       textField.add(mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
-      textFieldService.activeTextFieldData.controller.text = char; 
+      textFieldService.getActiveTextFieldController().text = char; 
       textField.add(mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
     }
     if (parsedWidgetData != null) {
@@ -186,13 +187,13 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   void backspaceButtonTap() {
-    final activeController = textFieldService.activeTextFieldData.controller;
+    final activeController = textFieldService.getActiveTextFieldController();
     if (activeController.text.isNotEmpty) {
-      _deleteLastChar(activeController);
+      textFieldService.deleteLastChar();
     } else {
       CountData? fieldsInElementCountData;
       final parsedWidgets = parsersService.parseWidgetListWithReplacment(
-        formulaGroopWidgets, 
+        _formulaGroopWidgets, 
         activeController
       );
       if (parsedWidgets != null) {
@@ -208,9 +209,19 @@ class KeyboardModel extends ChangeNotifier{
     }
   }
 
+  void _deleteField(ReturnData parsedWidgets, int fieldLocation) {
+    final isSuccess =
+        textFieldService.deleteCurrentController(fieldLocation);
+    if (isSuccess) {
+      dataHandler.deleteFromWidgetTree(parsedWidgets);
+    } else {
+      deleteAllButtonTap();
+    }
+  } 
+
   void _replaceElementByFiled(TextEditingController activeController) { 
     final elementToReplace = deletingParserService.parseWidgetList(
-      formulaGroopWidgets, 
+      _formulaGroopWidgets, 
       activeController
     );
     final isControllersDeleted =
@@ -228,7 +239,7 @@ class KeyboardModel extends ChangeNotifier{
       dataHandler.replaceWidgetInTree(elementToReplace, newField);
     } else {
       final dataToReplaceField = parsersService.parseWidgetListWithReplacment(
-        formulaGroopWidgets,
+        _formulaGroopWidgets,
         activeController
       );
       if (dataToReplaceField != null) {
@@ -237,20 +248,12 @@ class KeyboardModel extends ChangeNotifier{
     }
   }
 
-  void _deleteField(ReturnData parsedWidgets, int fieldLocation) {
-    final isSuccess =
-        textFieldService.deleteCurrentController(fieldLocation);
-    if (isSuccess) {
-      dataHandler.deleteFromWidgetTree(parsedWidgets);
-    } else {
-      deleteAllButtonTap();
-    }
-  } 
-
-  void _deleteLastChar(TextEditingController controller) {
-    final textLength = controller.text.length;
-    controller.text = controller.text.substring(0, textLength - 1);
-  } 
+  void deleteAllButtonTap(){
+    _formulaGroopWidgets.clear();
+    textFieldService.deleteAllTextFields(); 
+    initialization(); 
+    notifyListeners();
+  }
 
   void rebuildSreenState({bool hard = false}){
     update = false; 
@@ -260,16 +263,8 @@ class KeyboardModel extends ChangeNotifier{
       (){
         update = true; 
         notifyListeners();
-        textFieldService.activeTextFieldData.focusNode.requestFocus();
+        textFieldService.requestFocusToActiveTextField();
       }
     );
   }
-
-  void deleteAllButtonTap(){
-    formulaGroopWidgets.clear();
-    textFieldService.deleteAllTextFields(); 
-    initialization(); 
-    notifyListeners();
-  }
-
 }
