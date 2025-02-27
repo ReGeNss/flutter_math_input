@@ -32,96 +32,96 @@ class _LatinAlphabetPageWidgetState extends State<LatinAlphabetPageWidget> {
         [
           TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('q');
+                    model.addCharToTextField('q');
                   },
                   style: buttonStyle,
                   child: const Text('q')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('w');
+                    model.addCharToTextField('w');
                   },
                   style: buttonStyle,
                   child: const Text('w')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('e');},
+                  onPressed: () {model.addCharToTextField('e');},
                   style: buttonStyle,
                   child: const Text('e')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('r');},
+                  onPressed: () {model.addCharToTextField('r');},
                   style: buttonStyle,
                   child: const Text('r')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('t');},
+                  onPressed: () {model.addCharToTextField('t');},
                   style: buttonStyle,
                   child: const Text('t')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('y');
+                    model.addCharToTextField('y');
                   },
                   style: buttonStyle,
                   child: const Text('y')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('u');
+                    model.addCharToTextField('u');
                   },
                   style: buttonStyle,
                   child: const Text('u')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('i');
+                    model.addCharToTextField('i');
                   },
                   style: buttonStyle,
                   child: const Text('i')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('o');
+                    model.addCharToTextField('o');
                   },
                   style: buttonStyle,
                   child: const Text('o')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('p');
+                    model.addCharToTextField('p');
                   },
                   style: buttonStyle,
                   child: const Text('p')),
         ],
         [
           TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('a');},
+                  onPressed: () {model.addCharToTextField('a');},
                   style: buttonStyle,
                   child: const Text('a')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('s');},
+                  onPressed: () {model.addCharToTextField('s');},
                   style: buttonStyle,
                   child: const Text('s')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('d');},
+                  onPressed: () {model.addCharToTextField('d');},
                   style: buttonStyle,
                   child: const Text('d')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('f');
+                    model.addCharToTextField('f');
                   },
                   style: buttonStyle,
                   child: const Text('f')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('g');},
+                  onPressed: () {model.addCharToTextField('g');},
                   style: buttonStyle,
                   child: const Text('g')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('h');},
+                  onPressed: () {model.addCharToTextField('h');},
                   style: buttonStyle,
                   child: const Text('h')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('j');},
+                  onPressed: () {model.addCharToTextField('j');},
                   style: buttonStyle,
                   child: const Text('j')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('k');},
+                  onPressed: () {model.addCharToTextField('k');},
                   style: buttonStyle,
                   child: const Text('k')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('l');},
+                  onPressed: () {model.addCharToTextField('l');},
                   style: buttonStyle,
                   child: const Text('l')),
         ],
@@ -131,38 +131,38 @@ class _LatinAlphabetPageWidgetState extends State<LatinAlphabetPageWidget> {
                   style: buttonStyle,
                   child: const Icon(CustomMathIcons.shift, size: 20, color: Colors.black,)),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('z');},
+                  onPressed: () {model.addCharToTextField('z');},
                   style: buttonStyle,
                   child: const Text('z')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('x');},
+                  onPressed: () {model.addCharToTextField('x');},
                   style: buttonStyle,
                   child: const Text('x')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('c');
+                    model.addCharToTextField('c');
                   },
                   style: buttonStyle,
                   child: const Text('c')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('v');},
+                  onPressed: () {model.addCharToTextField('v');},
                   style: buttonStyle,
                   child: const Text('v')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('b');
+                    model.addCharToTextField('b');
                   },
                   style: buttonStyle,
                   child: const Text('b')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('n');
+                    model.addCharToTextField('n');
                   },
                   style: buttonStyle,
                   child: const Text('n')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('m');
+                    model.addCharToTextField('m');
                   },
                   style: buttonStyle,
                   child: const Text('m')),
@@ -173,96 +173,96 @@ class _LatinAlphabetPageWidgetState extends State<LatinAlphabetPageWidget> {
         [
           TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('Q');
+                    model.addCharToTextField('Q');
                   },
                   style: buttonStyle,
                   child: const Text('Q')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('W');
+                    model.addCharToTextField('W');
                   },
                   style: buttonStyle,
                   child: const Text('W')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('E');},
+                  onPressed: () {model.addCharToTextField('E');},
                   style: buttonStyle,
                   child: const Text('E')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('R');},
+                  onPressed: () {model.addCharToTextField('R');},
                   style: buttonStyle,
                   child: const Text('R')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('T');},
+                  onPressed: () {model.addCharToTextField('T');},
                   style: buttonStyle,
                   child: const Text('T')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('Y');
+                    model.addCharToTextField('Y');
                   },
                   style: buttonStyle,
                   child: const Text('Y')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('U');
+                    model.addCharToTextField('U');
                   },
                   style: buttonStyle,
                   child: const Text('U')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('I');
+                    model.addCharToTextField('I');
                   },
                   style: buttonStyle,
                   child: const Text('I')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('O');
+                    model.addCharToTextField('O');
                   },
                   style: buttonStyle,
                   child: const Text('O')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('P');
+                    model.addCharToTextField('P');
                   },
                   style: buttonStyle,
                   child: const Text('P')),
         ],
         [
           TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('A');},
+                  onPressed: () {model.addCharToTextField('A');},
                   style: buttonStyle,
                   child: const Text('A')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('S');},
+                  onPressed: () {model.addCharToTextField('S');},
                   style: buttonStyle,
                   child: const Text('S')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('D');},
+                  onPressed: () {model.addCharToTextField('D');},
                   style: buttonStyle,
                   child: const Text('D')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('F');
+                    model.addCharToTextField('F');
                   },
                   style: buttonStyle,
                   child: const Text('F')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('G');},
+                  onPressed: () {model.addCharToTextField('G');},
                   style: buttonStyle,
                   child: const Text('G')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('H');},
+                  onPressed: () {model.addCharToTextField('H');},
                   style: buttonStyle,
                   child: const Text('H')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('J');},
+                  onPressed: () {model.addCharToTextField('J');},
                   style: buttonStyle,
                   child: const Text('J')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('K');},
+                  onPressed: () {model.addCharToTextField('K');},
                   style: buttonStyle,
                   child: const Text('K')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('L');},
+                  onPressed: () {model.addCharToTextField('L');},
                   style: buttonStyle,
                   child: const Text('L')),
         ],
@@ -272,38 +272,38 @@ class _LatinAlphabetPageWidgetState extends State<LatinAlphabetPageWidget> {
                   style: buttonStyle,
                   icon: const Icon(CustomMathIcons.shift_lock,size: 20)),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('Z');},
+                  onPressed: () {model.addCharToTextField('Z');},
                   style: buttonStyle,
                   child: const Text('Z')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('X');},
+                  onPressed: () {model.addCharToTextField('X');},
                   style: buttonStyle,
                   child: const Text('X')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('C');
+                    model.addCharToTextField('C');
                   },
                   style: buttonStyle,
                   child: const Text('C')),
               TextButton(
-                  onPressed: () {model.textFieldService.addCharToTextField('V');},
+                  onPressed: () {model.addCharToTextField('V');},
                   style: buttonStyle,
                   child: const Text('V')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('B');
+                    model.addCharToTextField('B');
                   },
                   style: buttonStyle,
                   child: const Text('B')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('N');
+                    model.addCharToTextField('N');
                   },
                   style: buttonStyle,
                   child: const Text('N')),
               TextButton(
                   onPressed: () {
-                    model.textFieldService.addCharToTextField('M');
+                    model.addCharToTextField('M');
                   },
                   style: buttonStyle,
                   child: const Text('M')),

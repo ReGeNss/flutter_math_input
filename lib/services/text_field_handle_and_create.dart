@@ -77,7 +77,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     _textFieildsData[_selectedFieldIndex].focusNode.dispose();
     _textFieildsData[_selectedFieldIndex].controller.dispose();
 
-    checkGroops(textFieldData);
+    _checkGroops(textFieldData);
 
     _textFieildsData.replaceRange(
         _selectedFieldIndex, _selectedFieldIndex + 1, [textFieldData]);
@@ -226,7 +226,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
 
   int deleteTextFileds(bool? checkGroops) {
     if (_textFieldGroops.isNotEmpty && checkGroops == true) {
-      final findedGroops = findGroops();
+      final findedGroops = _findGroops();
 
       final startField = findedGroops.first.keys.first.startField;
       final start = _textFieildsData.indexOf(startField);
@@ -245,7 +245,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     }
   }
 
-  List<Map<TextFieldGroop, int>> findGroops() {
+  List<Map<TextFieldGroop, int>> _findGroops() {
     final findedGroops = <Map<TextFieldGroop, int>>[];
     for (final textFieldGroop in _textFieldGroops) {
       final startIndex =
@@ -259,11 +259,11 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     return findedGroops;
   }
 
-  bool deleteCurrentController(int fieldLocation) {
+  bool deleteCurrentController(bool shouldRemarkGroop) {
     if (_textFieildsData.length <= 1) {
       return false;
     } else {
-      if (fieldLocation == 1) {
+      if (shouldRemarkGroop) {
         _replaceActiveTextField(_textFieildsData[_selectedFieldIndex+1]);
       } else {
         _replaceActiveTextField(null);
@@ -278,18 +278,14 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     _activeTextFieldData.controller.dispose();
     _activeTextFieldData.focusNode.dispose();
     if( newFieldData != null){
-      checkGroops(newFieldData);
+      _checkGroops(newFieldData);
     }
     _textFieildsData.remove(_activeTextFieldData);
   }
 
-  TextFieldData getTextFieldDataByIndex(int index) {
-    return _textFieildsData[index];
-  }
-  
-  void checkGroops(TextFieldData newFieldData) { 
+  void _checkGroops(TextFieldData newFieldData) { 
     if(_textFieldGroops.isNotEmpty) {
-      final findedGroops = findGroops();
+      final findedGroops = _findGroops();
       if (findedGroops.isNotEmpty) {
         final startField = findedGroops.first.keys.first.startField;
         final endField = findedGroops.first.keys.first.endField;

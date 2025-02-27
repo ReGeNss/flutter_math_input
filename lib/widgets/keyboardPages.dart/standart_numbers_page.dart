@@ -23,12 +23,12 @@ class NumbersPageWidget extends StatelessWidget {
               FloatButtonOverlay().createOverlay(context, buttonsData: [
                 FloatButtonData(
                     buttonFuction: () {
-                      model.textFieldService.addCharToTextField('(');
+                      model.addCharToTextField('(');
                     },
                     buttonWidget: const Text('(')),
                 FloatButtonData(
                     buttonFuction: () {
-                      model.textFieldService.addCharToTextField(')');
+                      model.addCharToTextField(')');
                     },
                     buttonWidget: const Text(')'))
               ]);
@@ -40,22 +40,22 @@ class NumbersPageWidget extends StatelessWidget {
             FloatButtonOverlay().createOverlay(context, buttonsData: [
               FloatButtonData(
                   buttonFuction: () {
-                    model.textFieldService.addCharToTextField('>');
+                    model.addCharToTextField('>');
                   },
                   buttonWidget: const Text('>')),
               FloatButtonData(
                   buttonFuction: () {
-                    model.textFieldService.addCharToTextField('<');
+                    model.addCharToTextField('<');
                   },
                   buttonWidget: const Text('<')),
               FloatButtonData(
                   buttonFuction: () {
-                    model.textFieldService.addCharToTextField('≥');
+                    model.addCharToTextField('≥');
                   },
                   buttonWidget: const Text('≥')),
               FloatButtonData(
                   buttonFuction: () {
-                    model.textFieldService.addCharToTextField('≤');
+                    model.addCharToTextField('≤');
                   },
                   buttonWidget: const Text('≤'))
             ]);
@@ -64,22 +64,22 @@ class NumbersPageWidget extends StatelessWidget {
             FloatButtonOverlay().createOverlay(context, buttonsData: [
               FloatButtonData(
                   buttonFuction: () {
-                    model.textFieldService.addCharToTextField('>');
+                    model.addCharToTextField('>');
                   },
                   buttonWidget: const Text('>')),
               FloatButtonData(
                   buttonFuction: () {
-                    model.textFieldService.addCharToTextField('<');
+                    model.addCharToTextField('<');
                   },
                   buttonWidget: const Text('<')),
               FloatButtonData(
                   buttonFuction: () {
-                    model.textFieldService.addCharToTextField('≥');
+                    model.addCharToTextField('≥');
                   },
                   buttonWidget: const Text('≥')),
               FloatButtonData(
                   buttonFuction: () {
-                    model.textFieldService.addCharToTextField('≤');
+                    model.addCharToTextField('≤');
                   },
                   buttonWidget: const Text('≤'))
             ]);
@@ -89,19 +89,19 @@ class NumbersPageWidget extends StatelessWidget {
         ),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('7');
+              model.addCharToTextField('7');
             },
             style: buttonStyle,
             child: const Text('7')),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('8');
+              model.addCharToTextField('8');
             },
             style: buttonStyle,
             child: const Text('8')),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('9');
+              model.addCharToTextField('9');
             },
             style: buttonStyle,
             child: const Text('9')),
@@ -129,19 +129,19 @@ class NumbersPageWidget extends StatelessWidget {
         }),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('4');
+              model.addCharToTextField('4');
             },
             style: buttonStyle,
             child: const Text('4')),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('5');
+              model.addCharToTextField('5');
             },
             style: buttonStyle,
             child: const Text('5')),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('6');
+              model.addCharToTextField('6');
             },
             style: buttonStyle,
             child: const Text('6')),
@@ -162,25 +162,25 @@ class NumbersPageWidget extends StatelessWidget {
             child: const Icon(CustomMathIcons.exp, color: Colors.black, size: iconSize)),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('x');
+              model.addCharToTextField('x');
             },
             style: buttonStyle,
             child: const Text('x')),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('1');
+              model.addCharToTextField('1');
             },
             style: buttonStyle,
             child: const Text('1')),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('2');
+              model.addCharToTextField('2');
             },
             style: buttonStyle,
             child: const Text('2')),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('3');
+              model.addCharToTextField('3');
             },
             style: buttonStyle,
             child: const Text('3')),
@@ -194,7 +194,7 @@ class NumbersPageWidget extends StatelessWidget {
       [
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('π');
+              model.addCharToTextField('π');
             },
             style: buttonStyle,
             child: const Text('π')),
@@ -206,13 +206,13 @@ class NumbersPageWidget extends StatelessWidget {
             child: const Text('%')),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('0');
+              model.addCharToTextField('0');
             },
             style: buttonStyle,
             child: const Text('0')),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField(',');
+              model.addCharToTextField(',');
             },
             style: buttonStyle,
             child: const Text(',')),

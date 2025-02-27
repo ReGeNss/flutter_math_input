@@ -45,13 +45,13 @@ class FunctionPageWidget extends StatelessWidget {
             child: const Icon(CustomMathIcons.abs, color: Colors.black, size: iconSize)),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('!');
+              model.addCharToTextField('!');
             },
             style: buttonStyle,
             child: const Text('!')),
         TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('e');
+              model.addCharToTextField('e');
             },
             style: buttonStyle,
             child: const Text('e')),
@@ -80,12 +80,12 @@ class FunctionPageWidget extends StatelessWidget {
               style: buttonStyle,
               child: const Icon(CustomMathIcons.lim, color: Colors.black, size: iconSize)),
             TextButton(
-              onPressed: () {model.textFieldService.addCharToTextField('f(x)');},
+              onPressed: () {model.addCharToTextField('f(x)');},
               style: buttonStyle,
               child: const Text('f(x)')),
             TextButton(
               onPressed: () {
-                model.textFieldService.addCharToTextField('∞'); 
+                model.addCharToTextField('∞'); 
               },
               style: buttonStyle,
               child: const Text('∞')),

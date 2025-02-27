@@ -78,8 +78,7 @@ class MainScreenColumnWidget extends StatelessWidget {
             const SizedBox(width: 10,),
             FilledButton(
                 onPressed: () {
-                  model.formulaInTeX =
-                      model.texParsingService.start(model.getFormulaWidgets());
+                  model.formulaInTeX = model.getFormulaKaTeX();
                   model.rebuildSreenState();
                 },
                 child: const Text("Translate formula to KaTeX"))
