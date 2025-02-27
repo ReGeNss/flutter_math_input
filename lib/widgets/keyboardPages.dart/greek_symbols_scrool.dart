@@ -24,7 +24,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('α');              
+              model.addCharToTextField('α');              
             },
             style: buttonStyle,
             child: const Text('α'),
@@ -36,7 +36,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('β');
+              model.addCharToTextField('β');
             },
             style: buttonStyle,
             child: const Text('β'),
@@ -48,7 +48,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('γ');
+              model.addCharToTextField('γ');
             },
             style: buttonStyle,
             child: const Text('γ'),
@@ -60,7 +60,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('Δ');
+              model.addCharToTextField('Δ');
             },
             style: buttonStyle,
             child: const Text('Δ'),
@@ -72,7 +72,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('ε');
+              model.addCharToTextField('ε');
             },
             style: buttonStyle,
             child: const Text('ε'),
@@ -84,7 +84,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('η');
+              model.addCharToTextField('η');
             },
             style: buttonStyle,
             child: const Text('η'),
@@ -96,7 +96,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('θ');
+              model.addCharToTextField('θ');
             },
             style: buttonStyle,
             child: const Text('θ'),
@@ -108,7 +108,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('σ');
+              model.addCharToTextField('σ');
             },
             style: buttonStyle,
             child: const Text('σ'),
@@ -120,7 +120,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('τ');
+              model.addCharToTextField('τ');
             },
             style: buttonStyle,
             child: const Text('τ'),
@@ -132,7 +132,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('φ');
+              model.addCharToTextField('φ');
             },
             style: buttonStyle,
             child: const Text('φ'),
@@ -144,7 +144,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('ψ');
+              model.addCharToTextField('ψ');
             },
             style: buttonStyle,
             child: const Text('	ψ'),
@@ -156,7 +156,7 @@ class scroolGreekSymbolsWidget extends StatelessWidget {
           height: 50,
           child: TextButton(
             onPressed: () {
-              model.textFieldService.addCharToTextField('ω');
+              model.addCharToTextField('ω');
             },
             style: buttonStyle,
             child: const Text('ω'),

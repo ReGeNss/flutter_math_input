@@ -7,7 +7,8 @@
         {
             "name": "math_keyboard",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": ["--no-enable-impeller"]
         },
         {
             "name": "math_keyboard (profile mode)",
