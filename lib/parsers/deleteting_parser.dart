@@ -7,7 +7,7 @@ class FormulasTreeDeletingParser {
   ReturnData? _parsedData;
   bool _isReverse = false ; 
 
-  ReturnData? parseWidgetList(
+  ReturnData? getElement(
     List<Widget> array, 
     TextEditingController activeTextFieldController
     ) {
@@ -20,11 +20,11 @@ class FormulasTreeDeletingParser {
   int counter = 0;
   int textFieldLocation = 0;
 
-  CountData getCountOfTextFieldsIn(List<Widget> array, TextEditingController activeTextFieldController) {
+  ElementFieldsData getCountOfTextFieldsIn(List<Widget> array, TextEditingController activeTextFieldController) {
     counter = 0; 
     textFieldLocation = 0;
     _parseCountOfTextFields(array, activeTextFieldController);
-    return CountData(counter, textFieldLocation); 
+    return ElementFieldsData(counter, textFieldLocation); 
   }
 
   ReturnData? _parseWidgets(
@@ -275,9 +275,9 @@ class FormulasTreeDeletingParser {
   } 
 }
 
-class CountData{
-  CountData(this.count, this.fieldLocation);
+class ElementFieldsData{
+  ElementFieldsData(this.fieldsCount, this.ourFieldLocation);
 
-  final int count; 
-  final int fieldLocation; 
+  final int fieldsCount; 
+  final int ourFieldLocation; 
 }
