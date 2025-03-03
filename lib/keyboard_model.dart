@@ -197,84 +197,120 @@ class KeyboardModel extends ChangeNotifier{
 
   void backspaceButtonTap() {
     final activeController = _textFieldService.getActiveTextFieldController();
-    if (activeController.text.isNotEmpty) {
+    
+    if (_canDeleteCharFromCurrentField(activeController)) {
       _textFieldService.deleteLastChar();
-    } else {
-      CountData? fieldsInElementCountData;
-      final parsedWidgets = _parsersService.parseWidgetListWithReplacment(
-        _formulaGroopWidgets, 
-        activeController
-      );
-      if (parsedWidgets != null) {
-        fieldsInElementCountData = _deletingParserService.
-            getCountOfTextFieldsIn(parsedWidgets.wigetData!, activeController);
-      }
-      if (fieldsInElementCountData != null && fieldsInElementCountData.count > 1) {
-        final shouldRemarkGroop = fieldsInElementCountData.fieldLocation == 1; 
-        _deleteField(parsedWidgets!, shouldRemarkGroop);
-      } else {
-        _replaceElementByFiled(activeController);
-      }
-      rebuildSreenState(hard: true);
+    } else { 
+      _handleEmptyFieldDeletion(activeController);
     }
   }
 
-  void _deleteField(ReturnData parsedWidgets, bool shouldRemarkGroop) {
-    final isSuccess =
-        _textFieldService.deleteCurrentController(shouldRemarkGroop);
+  bool _canDeleteCharFromCurrentField(TextEditingController controller) {
+    return controller.text.isNotEmpty;
+  }
+
+  void _handleEmptyFieldDeletion(TextEditingController activeController) {
+    final parsedWidgets = _parsersService.parseWidgetListWithReplacment(
+      _formulaGroopWidgets, 
+      activeController
+    );
+    
+    if (parsedWidgets == null) {
+      return;
+    }
+
+    final fieldsCountInElement = _getFieldsCountInElement(parsedWidgets, activeController);
+    
+    if (fieldsCountInElement == null) {
+      _replaceElementByField(activeController);
+      rebuildSreenState(hard: true);
+      return;
+    }
+
+    if (fieldsCountInElement.fieldsCount > 1) {
+      _deleteFieldOrGroup(parsedWidgets, fieldsCountInElement.ourFieldLocation == 1);
+    } else {
+      _replaceElementByField(activeController);
+    }
+
+    rebuildSreenState(hard: true);
+  }
+
+  ElementFieldsData? _getFieldsCountInElement(ReturnData parsedWidgets, TextEditingController activeController) {
+    return _deletingParserService.getCountOfTextFieldsIn(
+      parsedWidgets.wigetData!, 
+      activeController
+    );
+  }
+
+  void _deleteFieldOrGroup(ReturnData parsedWidgets, bool shouldRemarkGroup) {
+    final isSuccess = _textFieldService.deleteCurrentController(shouldRemarkGroup);
+    
     if (isSuccess) {
       _dataHandler.deleteFromWidgetTree(parsedWidgets);
     } else {
       deleteAllButtonTap();
     }
-  } 
+  }
 
-  void _replaceElementByFiled(TextEditingController activeController) { 
-    final elementToReplace = _deletingParserService.parseWidgetList(
+  void _replaceElementByField(TextEditingController activeController) {
+    final elementToReplace = _deletingParserService.getElement(
       _formulaGroopWidgets, 
       activeController
     );
-    final isControllersDeleted =
-        _textFieldService.deleteElementFields(elementToReplace?.isGroop);
-    if (!isControllersDeleted) {
+
+    if (!_tryDeleteControllers(elementToReplace?.isGroop)) {
       deleteAllButtonTap();
-      return; 
+      return;
     }
 
     if (elementToReplace != null) {
-      final newField = _mathConstructionsBuildingService.createTextField(
-        replaceOldFocus: false, 
-        standartSize: true
-      );
-      _dataHandler.replaceWidgetInTree(elementToReplace, newField);
+      _replaceWithNewField(elementToReplace);
     } else {
-      final dataToReplaceField = _parsersService.parseWidgetListWithReplacment(
-        _formulaGroopWidgets,
-        activeController
-      );
-      if (dataToReplaceField != null) {
-        _dataHandler.deleteFromWidgetTree(dataToReplaceField);
-      }
+      _removeCurrentField(activeController);
     }
   }
 
-  void deleteAllButtonTap(){
+  bool _tryDeleteControllers(bool? isGroup) {
+    return _textFieldService.deleteElementFields(isGroup);
+  }
+
+  void _replaceWithNewField(ReturnData elementToReplace) {
+    final newField = _mathConstructionsBuildingService.createTextField(
+      replaceOldFocus: false,
+      standartSize: true
+    );
+    _dataHandler.replaceWidgetInTree(elementToReplace, newField);
+  }
+
+  void _removeCurrentField(TextEditingController activeController) {
+    final dataToReplaceField = _parsersService.parseWidgetListWithReplacment(
+      _formulaGroopWidgets,
+      activeController
+    );
+    
+    if (dataToReplaceField != null) {
+      _dataHandler.deleteFromWidgetTree(dataToReplaceField);
+    }
+  }
+
+  void deleteAllButtonTap() {
     _formulaGroopWidgets.clear();
-    _textFieldService.deleteAllTextFields(); 
-    initialization(); 
+    _textFieldService.deleteAllTextFields();
+    initialization();
     notifyListeners();
   }
 
-  void rebuildSreenState({bool hard = false}){
-    update = false; 
+  void rebuildSreenState({bool hard = false}) {
+    update = false;
     notifyListeners();
-    Future.delayed(
-      !hard ? const Duration(milliseconds: 50) : const Duration(milliseconds: 50),
-      (){
-        update = true; 
-        notifyListeners();
-        _textFieldService.requestFocusToActiveTextField();
-      }
-    );
+    
+    final delay = hard ? const Duration(milliseconds: 50) : const Duration(milliseconds: 50);
+    
+    Future.delayed(delay, () {
+      update = true;
+      notifyListeners();
+      _textFieldService.requestFocusToActiveTextField();
+    });
   }
 }

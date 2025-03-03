@@ -206,95 +206,123 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
   }
 
   bool deleteElementFields(bool? checkGroops) {
-    if (_textFieildsData.length >= minTextFieldCountToStapBack) {
-      final firstDeletedIndex = deleteTextFileds(checkGroops);
-      if (_textFieildsData.isEmpty) {
-        return false;
-      } else {
-        if (_selectedFieldIndex >= 1 && firstDeletedIndex >= 1) {
-          _selectedFieldIndex = firstDeletedIndex - 1;
-          _activeTextFieldData = _textFieildsData[_selectedFieldIndex];
-        } else {
-          _selectedFieldIndex = firstDeletedIndex;
-          _activeTextFieldData = _textFieildsData[_selectedFieldIndex];
-        }
-        return true;
-      }
+    if (_textFieildsData.isEmpty || _textFieildsData.length < minTextFieldCountToStapBack) {
+      return false;
     }
-    return false;
+
+    final firstDeletedIndex = deleteTextFileds(checkGroops);
+    if (_textFieildsData.isEmpty) {
+      return false;
+    }
+
+    _updateSelectedFieldIndex(firstDeletedIndex);
+    return true;
+  }
+
+  void _updateSelectedFieldIndex(int firstDeletedIndex) {
+    if (_selectedFieldIndex >= 1 && firstDeletedIndex >= 1) {
+      _selectedFieldIndex = firstDeletedIndex - 1;
+    } else {
+      _selectedFieldIndex = firstDeletedIndex;
+    }
+    _activeTextFieldData = _textFieildsData[_selectedFieldIndex];
   }
 
   int deleteTextFileds(bool? checkGroops) {
     if (_textFieldGroops.isNotEmpty && checkGroops == true) {
-      final findedGroops = _findGroops();
+      return _deleteGroopFields();
+    } 
+    _replaceActiveTextField(null);
+    return _selectedFieldIndex;
+  }
 
-      final startField = findedGroops.first.keys.first.startField;
-      final start = _textFieildsData.indexOf(startField);
-      final endField = findedGroops.first.keys.first.endField;
-      final end = _textFieildsData.indexOf(endField);
-      for (int i = start; i <= end; i++) {
-        _textFieildsData[i].controller.dispose();
-        _textFieildsData[i].focusNode.dispose();
-      }
-      _textFieildsData.removeRange(start, end + 1);
-      _textFieldGroops.remove(findedGroops.first.keys.first);
-      return start;
-    } else {
-      _replaceActiveTextField(null);
-      return _selectedFieldIndex;
+  int _deleteGroopFields() {
+    final findedGroops = _findGroops();
+    final groopToDelete = findedGroops.first.keys.first;
+    
+    final start = _textFieildsData.indexOf(groopToDelete.startField);
+    final end = _textFieildsData.indexOf(groopToDelete.endField);
+
+    _disposeFieldsInRange(start, end);
+    _textFieildsData.removeRange(start, end + 1);
+    _textFieldGroops.remove(groopToDelete);
+
+    return start;
+  }
+
+  void _disposeFieldsInRange(int start, int end) {
+    for (int i = start; i <= end; i++) {
+      _textFieildsData[i].controller.dispose();
+      _textFieildsData[i].focusNode.dispose();
     }
   }
 
   List<Map<TextFieldGroop, int>> _findGroops() {
     final findedGroops = <Map<TextFieldGroop, int>>[];
-    for (final textFieldGroop in _textFieldGroops) {
-      final startIndex =
-          _textFieildsData.indexOf(textFieldGroop.startField);
-      final endIndex = _textFieildsData.indexOf(textFieldGroop.endField);
-      if (_selectedFieldIndex >= startIndex && _selectedFieldIndex <= endIndex) {
-        findedGroops.add({textFieldGroop: endIndex - startIndex});
+    
+    for (final groop in _textFieldGroops) {
+      final startIndex = _textFieildsData.indexOf(groop.startField);
+      final endIndex = _textFieildsData.indexOf(groop.endField);
+      
+      if (_isFieldInGroopRange(startIndex, endIndex)) {
+        findedGroops.add({groop: endIndex - startIndex});
       }
     }
+
     findedGroops.sort((a, b) => b.values.first.compareTo(a.values.first));
     return findedGroops;
+  }
+
+  bool _isFieldInGroopRange(int startIndex, int endIndex) {
+    return _selectedFieldIndex >= startIndex && _selectedFieldIndex <= endIndex;
   }
 
   bool deleteCurrentController(bool shouldRemarkGroop) {
     if (_textFieildsData.length <= 1) {
       return false;
-    } else {
-      if (shouldRemarkGroop) {
-        _replaceActiveTextField(_textFieildsData[_selectedFieldIndex+1]);
-      } else {
-        _replaceActiveTextField(null);
-        _selectedFieldIndex -= 1;
-      }
-      _activeTextFieldData = _textFieildsData[_selectedFieldIndex];
     }
+
+    if (shouldRemarkGroop) {
+      _replaceActiveTextField(_textFieildsData[_selectedFieldIndex + 1]);
+    } else {
+      _replaceActiveTextField(null);
+      _selectedFieldIndex -= 1;
+    }
+    
+    _activeTextFieldData = _textFieildsData[_selectedFieldIndex];
     return true;
   }
 
   void _replaceActiveTextField(TextFieldData? newFieldData) {
-    _activeTextFieldData.controller.dispose();
-    _activeTextFieldData.focusNode.dispose();
-    if( newFieldData != null){
+    _disposeActiveTextField();
+    
+    if (newFieldData != null) {
       _checkGroops(newFieldData);
     }
+    
     _textFieildsData.remove(_activeTextFieldData);
   }
 
-  void _checkGroops(TextFieldData newFieldData) { 
-    if(_textFieldGroops.isNotEmpty) {
-      final findedGroops = _findGroops();
-      if (findedGroops.isNotEmpty) {
-        final startField = findedGroops.first.keys.first.startField;
-        final endField = findedGroops.first.keys.first.endField;
-        if( startField == _activeTextFieldData){
-          findedGroops.first.keys.first.startField = newFieldData;
-        } else if( endField == _activeTextFieldData){
-          findedGroops.first.keys.first.endField = newFieldData;
-        }
-      }
+  void _disposeActiveTextField() {
+    _activeTextFieldData.controller.dispose();
+    _activeTextFieldData.focusNode.dispose();
+  }
+
+  void _checkGroops(TextFieldData newFieldData) {
+    if (_textFieldGroops.isEmpty) return;
+
+    final findedGroops = _findGroops();
+    if (findedGroops.isEmpty) return;
+
+    final groop = findedGroops.first.keys.first;
+    _updateGroopFields(groop, newFieldData);
+  }
+
+  void _updateGroopFields(TextFieldGroop groop, TextFieldData newFieldData) {
+    if (groop.startField == _activeTextFieldData) {
+      groop.startField = newFieldData;
+    } else if (groop.endField == _activeTextFieldData) {
+      groop.endField = newFieldData;
     }
   }
 
