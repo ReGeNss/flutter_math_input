@@ -3,166 +3,41 @@ import 'package:math_keyboard/keyboard_model.dart';
 import 'package:math_keyboard/widgets/keyboard.dart';
 import 'package:provider/provider.dart';
 
+const greekSymbolsList = ['α', 'β', 'γ', 'Δ', 'ε', 'η', 'θ', 'σ', 'τ', 'φ', 'ψ', 'ω'];
 
-
-const double _spaceBetweenWidth = 5; 
-
-class scroolGreekSymbolsWidget extends StatelessWidget {
-  const scroolGreekSymbolsWidget({
+class ScroolGreekSymbolsWidget extends StatelessWidget {
+  const ScroolGreekSymbolsWidget({
     super.key,
+    this.iconSize = 30,
+    this.buttonStyle,
+    this.textStyle,
+    required this.keyboardSpacing,
   });
-
+  
+  final double iconSize;
+  final TextStyle? textStyle;
+  final ButtonStyle? buttonStyle;
+  final double keyboardSpacing;
   @override
   Widget build(BuildContext context) {
-    final model = context.read<KeyboardModel>(); 
+    final model = context.read<MathKeyboardModel>(); 
     return SizedBox(
         child: SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Row(children: [
-        SizedBox(
-          width: 50,
-          height: 50,
+      child: Row(
+        spacing: keyboardSpacing,
+          children: greekSymbolsList.map((symbol) => SizedBox(
+          width: 50,  
+          height: double.infinity,
           child: TextButton(
             onPressed: () {
-              model.addCharToTextField('α');              
+              model.addCharToTextField(symbol);
             },
-            style: buttonStyle,
-            child: const Text('α'),
+            style: buttonStyle ?? defaultButtonStyle,
+            child: Text(symbol, style: textStyle),
           ),
-        ),
-        const SizedBox(width: _spaceBetweenWidth,),
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: TextButton(
-            onPressed: () {
-              model.addCharToTextField('β');
-            },
-            style: buttonStyle,
-            child: const Text('β'),
-          ),
-        ),
-        const SizedBox(width: _spaceBetweenWidth,),
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: TextButton(
-            onPressed: () {
-              model.addCharToTextField('γ');
-            },
-            style: buttonStyle,
-            child: const Text('γ'),
-          ),
-        ),
-        const SizedBox(width: _spaceBetweenWidth,),
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: TextButton(
-            onPressed: () {
-              model.addCharToTextField('Δ');
-            },
-            style: buttonStyle,
-            child: const Text('Δ'),
-          ),          
-        ),
-        const SizedBox(width: _spaceBetweenWidth,),
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: TextButton(
-            onPressed: () {
-              model.addCharToTextField('ε');
-            },
-            style: buttonStyle,
-            child: const Text('ε'),
-          ),
-        ),
-        const SizedBox(width: _spaceBetweenWidth,),
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: TextButton(
-            onPressed: () {
-              model.addCharToTextField('η');
-            },
-            style: buttonStyle,
-            child: const Text('η'),
-          ),
-        ),
-        const SizedBox(width: _spaceBetweenWidth,),
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: TextButton(
-            onPressed: () {
-              model.addCharToTextField('θ');
-            },
-            style: buttonStyle,
-            child: const Text('θ'),
-          ),
-        ),
-        const SizedBox(width: _spaceBetweenWidth,),
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: TextButton(
-            onPressed: () {
-              model.addCharToTextField('σ');
-            },
-            style: buttonStyle,
-            child: const Text('σ'),
-          ),
-        ),
-        const SizedBox(width: _spaceBetweenWidth,),
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: TextButton(
-            onPressed: () {
-              model.addCharToTextField('τ');
-            },
-            style: buttonStyle,
-            child: const Text('τ'),
-          ),
-        ),
-        const SizedBox(width: _spaceBetweenWidth,),
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: TextButton(
-            onPressed: () {
-              model.addCharToTextField('φ');
-            },
-            style: buttonStyle,
-            child: const Text('φ'),
-          ),
-        ),
-        const SizedBox(width: _spaceBetweenWidth,),
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: TextButton(
-            onPressed: () {
-              model.addCharToTextField('ψ');
-            },
-            style: buttonStyle,
-            child: const Text('	ψ'),
-          ),
-        ),
-        const SizedBox(width: _spaceBetweenWidth,),
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: TextButton(
-            onPressed: () {
-              model.addCharToTextField('ω');
-            },
-            style: buttonStyle,
-            child: const Text('ω'),
-          ),
-        ),
-      ]),
+        )).toList(),
+      ),
     ));
   }
 }

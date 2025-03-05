@@ -58,7 +58,6 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     final Widget textFiledWidget = SizedBox(
         height: size.height,
         child: TextFieldWidgetHandler(
-          key: UniqueKey(),
           textFieldData: textFieldData,
           onTextFieldTap: onTextFieldTap,
         ));

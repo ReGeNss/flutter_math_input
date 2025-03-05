@@ -1,0 +1,61 @@
+import 'package:flutter/material.dart';
+import 'package:math_keyboard/keyboard_model.dart';
+import 'package:math_keyboard/widgets/keyboard.dart';
+import 'package:provider/provider.dart';
+
+class MathInputWidget extends StatefulWidget {
+  const MathInputWidget({
+    super.key,
+    this.decoration,
+    this.width = double.infinity,
+    this.height = 100,
+    this.padding = const EdgeInsets.all(10),
+  });
+  final BoxDecoration? decoration;
+  final double width;
+  final double height;
+  final EdgeInsetsGeometry? padding;
+
+  @override
+  State<MathInputWidget> createState() => _MathInputWidgetState();
+}
+
+class _MathInputWidgetState extends State<MathInputWidget> {
+  @override
+  Widget build(BuildContext context) {
+    try{
+    final model = context.watch<MathKeyboardModel>();
+    final formula = model.update == true
+        ? Row(
+            children: model.getFormulaWidgets(),
+          )
+        : const Center(child: Text('LOAD'));
+    return GestureDetector(
+      onTap: () => MathKeyboard().showKeyboard(context),
+      child: Container(
+        width: widget.width,
+        height: widget.height,
+        padding: widget.padding,
+        decoration: widget.decoration ?? BoxDecoration(
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: formula,
+            ),
+          ),
+        ),
+      ),
+    );
+    } on ProviderNotFoundException {
+      throw Exception('MathKeyboardModel not found. Please add provide MathKeyboardModel to your widget tree.');
+    } catch (e) {
+      return const Center(child: Text('Something went wrong. Tap delete button to clear the input'));
+    }
+  }
+}
