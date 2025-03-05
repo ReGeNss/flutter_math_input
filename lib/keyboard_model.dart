@@ -6,7 +6,7 @@ import 'package:math_keyboard/services/math_constructions_building.dart';
 import 'package:math_keyboard/services/text_field_handle_and_create.dart';
 import 'package:math_keyboard/services/widgets_data_handler.dart';
 
-class KeyboardModel extends ChangeNotifier{
+class MathKeyboardModel extends ChangeNotifier{
   late final TextFieldHandleAndCreateService _textFieldService; 
   late final MathConstructionsBuilding _mathConstructionsBuildingService; 
   late final FormulasTreeParsersService _parsersService; 
@@ -17,7 +17,7 @@ class KeyboardModel extends ChangeNotifier{
   bool update = true; 
   String? formulaInTeX; 
 
-  KeyboardModel(){
+  MathKeyboardModel(){
     _textFieldService = TextFieldHandleAndCreateService();
     _mathConstructionsBuildingService = MathConstructionsBuilding(textFieldService: _textFieldService);
     _parsersService = FormulasTreeParsersService();
@@ -43,7 +43,8 @@ class KeyboardModel extends ChangeNotifier{
   }
 
   String getFormulaKaTeX() {
-    return _texParsingService.start(_formulaGroopWidgets);
+    formulaInTeX = _texParsingService.start(_formulaGroopWidgets);
+    return formulaInTeX ?? '';
   }
 
   void onFracButtonTap(){

@@ -5,157 +5,101 @@ import 'package:math_keyboard/services/math_constructions_building.dart';
 import 'package:math_keyboard/widgets/keyboard.dart';
 import 'package:provider/provider.dart';
 
-
-
 class FunctionPageWidget extends StatelessWidget {
   const FunctionPageWidget({
     super.key,
+    this.iconSize = 30,
+    this.buttonStyle, 
+    this.textStyle, 
+    required this.keyboardPaddings, 
+    required this.keyboardSpacing,
   });
+
+  final double iconSize;
+  final ButtonStyle? buttonStyle;
+  final TextStyle? textStyle;
+  final double keyboardPaddings;
+  final double keyboardSpacing;
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<KeyboardModel>();
+    final model = context.read<MathKeyboardModel>();
     final List<List<Widget>> rows = [
       [
-        TextButton(
-            onPressed: () {
-              model.namedFunctionButtonTap('cos', ElementsType.cosElement);
-            },
-            style: buttonStyle,
-            child: const Text('cos')),
-        TextButton(
-          onPressed: () {
-            model.namedFunctionButtonTap('arccos', ElementsType.arccosElement);
-          },
-          style: buttonStyle,
-          child: const Text('arccos'),
+        _buildFunctionButton('cos', ElementsType.cosElement, model),
+        _buildFunctionButton('arccos', ElementsType.arccosElement, model),
+        _buildFunctionButton('lg', ElementsType.decimalLogElement, model),
+        _buildIconButton(CustomMathIcons.abs, model.absButtonTap),
+        _buildTextButton('!', model),
+        _buildTextButton('e', model),
+      ],
+      [
+        _buildFunctionButton('sin', ElementsType.sinElement, model),
+        _buildFunctionButton('arcsin', ElementsType.arcsinElement, model),
+        _buildFunctionButton('log₂', ElementsType.logBaseTwoElement, model),
+        _buildIconButton(CustomMathIcons.lim, model.limButtonTap),
+        _buildTextButton('f(x)', model),
+        _buildTextButton('∞', model),
+      ],
+      [
+        _buildFunctionButton('tan', ElementsType.tanElement, model),
+        _buildFunctionButton('arctan', ElementsType.arctanElement, model),
+        _buildIconButton(CustomMathIcons.log, model.logButtonTap),
+        _buildIconButton(CustomMathIcons.integral, model.integralButtonTap),
+        _buildIconButton(
+          CustomMathIcons.dx_dy, 
+          () => model.onDerevativeButtonTap(upperField: 'x', downField: 'y')
         ),
-        TextButton(
-            onPressed: () {
-              model.namedFunctionButtonTap(
-                  'lg', ElementsType.decimalLogElement);
-            },
-            style: buttonStyle,
-            child: const Text('lg')),
-        TextButton(
-            onPressed: () {
-              model.absButtonTap();
-            },
-            style: buttonStyle,
-            child: const Icon(CustomMathIcons.abs, color: Colors.black, size: iconSize)),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('!');
-            },
-            style: buttonStyle,
-            child: const Text('!')),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('e');
-            },
-            style: buttonStyle,
-            child: const Text('e')),
+        _buildEmptyButton(),
       ],
       [
-        TextButton(
-              onPressed: () {
-                // fracButtonTap(context);
-                model.namedFunctionButtonTap('sin',ElementsType.sinElement);
-              },
-              style: buttonStyle,
-              child: const Text('sin')),
-            TextButton(
-              onPressed: () {
-                // sqrtButtonTap(context);
-                model.namedFunctionButtonTap('arcsin',ElementsType.arcsinElement);
-              },
-              style: buttonStyle,
-              child: const Text('arcsin')),
-            TextButton(
-              onPressed: () {model.namedFunctionButtonTap('log₂',ElementsType.logBaseTwoElement);},
-              style: buttonStyle,
-              child: const Text('log₂')),
-            TextButton(
-              onPressed: model.limButtonTap,
-              style: buttonStyle,
-              child: const Icon(CustomMathIcons.lim, color: Colors.black, size: iconSize)),
-            TextButton(
-              onPressed: () {model.addCharToTextField('f(x)');},
-              style: buttonStyle,
-              child: const Text('f(x)')),
-            TextButton(
-              onPressed: () {
-                model.addCharToTextField('∞'); 
-              },
-              style: buttonStyle,
-              child: const Text('∞')),
-      ],
-      [
-        TextButton(
-              onPressed: () {
-                // toSquareTap(context);
-                model.namedFunctionButtonTap('tan',ElementsType.tanElement);
-              },
-              style: buttonStyle,
-              child: const Text('tan')),
-            TextButton(
-              onPressed: () {model.namedFunctionButtonTap('arctan',ElementsType.arctanElement);},
-              style: buttonStyle,
-              child: const Text('arctan')),
-            TextButton(
-              onPressed: () {model.logButtonTap() ;},
-              style: buttonStyle,
-              child: const Icon(CustomMathIcons.log, color: Colors.black, size: iconSize)),
-            TextButton(
-              onPressed: () {model.integralButtonTap();},
-              style: buttonStyle,
-              child: const Icon(CustomMathIcons.integral, color: Colors.black ,size: iconSize)),
-            TextButton(
-              onPressed: () {model.onDerevativeButtonTap(upperField: 'x',downField: 'y');},
-              style: buttonStyle,
-              child: const Icon(CustomMathIcons.dx_dy, color: Colors.black, size: iconSize,)),
-            TextButton(
-              onPressed: () {},
-              style: buttonStyle,
-              child: const Text('')),
-      ],
-      [
-        TextButton(
-              onPressed: () {model.namedFunctionButtonTap('cot',ElementsType.cotElement);},
-              style: buttonStyle,
-              child: const Text('cot')),
-            TextButton(
-              onPressed: () {
-                model.namedFunctionButtonTap('arcctg',ElementsType.arccotElement);
-              },
-              style: buttonStyle,
-              child: const Text('arcctg')),
-            TextButton(
-              onPressed: () {model.namedFunctionButtonTap('ln',ElementsType.naturalLogElement);},
-              style: buttonStyle,
-              child: const Text('ln')),
-            TextButton(
-              onPressed: () {
-                model.undefinitintegralButtonTap();
-              },
-              style: buttonStyle,
-              child: const Icon(CustomMathIcons.indefinite_integral, color: Colors.black, size: iconSize)),
-            TextButton(
-              onPressed: () {
-                model.onDerevativeButtonTap(); 
-              },
-              style: buttonStyle,
-              child: const Icon(CustomMathIcons.derevative, color: Colors.black, size: iconSize)),
-            TextButton(
-              onPressed: () {
-                
-              },
-              style: buttonStyle,
-              child: const Text('')),
+        _buildFunctionButton('cot', ElementsType.cotElement, model),
+        _buildFunctionButton('arcctg', ElementsType.arccotElement, model),
+        _buildFunctionButton('ln', ElementsType.naturalLogElement, model),
+        _buildIconButton(
+          CustomMathIcons.indefinite_integral, 
+          model.undefinitintegralButtonTap
+        ),
+        _buildIconButton(CustomMathIcons.derevative, model.onDerevativeButtonTap),
+        _buildEmptyButton(),
       ]
-
     ];
+    return KeyboardPageWidget(
+      pageRows: rows,
+      keyboardPaddings: keyboardPaddings, 
+      keyboardSpacing: keyboardSpacing
+    );
+  }
 
-    return KeyboardPage(pageRows: rows);
+  Widget _buildFunctionButton(String text, ElementsType type, MathKeyboardModel model) {
+    return TextButton(
+      onPressed: () => model.namedFunctionButtonTap(text, type),
+      style: buttonStyle ?? defaultButtonStyle,
+      child: Text(text, style: textStyle)
+    );
+  }
+
+  Widget _buildTextButton(String text, MathKeyboardModel model) {
+    return TextButton(
+      onPressed: () => model.addCharToTextField(text),
+      style: buttonStyle ?? defaultButtonStyle,
+      child: Text(text, style: textStyle)
+    );
+  }
+
+  Widget _buildIconButton(IconData icon, VoidCallback onPressed) {
+    return TextButton(
+      onPressed: onPressed,
+      style: buttonStyle ?? defaultButtonStyle,
+      child: Icon(icon, color: textStyle?.color, size: iconSize)
+    );
+  }
+
+  Widget _buildEmptyButton() {
+    return TextButton(
+      onPressed: () {},
+      style: buttonStyle ?? defaultButtonStyle,
+      child: Text('', style: textStyle)
+    );
   }
 }

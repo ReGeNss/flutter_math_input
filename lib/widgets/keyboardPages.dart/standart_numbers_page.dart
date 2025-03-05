@@ -8,11 +8,27 @@ import 'package:provider/provider.dart';
 class NumbersPageWidget extends StatelessWidget {
   const NumbersPageWidget({
     super.key,
+    this.iconSize = 30,
+    this.buttonStyle,
+    this.buttonWithOverlayStyle,
+    this.textStyle,
+    this.overlayButtonStyle,
+    required this.keyboardPaddings,
+    required this.keyboardSpacing,
   });
+  final double iconSize;
+  final TextStyle? textStyle; 
+  final ButtonStyle? buttonStyle;
+  final ButtonStyle? buttonWithOverlayStyle;
+  final ButtonStyle? overlayButtonStyle;
+  final double keyboardPaddings;
+  final double keyboardSpacing;
+
+
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<KeyboardModel>();
+    final model = context.read<MathKeyboardModel>();
     final List<List<Widget>> rows = [
       [
         TextButton(
@@ -25,16 +41,18 @@ class NumbersPageWidget extends StatelessWidget {
                     buttonFuction: () {
                       model.addCharToTextField('(');
                     },
-                    buttonWidget: const Text('(')),
+                    buttonWidget: Text('(', style: textStyle),
+                    buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
                 FloatButtonData(
                     buttonFuction: () {
                       model.addCharToTextField(')');
                     },
-                    buttonWidget: const Text(')'))
+                    buttonWidget: Text(')', style: textStyle),
+                    buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle)
               ]);
             },
-            style: buttonWithOverlayStyle,
-            child: const Text('( )')),
+            style: buttonWithOverlayStyle ?? defalutButtonWithOverlayStyle,
+            child: Text('( )', style: textStyle)),
         TextButton(
           onPressed: () {
             FloatButtonOverlay().createOverlay(context, buttonsData: [
@@ -42,22 +60,26 @@ class NumbersPageWidget extends StatelessWidget {
                   buttonFuction: () {
                     model.addCharToTextField('>');
                   },
-                  buttonWidget: const Text('>')),
+                  buttonWidget: Text('>', style: textStyle),
+                  buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
               FloatButtonData(
                   buttonFuction: () {
                     model.addCharToTextField('<');
                   },
-                  buttonWidget: const Text('<')),
+                  buttonWidget: Text('<', style: textStyle),
+                  buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
               FloatButtonData(
                   buttonFuction: () {
                     model.addCharToTextField('≥');
                   },
-                  buttonWidget: const Text('≥')),
+                  buttonWidget: Text('≥', style: textStyle),
+                  buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
               FloatButtonData(
                   buttonFuction: () {
                     model.addCharToTextField('≤');
-                  },
-                  buttonWidget: const Text('≤'))
+                  },  
+                  buttonWidget: Text('≤', style: textStyle),
+                  buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle)
             ]);
           },
           onLongPress: () {
@@ -66,156 +88,57 @@ class NumbersPageWidget extends StatelessWidget {
                   buttonFuction: () {
                     model.addCharToTextField('>');
                   },
-                  buttonWidget: const Text('>')),
+                  buttonWidget: Text('>', style: textStyle),
+                  buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
               FloatButtonData(
                   buttonFuction: () {
                     model.addCharToTextField('<');
                   },
-                  buttonWidget: const Text('<')),
+                  buttonWidget: Text('<', style: textStyle),
+                  buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
               FloatButtonData(
                   buttonFuction: () {
                     model.addCharToTextField('≥');
                   },
-                  buttonWidget: const Text('≥')),
+                  buttonWidget: Text('≥', style: textStyle),
+                  buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
               FloatButtonData(
                   buttonFuction: () {
                     model.addCharToTextField('≤');
                   },
-                  buttonWidget: const Text('≤'))
+                  buttonWidget: Text('≤', style: textStyle),
+                  buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle)
             ]);
           },
-          style: buttonWithOverlayStyle,
-          child: const Text('>,<'),
+          style: buttonWithOverlayStyle ?? defalutButtonWithOverlayStyle,
+          child: Text('>,<', style: textStyle),
         ),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('7');
-            },
-            style: buttonStyle,
-            child: const Text('7')),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('8');
-            },
-            style: buttonStyle,
-            child: const Text('8')),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('9');
-            },
-            style: buttonStyle,
-            child: const Text('9')),
-        TextButton(
-            onPressed: () {
-              model.createCharWidgets('÷');
-            },
-            style: buttonStyle,
-            child: const Text('÷')),
+        _buildCharButton('7', model),
+        _buildCharButton('8', model),
+        _buildCharButton('9', model),
+        _createFunctionButtonWithText(() => model.createCharWidgets('÷'), '÷'),
       ],
       [
-        TextButton(
-            onPressed: () {
-              model.onFracButtonTap();
-            },
-            style: buttonStyle,
-            child: const Icon(CustomMathIcons.frac, color: Colors.black, size: iconSize)),
-        Builder(builder: (context) {
-          return TextButton(
-              onPressed: () {
-                model.sqrtButtonTap();
-              },
-              style: buttonStyle,
-              child: const Icon(CustomMathIcons.sqrt, color: Colors.black,size: iconSize));
-        }),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('4');
-            },
-            style: buttonStyle,
-            child: const Text('4')),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('5');
-            },
-            style: buttonStyle,
-            child: const Text('5')),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('6');
-            },
-            style: buttonStyle,
-            child: const Text('6')),
-        TextButton(
-            onPressed: () {
-              model.createCharWidgets('×');
-            },
-            style: buttonStyle,
-            child: const Text('×')),
+        _createFunctionButtonWithIcon(model.onFracButtonTap, CustomMathIcons.frac),
+        _createFunctionButtonWithIcon(model.sqrtButtonTap, CustomMathIcons.sqrt),
+        _buildCharButton('4', model),
+        _buildCharButton('5', model),
+        _buildCharButton('6', model),
+        _createFunctionButtonWithText(() => model.createCharWidgets('×'), '×'),
       ],
       [
-        TextButton(
-            onPressed: () {
-              // toSquareTap(context);
-              model.onExpButtonTap();
-            },
-            style: buttonStyle,
-            child: const Icon(CustomMathIcons.exp, color: Colors.black, size: iconSize)),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('x');
-            },
-            style: buttonStyle,
-            child: const Text('x')),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('1');
-            },
-            style: buttonStyle,
-            child: const Text('1')),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('2');
-            },
-            style: buttonStyle,
-            child: const Text('2')),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('3');
-            },
-            style: buttonStyle,
-            child: const Text('3')),
-        TextButton(
-            onPressed: () {
-              model.createCharWidgets('-');
-            },
-            style: buttonStyle,
-            child: const Text('-')),
+        _createFunctionButtonWithIcon(model.onExpButtonTap, CustomMathIcons.exp),
+        _buildCharButton('x', model),
+        _buildCharButton('1', model),
+        _buildCharButton('2', model),
+        _buildCharButton('3', model),
+        _createFunctionButtonWithText(() => model.createCharWidgets('-'), '-'),
       ],
       [
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('π');
-            },
-            style: buttonStyle,
-            child: const Text('π')),
-        TextButton(
-            onPressed: () {
-              model.createCharWidgets('%');
-            },
-            style: buttonStyle,
-            child: const Text('%')),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField('0');
-            },
-            style: buttonStyle,
-            child: const Text('0')),
-        TextButton(
-            onPressed: () {
-              model.addCharToTextField(',');
-            },
-            style: buttonStyle,
-            child: const Text(',')),
+        _buildCharButton('π', model),
+        _buildCharButton('%', model),
+        _buildCharButton('0', model),
+        _buildCharButton(',', model),
         Builder(builder: (context) {
           return TextButton(
               onLongPress: () {
@@ -224,14 +147,14 @@ class NumbersPageWidget extends StatelessWidget {
                       buttonFuction: () {
                         model.createCharWidgets('≠');
                       },
-                      buttonWidget: const Text('≠'))
+                      buttonWidget: Text('≠', style: textStyle))
                 ]);
               },
               onPressed: () {
                 model.createCharWidgets('=');
               },
-              style: buttonWithOverlayStyle,
-              child: const Text('='));
+              style: buttonWithOverlayStyle ?? defalutButtonWithOverlayStyle,
+              child: Text('=', style: textStyle));
         }),
         Builder(builder: (context) {
           return TextButton(
@@ -241,24 +164,49 @@ class NumbersPageWidget extends StatelessWidget {
                       buttonFuction: () {
                         model.createCharWidgets('±');
                       },
-                      buttonWidget: const Text('±'))
+                      buttonWidget: Text('±', style: textStyle))
                 ]);
               },
               onPressed: () {
                 model.createCharWidgets('+');
               },
-              style: buttonWithOverlayStyle,
-              child: const Text('+'));
+              style: buttonWithOverlayStyle ?? defalutButtonWithOverlayStyle,
+              child: Text('+', style: textStyle));
         }),
       ],
     ]; 
     
-    return KeyboardPage(pageRows: rows);
+    return KeyboardPageWidget(pageRows: rows, keyboardPaddings: keyboardPaddings, keyboardSpacing: keyboardSpacing);
+  }
+
+  TextButton _buildCharButton(String char, MathKeyboardModel model){
+    return TextButton(
+      onPressed: () => model.addCharToTextField(char),
+      style: buttonStyle ?? defaultButtonStyle,
+      child: Text(char, style: textStyle)
+    );
+  }
+
+  TextButton _createFunctionButtonWithIcon(Function function, IconData icon ){
+    return TextButton(
+      onPressed: () => function(),
+      style: buttonStyle ?? defaultButtonStyle,
+      child: Icon(icon, color: textStyle?.color, size: iconSize)
+    );
+  }
+
+  TextButton _createFunctionButtonWithText(Function function, String text ){
+    return TextButton(
+      onPressed: () => function(),
+      style: buttonStyle ?? defaultButtonStyle,
+      child: Text(text, style: textStyle)
+    );
   }
 }
 
 class FloatButtonOverlay{
   OverlayEntry? _overlayEntry;
+  
   void createOverlay(BuildContext context, {required List<FloatButtonData> buttonsData}){
     final overlay = Overlay.of(context);
     final renderBox = context.findRenderObject() as RenderBox; 
@@ -268,7 +216,7 @@ class FloatButtonOverlay{
       buttonsWidgets.add(SizedBox(
         height: 50,
         child: TextButton(
-            style: overlayButtonStyle,
+            style: defalultOverlayButtonStyle,
             onPressed: () {
               buttonsData[index].buttonFuction();
               _deleteOverlay(); 
@@ -305,6 +253,7 @@ class FloatButtonOverlay{
 class FloatButtonData{ 
   final Function buttonFuction; 
   final Widget buttonWidget;
+  final ButtonStyle? buttonStyle;
 
-  FloatButtonData({required this.buttonFuction, required this.buttonWidget}); 
+  FloatButtonData({required this.buttonFuction, required this.buttonWidget, this.buttonStyle}); 
 }
