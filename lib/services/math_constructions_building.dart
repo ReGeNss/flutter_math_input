@@ -63,7 +63,7 @@ class MathConstructionsBuilding {
           const SizedBox(width: 5,),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            key: const ValueKey(ElementsType.fracElement),
+            key: getKey(ElementsType.fracElement),
             children: [
               SizedBox(
                 child: Row(
@@ -132,7 +132,7 @@ class MathConstructionsBuilding {
             offsetByHeight: RelayedPositionedType.fromBottom,
             connectedWidgetKeys: [baseGlobalKey],
             widgetToWrap: Row(
-              key: const ValueKey(ElementsType.exponentiationElement),
+              key: getKey(ElementsType.exponentiationElement),
               children: [
                 textField,
               ],
@@ -157,7 +157,7 @@ class MathConstructionsBuilding {
     final adictionalField =
         textFieldService.createTextField(isReplaceOperation: false);
     final sqrtWidget = SizedBox(
-      key: const ValueKey(ElementsType.sqrtElement),
+      key: getKey(ElementsType.sqrtElement),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -195,7 +195,7 @@ class MathConstructionsBuilding {
     final baseFieldKey = GlobalKey();
     final argFieldKey = GlobalKey();
     final logWidget = WidgetDynamicSizeWrapper(
-      key: const ValueKey(ElementsType.logElement),
+      key: getKey(ElementsType.logElement),
       defaultHeight: 50,
       defaultWidth: 40,
       connectedKeysToHeight: [],
@@ -250,7 +250,7 @@ class MathConstructionsBuilding {
           defaultHeight: 50,
           defaultWidth: 50,
           connectedKeysToWidth: [firstDownFieldKey, secondDownFieldKey, argWidgetKey],
-          key: const ValueKey(ElementsType.limitElement),
+          key: getKey(ElementsType.limitElement),
           wrappedWidget: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -311,7 +311,7 @@ class MathConstructionsBuilding {
         isActiveTextField: true,
         performAdictionalTextField: true);
     final widget = SizedBox(
-      key: ValueKey(type),
+      key: getKey(type),
       child: Row(
         children: [
           Text(
@@ -341,7 +341,7 @@ class MathConstructionsBuilding {
 
     final globalKey = GlobalKey();
     final absWidget = SizedBox(
-      key: const ValueKey(ElementsType.absElement),
+      key: getKey(ElementsType.absElement),
       child: Row(
         key: globalKey,
         children: [
@@ -390,7 +390,7 @@ class MathConstructionsBuilding {
         isReplaceOperation: false, performAdictionalTextField: false);
     textFieldService.markAsGrop(argFieldWidget, derevativeField); 
     final integralWidget = Row(
-      key: const ValueKey(ElementsType.indefiniteIntegralElement),
+      key: getKey(ElementsType.indefiniteIntegralElement),
       children: [
         const Text(
           '∫',
@@ -428,7 +428,7 @@ class MathConstructionsBuilding {
     }
     textFieldService.markAsGrop(upperField, downField);
     final derevativeWidget = SizedBox(
-      key: const ValueKey(ElementsType.derevativeElement),
+      key: getKey(ElementsType.derevativeElement),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -480,7 +480,7 @@ class MathConstructionsBuilding {
     final derevativeKey = GlobalKey();
     textFieldService.markAsGrop(startPointField, derevativeField);
     final integralWidget = WidgetDynamicSizeWrapper(
-      key: const ValueKey(ElementsType.integralElement),
+      key: getKey(ElementsType.integralElement),
       connectedKeysToHeight: [],
       connectedKeysToWidth: [finishPointKey, argumentKey, derevativeKey],
       defaultHeight: 60,
@@ -714,9 +714,8 @@ class _ArgumentWidgetState extends State<ArgumentWidget> {
 
 class BacketsWidget extends StatefulWidget {
   BacketsWidget({
-    key = const ValueKey(ElementsType.backetsWidget),
     required this.textFieldWidget,
-  }) : super(key: key);
+  }) : super(key: getKey(ElementsType.backetsWidget));
   final Widget textFieldWidget;
   Widget? child;
 
@@ -888,6 +887,16 @@ class _FracDividerWidgetState extends State<FracDividerWidget> {
       ),
     );
   }
+}
+
+ObjectKey getKey(ElementsType type){
+  return ObjectKey(MathConstructionKey(type: type));
+}
+
+class MathConstructionKey{
+  final ElementsType type;
+  
+  MathConstructionKey({required this.type,});
 }
 
 class WidgetDynamicSizeWrapper extends StatefulWidget {
