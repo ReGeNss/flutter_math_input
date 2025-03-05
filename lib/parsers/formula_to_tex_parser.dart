@@ -7,12 +7,10 @@ class FormulaToTexParser {
   String start(List<Widget> widgetList) {
     formulaInTeX = '';
     _formulaParser(widgetList);
-    print(formulaInTeX);
     return formulaInTeX;
   }
 
   String? _formulaParser(List<Widget> widgetList) {
-    print('GOOL');
     for (final element in widgetList) {
       switch (element.runtimeType) {
         case const (Row):
@@ -20,8 +18,8 @@ class FormulaToTexParser {
             element as Row;
             if (element.key != null &&
                 element.key.runtimeType != LabeledGlobalKey<State<StatefulWidget>>) {
-              final keyValue = (element.key as ValueKey).value;
-              switch (keyValue) {
+              final keyValue = ((element.key as ObjectKey).value as MathConstructionKey);
+              switch (keyValue.type) {
                 case (ElementsType.exponentiationElement):
                   {
                     return addToTeXData(
@@ -34,6 +32,7 @@ class FormulaToTexParser {
                         widgets: element.children,
                         parseFunctionByChildren: undefinitIntegralParser);
                   }
+                default:
               }
             } else {
               final intermediateTeXData = formulaInTeX;
@@ -48,8 +47,8 @@ class FormulaToTexParser {
           {
             element as Column;
             if (element.key != null) {
-              final key = element.key as ValueKey;
-              if (key.value == ElementsType.fracElement) {
+              final key = (element.key as ObjectKey).value as MathConstructionKey;
+              if (key.type == ElementsType.fracElement) {
                 final fracString = fracParser(element.children);
                 formulaInTeX = formulaInTeX + fracString;
                 // return formulaInTeX;
@@ -61,15 +60,9 @@ class FormulaToTexParser {
         case const (Stack):
           {
             element as Stack;
-            if (element.key != null) {
-              final key = element.key as ValueKey;
-              switch (key.value) {
-              }
-            } else {
-              if (element.children.isNotEmpty) {
-                _formulaParser(element.children);
-                return formulaInTeX ;
-              }
+            if (element.children.isNotEmpty) {
+              _formulaParser(element.children);
+              return formulaInTeX ;
             }
             break;
           }
@@ -77,10 +70,10 @@ class FormulaToTexParser {
           {
             element as SizedBox;
             if (element.child != null) {
-              if (element.key != null && element.key is ValueKey) {
-                final key = element.key as ValueKey;
-                final keyValue = key.value;
-                switch (keyValue) {
+              if (element.key != null && element.key is ObjectKey) {
+                final key = element.key as ObjectKey;
+                final keyValue = key.value as MathConstructionKey;
+                switch (keyValue.type) {
                   case (ElementsType.absElement):
                     {
                       addToTeXData(
@@ -189,7 +182,8 @@ class FormulaToTexParser {
                   {
                     addToTeXData(widget: element.child!, parseFunctionByChild: derevativeParser);
                   }
-                }
+                default:
+              }
               } else {
                 _formulaParser([element.child!]);
               }
@@ -238,9 +232,10 @@ class FormulaToTexParser {
         case const (WidgetDynamicSizeWrapper): 
         {
           element as WidgetDynamicSizeWrapper;
-          if(element.key != null && element.key is ValueKey){
-            final key = element.key as ValueKey;
-            switch(key.value){
+          if(element.key != null && element.key is ObjectKey){
+            final key = element.key as ObjectKey;
+            final keyValue = key.value as MathConstructionKey;
+            switch(keyValue.type){
               case (ElementsType.limitElement):
               {
                 addToTeXData(
@@ -259,6 +254,7 @@ class FormulaToTexParser {
               {
                 addToTeXData(widget: element.wrappedWidget, parseFunctionByChild: logParser);
               }
+              default:
             }
           }else{
             _formulaParser([element.wrappedWidget]);
@@ -267,7 +263,6 @@ class FormulaToTexParser {
         }
       }
     }
-    print(formulaInTeX);
     return null;
   }
 
@@ -290,7 +285,6 @@ class FormulaToTexParser {
       teXData = parseFunctionByChild(widget) as String;
     }
     formulaInTeX = intermediateTeXData + teXData;
-    print(formulaInTeX);
     return formulaInTeX;
   }
 
