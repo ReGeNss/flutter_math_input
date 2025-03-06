@@ -812,7 +812,7 @@ class _SqrtCustomPaintState extends State<_SqrtCustomPaint> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-        size: Size((size?.width ?? 80) + 30, size?.height ?? 50), painter: _SqrtPainter());
+        size: Size((size?.width ?? 80) + 30, (size?.height ?? 50) + 5), painter: _SqrtPainter());
   }
 }
 

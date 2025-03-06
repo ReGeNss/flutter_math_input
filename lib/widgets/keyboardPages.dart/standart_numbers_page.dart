@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/custom_math_icons_icons.dart';
 import 'package:math_keyboard/keyboard_model.dart';
+import 'package:math_keyboard/widgets/float_button_overlay.dart';
 import 'package:math_keyboard/widgets/keyboard.dart';
-import 'package:provider/provider.dart';
-
 
 class NumbersPageWidget extends StatelessWidget {
   const NumbersPageWidget({
@@ -15,6 +14,8 @@ class NumbersPageWidget extends StatelessWidget {
     this.overlayButtonStyle,
     required this.keyboardPaddings,
     required this.keyboardSpacing,
+    required this.keyboardProperties,
+    required this.floatButtonOverlayDuration,
   });
   final double iconSize;
   final TextStyle? textStyle; 
@@ -23,135 +24,161 @@ class NumbersPageWidget extends StatelessWidget {
   final ButtonStyle? overlayButtonStyle;
   final double keyboardPaddings;
   final double keyboardSpacing;
-
-
+  final MathKontroller keyboardProperties;
+  final int floatButtonOverlayDuration;
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<MathKeyboardModel>();
+    final buttonWidth = (MediaQuery.of(context).size.width - keyboardPaddings - keyboardSpacing * (countOfButtonsInRow - 1)) / countOfButtonsInRow;
     final List<List<Widget>> rows = [
       [
         TextButton(
             onPressed: () {
-              model.backetsButtonTap();
+              keyboardProperties.backetsButtonTap();
             },
             onLongPress: () {
-              FloatButtonOverlay().createOverlay(context, buttonsData: [
-                FloatButtonData(
-                    buttonFuction: () {
-                      model.addCharToTextField('(');
-                    },
-                    buttonWidget: Text('(', style: textStyle),
-                    buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
-                FloatButtonData(
-                    buttonFuction: () {
-                      model.addCharToTextField(')');
-                    },
-                    buttonWidget: Text(')', style: textStyle),
-                    buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle)
+              FloatButtonOverlay().createOverlay(
+                context, 
+                floatButtonOverlayDuration: floatButtonOverlayDuration,
+                keyboardSpacing: keyboardSpacing, 
+                keyboardPaddings: keyboardPaddings,
+                buttonWidth: buttonWidth,
+                buttonsData: [
+                  FloatButtonData(
+                      buttonFuction: () {
+                        keyboardProperties.addCharToTextField('(');
+                      },
+                      buttonWidget: Text('(', style: textStyle),
+                      buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle
+                    ),
+                  FloatButtonData(
+                      buttonFuction: () {
+                        keyboardProperties.addCharToTextField(')');
+                      },
+                      buttonWidget: Text(')', style: textStyle),
+                      buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle
+                    )
               ]);
             },
             style: buttonWithOverlayStyle ?? defalutButtonWithOverlayStyle,
             child: Text('( )', style: textStyle)),
         TextButton(
           onPressed: () {
-            FloatButtonOverlay().createOverlay(context, buttonsData: [
+            FloatButtonOverlay().createOverlay(
+              context,
+              floatButtonOverlayDuration: floatButtonOverlayDuration,
+              buttonWidth: buttonWidth,
+              keyboardSpacing: keyboardSpacing, 
+              keyboardPaddings: keyboardPaddings,
+              buttonsData: [
               FloatButtonData(
                   buttonFuction: () {
-                    model.addCharToTextField('>');
+                    keyboardProperties.addCharToTextField('>');
                   },
                   buttonWidget: Text('>', style: textStyle),
                   buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
               FloatButtonData(
                   buttonFuction: () {
-                    model.addCharToTextField('<');
+                    keyboardProperties.addCharToTextField('<');
                   },
                   buttonWidget: Text('<', style: textStyle),
                   buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
               FloatButtonData(
                   buttonFuction: () {
-                    model.addCharToTextField('≥');
+                    keyboardProperties.addCharToTextField('≥');
                   },
                   buttonWidget: Text('≥', style: textStyle),
                   buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
               FloatButtonData(
                   buttonFuction: () {
-                    model.addCharToTextField('≤');
+                    keyboardProperties.addCharToTextField('≤');
                   },  
                   buttonWidget: Text('≤', style: textStyle),
                   buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle)
             ]);
           },
           onLongPress: () {
-            FloatButtonOverlay().createOverlay(context, buttonsData: [
-              FloatButtonData(
-                  buttonFuction: () {
-                    model.addCharToTextField('>');
-                  },
-                  buttonWidget: Text('>', style: textStyle),
-                  buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
-              FloatButtonData(
-                  buttonFuction: () {
-                    model.addCharToTextField('<');
-                  },
-                  buttonWidget: Text('<', style: textStyle),
-                  buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
-              FloatButtonData(
-                  buttonFuction: () {
-                    model.addCharToTextField('≥');
-                  },
-                  buttonWidget: Text('≥', style: textStyle),
-                  buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
-              FloatButtonData(
-                  buttonFuction: () {
-                    model.addCharToTextField('≤');
-                  },
-                  buttonWidget: Text('≤', style: textStyle),
-                  buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle)
+            FloatButtonOverlay().createOverlay(
+              context, 
+              floatButtonOverlayDuration: floatButtonOverlayDuration,
+              buttonWidth: buttonWidth,
+              keyboardSpacing: keyboardSpacing, 
+              keyboardPaddings: keyboardPaddings,
+              buttonsData: [
+                FloatButtonData(
+                    buttonFuction: () {
+                      keyboardProperties.addCharToTextField('>');
+                    },
+                    buttonWidget: Text('>', style: textStyle),
+                    buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
+                FloatButtonData(
+                    buttonFuction: () {
+                      keyboardProperties.addCharToTextField('<');
+                    },
+                    buttonWidget: Text('<', style: textStyle),
+                    buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
+                FloatButtonData(
+                    buttonFuction: () {
+                      keyboardProperties.addCharToTextField('≥');
+                    },
+                    buttonWidget: Text('≥', style: textStyle),
+                    buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle),
+                FloatButtonData(
+                    buttonFuction: () {
+                      keyboardProperties.addCharToTextField('≤');
+                    },
+                    buttonWidget: Text('≤', style: textStyle),
+                    buttonStyle: overlayButtonStyle ?? defalultOverlayButtonStyle)
             ]);
           },
           style: buttonWithOverlayStyle ?? defalutButtonWithOverlayStyle,
           child: Text('>,<', style: textStyle),
         ),
-        _buildCharButton('7', model),
-        _buildCharButton('8', model),
-        _buildCharButton('9', model),
-        _createFunctionButtonWithText(() => model.createCharWidgets('÷'), '÷'),
+        _buildCharButton('7'),
+        _buildCharButton('8'),
+        _buildCharButton('9'),
+        _createFunctionButtonWithText(() => keyboardProperties.createCharWidgets('÷'), '÷'),
       ],
       [
-        _createFunctionButtonWithIcon(model.onFracButtonTap, CustomMathIcons.frac),
-        _createFunctionButtonWithIcon(model.sqrtButtonTap, CustomMathIcons.sqrt),
-        _buildCharButton('4', model),
-        _buildCharButton('5', model),
-        _buildCharButton('6', model),
-        _createFunctionButtonWithText(() => model.createCharWidgets('×'), '×'),
+        _createFunctionButtonWithIcon(keyboardProperties.onFracButtonTap, CustomMathIcons.frac),
+        _createFunctionButtonWithIcon(keyboardProperties.sqrtButtonTap, CustomMathIcons.sqrt),
+        _buildCharButton('4'),
+        _buildCharButton('5'),
+        _buildCharButton('6'),
+        _createFunctionButtonWithText(() => keyboardProperties.createCharWidgets('×'), '×'),
       ],
       [
-        _createFunctionButtonWithIcon(model.onExpButtonTap, CustomMathIcons.exp),
-        _buildCharButton('x', model),
-        _buildCharButton('1', model),
-        _buildCharButton('2', model),
-        _buildCharButton('3', model),
-        _createFunctionButtonWithText(() => model.createCharWidgets('-'), '-'),
+        _createFunctionButtonWithIcon(keyboardProperties.onExpButtonTap, CustomMathIcons.exp),
+        _buildCharButton('x'),
+        _buildCharButton('1'),
+        _buildCharButton('2'),
+        _buildCharButton('3'),
+        _createFunctionButtonWithText(() => keyboardProperties.createCharWidgets('-'), '-'),
       ],
       [
-        _buildCharButton('π', model),
-        _buildCharButton('%', model),
-        _buildCharButton('0', model),
-        _buildCharButton(',', model),
+        _buildCharButton('π'),
+        _buildCharButton('%'),
+        _buildCharButton('0'),
+        _buildCharButton(','),
         Builder(builder: (context) {
           return TextButton(
               onLongPress: () {
-                FloatButtonOverlay().createOverlay(context, buttonsData: [
-                  FloatButtonData(
-                      buttonFuction: () {
-                        model.createCharWidgets('≠');
-                      },
-                      buttonWidget: Text('≠', style: textStyle))
+                FloatButtonOverlay().createOverlay(
+                  context, 
+                  floatButtonOverlayDuration: floatButtonOverlayDuration,
+                  buttonWidth: buttonWidth,
+                  keyboardSpacing: keyboardSpacing, 
+                  keyboardPaddings: keyboardPaddings,
+                  buttonsData: [
+                    FloatButtonData(
+                        buttonFuction: () {
+                          keyboardProperties.createCharWidgets('≠');
+                        },
+                        buttonWidget: Text('≠', style: textStyle))
                 ]);
               },
               onPressed: () {
-                model.createCharWidgets('=');
+                keyboardProperties.createCharWidgets('=');
               },
               style: buttonWithOverlayStyle ?? defalutButtonWithOverlayStyle,
               child: Text('=', style: textStyle));
@@ -159,16 +186,22 @@ class NumbersPageWidget extends StatelessWidget {
         Builder(builder: (context) {
           return TextButton(
               onLongPress: () {
-                FloatButtonOverlay().createOverlay(context, buttonsData: [
-                  FloatButtonData(
-                      buttonFuction: () {
-                        model.createCharWidgets('±');
+                FloatButtonOverlay().createOverlay(
+                  context, 
+                  floatButtonOverlayDuration: floatButtonOverlayDuration,
+                  buttonWidth: buttonWidth,
+                  keyboardSpacing: keyboardSpacing, 
+                  keyboardPaddings: keyboardPaddings,
+                  buttonsData: [
+                    FloatButtonData(
+                        buttonFuction: () {
+                          keyboardProperties.createCharWidgets('±');
                       },
                       buttonWidget: Text('±', style: textStyle))
                 ]);
               },
               onPressed: () {
-                model.createCharWidgets('+');
+                keyboardProperties.createCharWidgets('+');
               },
               style: buttonWithOverlayStyle ?? defalutButtonWithOverlayStyle,
               child: Text('+', style: textStyle));
@@ -179,9 +212,9 @@ class NumbersPageWidget extends StatelessWidget {
     return KeyboardPageWidget(pageRows: rows, keyboardPaddings: keyboardPaddings, keyboardSpacing: keyboardSpacing);
   }
 
-  TextButton _buildCharButton(String char, MathKeyboardModel model){
+  TextButton _buildCharButton(String char){
     return TextButton(
-      onPressed: () => model.addCharToTextField(char),
+      onPressed: () => keyboardProperties.addCharToTextField(char),
       style: buttonStyle ?? defaultButtonStyle,
       child: Text(char, style: textStyle)
     );
@@ -191,7 +224,7 @@ class NumbersPageWidget extends StatelessWidget {
     return TextButton(
       onPressed: () => function(),
       style: buttonStyle ?? defaultButtonStyle,
-      child: Icon(icon, color: textStyle?.color, size: iconSize)
+      child: Icon(icon, color: (textStyle?.color) ?? Colors.black, size: iconSize)
     );
   }
 
@@ -202,58 +235,4 @@ class NumbersPageWidget extends StatelessWidget {
       child: Text(text, style: textStyle)
     );
   }
-}
-
-class FloatButtonOverlay{
-  OverlayEntry? _overlayEntry;
-  
-  void createOverlay(BuildContext context, {required List<FloatButtonData> buttonsData}){
-    final overlay = Overlay.of(context);
-    final renderBox = context.findRenderObject() as RenderBox; 
-    final offset = renderBox.localToGlobal(Offset.zero);
-    final List<Widget >buttonsWidgets = [];
-    for(int index= 0; index < buttonsData.length; index++){
-      buttonsWidgets.add(SizedBox(
-        height: 50,
-        child: TextButton(
-            style: defalultOverlayButtonStyle,
-            onPressed: () {
-              buttonsData[index].buttonFuction();
-              _deleteOverlay(); 
-            },
-            child: buttonsData[index].buttonWidget),
-      ),);
-      buttonsWidgets.add(const SizedBox(width: 5,));
-    } 
-    late final double offestDx;
-    if(offset.dx - (buttonsData.length-1)*25 > 0){
-      offestDx = offset.dx - (buttonsData.length-1)*25;
-    } 
-    else{ 
-      offestDx = 0;
-    }
-
-    _overlayEntry = OverlayEntry(
-        builder: (context) => Positioned(
-            left: offestDx,
-            top: offset.dy - 55,
-            child: Row(
-              children: buttonsWidgets
-            )));
-    overlay.insert(_overlayEntry!); 
-    Future.delayed(const Duration(seconds: 2)).then((_)=> _deleteOverlay()); 
-  }
-
-  void _deleteOverlay(){
-    _overlayEntry?.remove();
-    _overlayEntry = null;
-  }
-}
-
-class FloatButtonData{ 
-  final Function buttonFuction; 
-  final Widget buttonWidget;
-  final ButtonStyle? buttonStyle;
-
-  FloatButtonData({required this.buttonFuction, required this.buttonWidget, this.buttonStyle}); 
 }

@@ -6,7 +6,7 @@ import 'package:math_keyboard/services/math_constructions_building.dart';
 import 'package:math_keyboard/services/text_field_handle_and_create.dart';
 import 'package:math_keyboard/services/widgets_data_handler.dart';
 
-class MathKeyboardModel extends ChangeNotifier{
+class MathKontroller extends ChangeNotifier{
   late final TextFieldHandleAndCreateService _textFieldService; 
   late final MathConstructionsBuilding _mathConstructionsBuildingService; 
   late final FormulasTreeParsersService _parsersService; 
@@ -17,14 +17,14 @@ class MathKeyboardModel extends ChangeNotifier{
   bool update = true; 
   String? formulaInTeX; 
 
-  MathKeyboardModel(){
+  MathKontroller(){
     _textFieldService = TextFieldHandleAndCreateService();
     _mathConstructionsBuildingService = MathConstructionsBuilding(textFieldService: _textFieldService);
     _parsersService = FormulasTreeParsersService();
     _dataHandler = WidgetsDataHandler(); 
     _texParsingService = FormulaToTexParser();
     _deletingParserService = FormulasTreeDeletingParser(); 
-    initialization();
+    _initialization();
   }
   final List<Widget> _formulaGroopWidgets = [];
 
@@ -32,7 +32,7 @@ class MathKeyboardModel extends ChangeNotifier{
     return _formulaGroopWidgets.toList(); 
   }
 
-  void initialization(){
+  void _initialization(){
     final defaultTextField = _mathConstructionsBuildingService.initialization(); 
     _formulaGroopWidgets.add(defaultTextField); 
     // notifyListeners();
@@ -298,7 +298,7 @@ class MathKeyboardModel extends ChangeNotifier{
   void deleteAllButtonTap() {
     _formulaGroopWidgets.clear();
     _textFieldService.deleteAllTextFields();
-    initialization();
+    _initialization();
     notifyListeners();
   }
 

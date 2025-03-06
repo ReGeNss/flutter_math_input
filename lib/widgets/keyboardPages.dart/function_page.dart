@@ -3,7 +3,6 @@ import 'package:math_keyboard/custom_math_icons_icons.dart';
 import 'package:math_keyboard/keyboard_model.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
 import 'package:math_keyboard/widgets/keyboard.dart';
-import 'package:provider/provider.dart';
 
 class FunctionPageWidget extends StatelessWidget {
   const FunctionPageWidget({
@@ -13,6 +12,7 @@ class FunctionPageWidget extends StatelessWidget {
     this.textStyle, 
     required this.keyboardPaddings, 
     required this.keyboardSpacing,
+    required this.keyboardProperties,
   });
 
   final double iconSize;
@@ -20,47 +20,47 @@ class FunctionPageWidget extends StatelessWidget {
   final TextStyle? textStyle;
   final double keyboardPaddings;
   final double keyboardSpacing;
+  final MathKontroller keyboardProperties;
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<MathKeyboardModel>();
     final List<List<Widget>> rows = [
       [
-        _buildFunctionButton('cos', ElementsType.cosElement, model),
-        _buildFunctionButton('arccos', ElementsType.arccosElement, model),
-        _buildFunctionButton('lg', ElementsType.decimalLogElement, model),
-        _buildIconButton(CustomMathIcons.abs, model.absButtonTap),
-        _buildTextButton('!', model),
-        _buildTextButton('e', model),
+        _buildFunctionButton('cos', ElementsType.cosElement),
+        _buildFunctionButton('arccos', ElementsType.arccosElement),
+        _buildFunctionButton('lg', ElementsType.decimalLogElement),
+        _buildIconButton(CustomMathIcons.abs, keyboardProperties.absButtonTap),
+        _buildTextButton('!'),
+        _buildTextButton('e'),
       ],
       [
-        _buildFunctionButton('sin', ElementsType.sinElement, model),
-        _buildFunctionButton('arcsin', ElementsType.arcsinElement, model),
-        _buildFunctionButton('log₂', ElementsType.logBaseTwoElement, model),
-        _buildIconButton(CustomMathIcons.lim, model.limButtonTap),
-        _buildTextButton('f(x)', model),
-        _buildTextButton('∞', model),
+        _buildFunctionButton('sin', ElementsType.sinElement),
+        _buildFunctionButton('arcsin', ElementsType.arcsinElement),
+        _buildFunctionButton('log₂', ElementsType.logBaseTwoElement),
+        _buildIconButton(CustomMathIcons.lim, keyboardProperties.limButtonTap),
+        _buildTextButton('f(x)'),
+        _buildTextButton('∞'),
       ],
       [
-        _buildFunctionButton('tan', ElementsType.tanElement, model),
-        _buildFunctionButton('arctan', ElementsType.arctanElement, model),
-        _buildIconButton(CustomMathIcons.log, model.logButtonTap),
-        _buildIconButton(CustomMathIcons.integral, model.integralButtonTap),
+        _buildFunctionButton('tan', ElementsType.tanElement),
+        _buildFunctionButton('arctan', ElementsType.arctanElement),
+        _buildIconButton(CustomMathIcons.log, keyboardProperties.logButtonTap),
+        _buildIconButton(CustomMathIcons.integral, keyboardProperties.integralButtonTap),
         _buildIconButton(
           CustomMathIcons.dx_dy, 
-          () => model.onDerevativeButtonTap(upperField: 'x', downField: 'y')
+          () => keyboardProperties.onDerevativeButtonTap(upperField: 'x', downField: 'y')
         ),
         _buildEmptyButton(),
       ],
       [
-        _buildFunctionButton('cot', ElementsType.cotElement, model),
-        _buildFunctionButton('arcctg', ElementsType.arccotElement, model),
-        _buildFunctionButton('ln', ElementsType.naturalLogElement, model),
+        _buildFunctionButton('cot', ElementsType.cotElement),
+        _buildFunctionButton('arcctg', ElementsType.arccotElement),
+        _buildFunctionButton('ln', ElementsType.naturalLogElement),
         _buildIconButton(
           CustomMathIcons.indefinite_integral, 
-          model.undefinitintegralButtonTap
+          keyboardProperties.undefinitintegralButtonTap
         ),
-        _buildIconButton(CustomMathIcons.derevative, model.onDerevativeButtonTap),
+        _buildIconButton(CustomMathIcons.derevative, keyboardProperties.onDerevativeButtonTap),
         _buildEmptyButton(),
       ]
     ];
@@ -71,17 +71,17 @@ class FunctionPageWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildFunctionButton(String text, ElementsType type, MathKeyboardModel model) {
+  Widget _buildFunctionButton(String text, ElementsType type) {
     return TextButton(
-      onPressed: () => model.namedFunctionButtonTap(text, type),
+      onPressed: () => keyboardProperties.namedFunctionButtonTap(text, type),
       style: buttonStyle ?? defaultButtonStyle,
       child: Text(text, style: textStyle)
     );
   }
 
-  Widget _buildTextButton(String text, MathKeyboardModel model) {
+  Widget _buildTextButton(String text) {
     return TextButton(
-      onPressed: () => model.addCharToTextField(text),
+      onPressed: () => keyboardProperties.addCharToTextField(text),
       style: buttonStyle ?? defaultButtonStyle,
       child: Text(text, style: textStyle)
     );
@@ -91,7 +91,7 @@ class FunctionPageWidget extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: buttonStyle ?? defaultButtonStyle,
-      child: Icon(icon, color: textStyle?.color, size: iconSize)
+      child: Icon(icon, color: (textStyle?.color) ?? Colors.black, size: iconSize)
     );
   }
 

@@ -3,12 +3,12 @@ import 'package:math_keyboard/keyboard_model.dart';
 import 'package:math_keyboard/widgets/keyboard.dart';
 import 'package:provider/provider.dart';
 
-class MathInputWidget extends StatefulWidget {
-  const MathInputWidget({
+class MathInput extends StatefulWidget {
+  const MathInput({
     super.key,
     this.decoration,
     this.width = double.infinity,
-    this.height = 100,
+    this.height = 150,
     this.padding = const EdgeInsets.all(10),
   });
   final BoxDecoration? decoration;
@@ -17,21 +17,21 @@ class MathInputWidget extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   @override
-  State<MathInputWidget> createState() => _MathInputWidgetState();
+  State<MathInput> createState() => _MathInputState();
 }
 
-class _MathInputWidgetState extends State<MathInputWidget> {
+class _MathInputState extends State<MathInput> {
   @override
   Widget build(BuildContext context) {
     try{
-    final model = context.watch<MathKeyboardModel>();
+    final model = context.watch<MathKontroller>();
     final formula = model.update == true
         ? Row(
             children: model.getFormulaWidgets(),
           )
         : const Center(child: Text('LOAD'));
     return GestureDetector(
-      onTap: () => MathKeyboard().showKeyboard(context),
+      onTap: () => BasicMathKeyboard().showKeyboard(),
       child: Container(
         width: widget.width,
         height: widget.height,

@@ -15,8 +15,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      lazy: false,
-      create: (_) => MathKeyboardModel(),
+      create: (_) => MathKontroller(),
       child: const MaterialApp(
         home: MainScreenWidget(),
       ),
@@ -44,14 +43,14 @@ class MainScreenColumnWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) { 
-  final model = context.watch<MathKeyboardModel>();  
+  final model = context.watch<MathKontroller>();  
     return Column(
       children: [
         const SizedBox(height: 50,),
         Math.tex(model.formulaInTeX ?? ''),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: MathInputWidget(),
+          child: MathInput(),
         ),  
         const SizedBox(height: 10,),
         Padding(
@@ -61,7 +60,7 @@ class MainScreenColumnWidget extends StatelessWidget {
             children: [
               FilledButton(
                   onPressed: () {
-                    MathKeyboard().showKeyboard(context);
+                    BasicMathKeyboard(context: context).showKeyboard();
                   },
                   child: const Text('Show keyboard')),
               const SizedBox(width: 10,),
