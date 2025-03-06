@@ -21,12 +21,27 @@ class MathInput extends StatefulWidget {
 }
 
 class _MathInputState extends State<MathInput> {
+  final GlobalKey _formulasRowKey = GlobalKey();
+  late final MathKontroller keyboardController;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final keyboardController = context.read<MathKontroller>();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final RenderBox? renderBox = _formulasRowKey.currentContext?.findRenderObject() as RenderBox?;
+      if(renderBox != null && keyboardController.isFormulaRendred == false){
+        keyboardController.changeFormulaRenderingState();
+      }
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
-    try{
+  try{
     final model = context.watch<MathKontroller>();
-    final formula = model.update == true
+    final formula = model.isFormulaUpdated == true
         ? Row(
+            key: _formulasRowKey,
             children: model.getFormulaWidgets(),
           )
         : const Center(child: Text('LOAD'));

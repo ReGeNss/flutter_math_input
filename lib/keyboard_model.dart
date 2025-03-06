@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:math_keyboard/parsers/deleteting_parser.dart';
 import 'package:math_keyboard/parsers/formula_to_tex_parser.dart';
@@ -6,6 +7,9 @@ import 'package:math_keyboard/services/math_constructions_building.dart';
 import 'package:math_keyboard/services/text_field_handle_and_create.dart';
 import 'package:math_keyboard/services/widgets_data_handler.dart';
 
+const _timeToUpdateFormula = Duration(seconds: 1);
+const _timeToRebuildScreen = Duration(milliseconds: 50);
+
 class MathKontroller extends ChangeNotifier{
   late final TextFieldHandleAndCreateService _textFieldService; 
   late final MathConstructionsBuilding _mathConstructionsBuildingService; 
@@ -13,9 +17,15 @@ class MathKontroller extends ChangeNotifier{
   late final WidgetsDataHandler _dataHandler; 
   late final FormulaToTexParser _texParsingService; 
   late final FormulasTreeDeletingParser _deletingParserService;
+  
+  final _streamController = StreamController<String>.broadcast();
+  Stream<String> get katexFormulaStream => _streamController.stream;
 
-  bool update = true; 
-  String? formulaInTeX; 
+  final _renderController = StreamController<void>.broadcast();
+
+  bool isFormulaUpdated = true; 
+  bool _isFormulaRendred = true; 
+  bool get isFormulaRendred => _isFormulaRendred;
 
   MathKontroller(){
     _textFieldService = TextFieldHandleAndCreateService();
@@ -35,16 +45,44 @@ class MathKontroller extends ChangeNotifier{
   void _initialization(){
     final defaultTextField = _mathConstructionsBuildingService.initialization(); 
     _formulaGroopWidgets.add(defaultTextField); 
-    // notifyListeners();
+    _setupStreams();
+  }
+  
+  void _setupStreams() { 
+    Timer? timer;
+    _streamController.onListen = () { 
+      timer = Timer.periodic(_timeToUpdateFormula, (timer) {
+        if (_isFormulaRendred) {
+          _streamController.add(_requestFormulaToKaTeXParse());
+        }
+      });
+    };
+    _streamController.onCancel = () {
+      timer?.cancel();
+    };
+
+    _renderController.stream.listen(
+      (isRendred) {
+        _isFormulaRendred = !_isFormulaRendred;
+      }
+    );
   }
 
   void addCharToTextField(String char){
     _textFieldService.addCharToTextField(char);
   }
 
-  String getFormulaKaTeX() {
-    formulaInTeX = _texParsingService.start(_formulaGroopWidgets);
-    return formulaInTeX ?? '';
+  String _requestFormulaToKaTeXParse() {
+      return _texParsingService.start(_formulaGroopWidgets);
+  }
+
+  FutureOr<String> getFormulaKaTeX() {
+    if(_isFormulaRendred){
+      return _texParsingService.start(_formulaGroopWidgets);
+    }else{
+      return Future.value(_renderController.stream.first)
+        .then((_) => _texParsingService.start(_formulaGroopWidgets));
+    }
   }
 
   void onFracButtonTap(){
@@ -224,7 +262,7 @@ class MathKontroller extends ChangeNotifier{
     
     if (fieldsCountInElement == null) {
       _replaceElementByField(activeController);
-      rebuildSreenState(hard: true);
+      rebuildSreenState();
       return;
     }
 
@@ -234,7 +272,7 @@ class MathKontroller extends ChangeNotifier{
       _replaceElementByField(activeController);
     }
 
-    rebuildSreenState(hard: true);
+    rebuildSreenState();
   }
 
   ElementFieldsData? _getFieldsCountInElement(ReturnData parsedWidgets, TextEditingController activeController) {
@@ -302,16 +340,27 @@ class MathKontroller extends ChangeNotifier{
     notifyListeners();
   }
 
-  void rebuildSreenState({bool hard = false}) {
-    update = false;
+  void rebuildSreenState() {
+    isFormulaUpdated = false;
+    changeFormulaRenderingState();
     notifyListeners();
-    
-    final delay = hard ? const Duration(milliseconds: 50) : const Duration(milliseconds: 50);
-    
-    Future.delayed(delay, () {
-      update = true;
+        
+    Future.delayed(_timeToRebuildScreen, () {
+      isFormulaUpdated = true;
       notifyListeners();
       _textFieldService.requestFocusToActiveTextField();
     });
+  }
+
+  void changeFormulaRenderingState(){
+    _renderController.add(null);
+  }
+
+  @override
+  void dispose() {
+    _streamController.close();
+    _renderController.close(); 
+    _textFieldService.dispose();
+    super.dispose();
   }
 }
