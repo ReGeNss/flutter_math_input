@@ -8,7 +8,7 @@ class MathInputWidget extends StatefulWidget {
     super.key,
     this.decoration,
     this.width = double.infinity,
-    this.height = 100,
+    this.height = 140,
     this.padding = const EdgeInsets.all(10),
   });
   final BoxDecoration? decoration;
@@ -31,7 +31,7 @@ class _MathInputWidgetState extends State<MathInputWidget> {
           )
         : const Center(child: Text('LOAD'));
     return GestureDetector(
-      onTap: () => MathKeyboard().showKeyboard(context),
+      onTap: () => BasicMathKeyboard().showKeyboard(),
       child: Container(
         width: widget.width,
         height: widget.height,

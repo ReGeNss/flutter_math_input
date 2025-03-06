@@ -61,7 +61,7 @@ class MainScreenColumnWidget extends StatelessWidget {
             children: [
               FilledButton(
                   onPressed: () {
-                    MathKeyboard().showKeyboard(context);
+                    BasicMathKeyboard(context: context).showKeyboard();
                   },
                   child: const Text('Show keyboard')),
               const SizedBox(width: 10,),

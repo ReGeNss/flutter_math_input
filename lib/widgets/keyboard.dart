@@ -6,6 +6,8 @@ import 'package:math_keyboard/widgets/keyboardPages.dart/latin_alphabet_page.dar
 import 'package:math_keyboard/widgets/keyboardPages.dart/standart_numbers_page.dart';
 import 'package:provider/provider.dart';
 
+const countOfButtonsInRow = 6;
+
 final defaultButtonStyle = ButtonStyle(
     backgroundColor: WidgetStateProperty.all(
       const Color.fromRGBO(211, 211, 211, 0.3),
@@ -30,6 +32,228 @@ final defalutButtonWithOverlayStyle = ButtonStyle(
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
     foregroundColor: WidgetStateProperty.all(Colors.black),
     side: WidgetStateProperty.all(const BorderSide(color: Colors.cyanAccent)));
+
+
+class MathKeyboard {
+  final BuildContext context;
+  late final MathKeyboardModel keyboardProperties;
+  MathKeyboard({required this.context}){
+    try{
+      keyboardProperties = context.read<MathKeyboardModel>();
+    } on ProviderNotFoundException {
+      throw Exception('MathKeyboardModel not found. Please add provide MathKeyboardModel to your widget tree.');
+    }
+  }
+
+  Widget _buildKeyboard(StateSetter setState) {
+    throw UnimplementedError('The buildKeyboard method must be overridden in the child class');
+  }
+
+  void showKeyboard() {
+    try{
+      Scaffold.of(context).showBottomSheet(
+        (context) => StatefulBuilder(
+          builder: (context, setState) => _buildKeyboard(setState),
+        ),
+      );
+    } catch (e) {
+      throw Exception('Something went wrong. Tap delete button to clear the input');
+    }
+  }
+}
+
+class BasicMathKeyboard extends MathKeyboard {
+  static BasicMathKeyboard? _instance;
+
+  final double height;
+  final double width;
+  final EdgeInsets padding;
+  final double spacing;
+  final Color backgroundColor;
+  final ButtonStyle? buttonsStyle;
+  final ButtonStyle? buttonWithOverlayStyle;
+  final ButtonStyle? overlayButtonStyle;
+  final int floatButtonOverlayDuration;
+  final double iconSize;
+  final TextStyle? textStyle;
+  late final List<Widget> _keyboardFormat = [
+    NumbersPageWidget(
+        buttonStyle: buttonsStyle,
+        buttonWithOverlayStyle: buttonWithOverlayStyle,
+        overlayButtonStyle: overlayButtonStyle,
+        textStyle: textStyle,
+        iconSize: iconSize,
+        keyboardPaddings: keyboardPaddings,
+        keyboardSpacing: spacing,
+        keyboardProperties: keyboardProperties,
+        floatButtonOverlayDuration: floatButtonOverlayDuration,
+      ),
+      FunctionPageWidget(
+        buttonStyle: buttonsStyle,
+        iconSize: iconSize,
+        textStyle: textStyle,
+        keyboardPaddings: keyboardPaddings,
+        keyboardSpacing: spacing,
+        keyboardProperties: keyboardProperties
+      ),
+      LatinAlphabetPageWidget(
+        buttonStyle: buttonsStyle,
+        iconSize: iconSize,
+        textStyle: textStyle,
+        keyboardPaddings: keyboardPaddings,
+        keyboardSpacing: spacing,
+        keyboardProperties: keyboardProperties
+      ),
+  ];
+  late final double keyboardPaddings = padding.left + padding.right;
+  int _selectedKeyboardFormat = 0;
+
+  BasicMathKeyboard._({
+    required this.height,
+    required this.width,
+    required this.padding,
+    required this.spacing,
+    required this.backgroundColor,
+    this.buttonsStyle,
+    this.buttonWithOverlayStyle,
+    this.overlayButtonStyle,
+    required this.iconSize,
+    this.textStyle,
+    required super.context,
+    required this.floatButtonOverlayDuration,
+  }); 
+
+  factory BasicMathKeyboard({
+    double height = 350,
+    double width = double.infinity,
+    EdgeInsets padding = const EdgeInsets.all(10),
+    double spacing = 5,
+    Color backgroundColor = Colors.white,
+    ButtonStyle? buttonsStyle,
+    ButtonStyle? buttonWithOverlayStyle,
+    ButtonStyle? overlayButtonStyle,
+    double iconSize = 30,
+    TextStyle? textStyle,
+    BuildContext? context,
+    int floatButtonOverlayDuration = 2,
+  }) {
+    if(_instance == null && context == null ) {
+      throw Exception('In first call of BasicMathKeyboard you must provide context');
+    }
+    _instance ??= BasicMathKeyboard._(
+      context: context!,
+      height: height,
+      width: width,
+      padding: padding,
+      spacing: spacing,
+      backgroundColor: backgroundColor,
+      buttonsStyle: buttonsStyle,
+      buttonWithOverlayStyle: buttonWithOverlayStyle,
+      overlayButtonStyle: overlayButtonStyle,
+      iconSize: iconSize, 
+      textStyle: textStyle,
+      floatButtonOverlayDuration: floatButtonOverlayDuration,
+    );
+    return _instance!;
+  }
+
+  @override
+  Widget _buildKeyboard(StateSetter setState) {
+    
+    return Container(
+      color: backgroundColor,
+      height: height,
+      width: width,
+      child: Padding(
+        padding: padding,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Row(
+                spacing: spacing,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildNavigationButton(
+                    onPressed: () => keyboardProperties.selectBackFocus(),
+                    icon: Icons.arrow_back,
+                  ),
+                  _buildNavigationButton(
+                    onPressed: () => keyboardProperties.selectNextFocus(),
+                    icon: Icons.arrow_forward,
+                  ),
+                  _buildNavigationButton(
+                    onPressed: () {
+                      _selectedKeyboardFormat = 0;
+                      setState(() {});
+                    },
+                    icon: Icons.pin_outlined,
+                  ),
+                  _buildNavigationButton(
+                    onPressed: () {
+                      _selectedKeyboardFormat = 1;
+                      setState(() {});
+                    },
+                    icon: Icons.functions_outlined,
+                  ),
+                  _buildNavigationButton(
+                    onPressed: () {
+                      _selectedKeyboardFormat = 2;
+                      setState(() {});
+                    },
+                    icon: Icons.abc_outlined,
+                  ),
+                  _buildNavigationButton(
+                    onPressed: () => keyboardProperties.backspaceButtonTap(),
+                    icon: Icons.backspace_outlined,
+                  ),
+                  _buildNavigationButton(
+                    onPressed: () => keyboardProperties.deleteAllButtonTap(),
+                    icon: Icons.delete_outline,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: spacing),
+            Expanded(
+              child: ScroolGreekSymbolsWidget(
+                keyboardProperties: keyboardProperties,
+                buttonStyle: buttonsStyle,
+                textStyle: textStyle,
+                iconSize: iconSize,
+                keyboardSpacing: spacing,
+                keyboardPadding: keyboardPaddings,
+              ),
+            ),
+            SizedBox(height: spacing),
+            Expanded(
+              flex: 4,
+              child: _keyboardFormat[_selectedKeyboardFormat],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  
+  Widget _buildNavigationButton({
+    required VoidCallback onPressed,
+    required IconData icon,
+  }) {
+    return Expanded(
+      child: SizedBox(
+        height: double.infinity,
+        child: IconButton(
+          onPressed: onPressed,
+          icon: Icon(icon, color: textStyle?.color),
+          style: buttonsStyle ?? defaultButtonStyle,
+        ),
+      ),
+    );
+  }
+
+}
 
 class KeyboardPageWidget extends StatelessWidget {
   const KeyboardPageWidget({
@@ -66,208 +290,9 @@ class KeyboardPageWidget extends StatelessWidget {
     }).toList();
 
     return Column(
-      spacing: 5,
+      spacing: keyboardSpacing,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: rows,
-    );
-  }
-}
-
-class MathKeyboard {
-  static MathKeyboard? _instance;
-
-  final double height;
-  final double width;
-  final EdgeInsets padding;
-  final double spacing;
-  final Color backgroundColor;
-  final ButtonStyle? buttonsStyle;
-  final ButtonStyle? buttonWithOverlayStyle;
-  final ButtonStyle? overlayButtonStyle;
-  final double keyboardPaddings;
-  final double iconSize;
-  final TextStyle? textStyle;
-  final List<Widget> _keyboardFormat = [];
-  int _selectedKeyboardFormat = 0;
-
-  MathKeyboard._({
-    this.height = 350,
-    this.width = double.infinity,
-    this.padding = const EdgeInsets.all(10),
-    this.spacing = 5,
-    this.backgroundColor = Colors.white,
-    this.buttonsStyle,
-    this.buttonWithOverlayStyle,
-    this.overlayButtonStyle,
-    this.keyboardPaddings = 20,
-    this.iconSize = 30,
-    this.textStyle,
-  }) {
-    _initKeyboardFormat();
-  }
-
-  void _initKeyboardFormat() {
-    _keyboardFormat.addAll([
-      NumbersPageWidget(
-        buttonStyle: buttonsStyle,
-        buttonWithOverlayStyle: buttonWithOverlayStyle,
-        overlayButtonStyle: overlayButtonStyle,
-        textStyle: textStyle,
-        iconSize: iconSize,
-        keyboardPaddings: keyboardPaddings,
-        keyboardSpacing: spacing,
-      ),
-      FunctionPageWidget(
-        buttonStyle: buttonsStyle,
-        iconSize: iconSize,
-        textStyle: textStyle,
-        keyboardPaddings: keyboardPaddings,
-        keyboardSpacing: spacing,
-      ),
-      LatinAlphabetPageWidget(
-        buttonStyle: buttonsStyle,
-        iconSize: iconSize,
-        textStyle: textStyle,
-        keyboardPaddings: keyboardPaddings,
-        keyboardSpacing: spacing,
-      ),
-    ]);
-  }
-
-  factory MathKeyboard({
-    double height = 350,
-    double width = double.infinity,
-    EdgeInsets padding = const EdgeInsets.all(10),
-    double spacing = 5,
-    Color backgroundColor = Colors.white,
-    ButtonStyle? buttonsStyle,
-    ButtonStyle? buttonWithOverlayStyle,
-    ButtonStyle? overlayButtonStyle,
-    double keyboardPaddings = 20,
-    double iconSize = 30,
-    TextStyle? textStyle,
-  }) {
-    _instance ??= MathKeyboard._(
-      height: height,
-      width: width,
-      padding: padding,
-      spacing: spacing,
-      backgroundColor: backgroundColor,
-      buttonsStyle: buttonsStyle,
-      buttonWithOverlayStyle: buttonWithOverlayStyle,
-      overlayButtonStyle: overlayButtonStyle,
-      keyboardPaddings: keyboardPaddings,
-      iconSize: iconSize, 
-      textStyle: textStyle,
-    );
-    return _instance!;
-  }
-
-  Widget _buildNavigationButton({
-    required VoidCallback onPressed,
-    required IconData icon,
-  }) {
-    return Expanded(
-      child: SizedBox(
-        height: double.infinity,
-        child: IconButton(
-          onPressed: onPressed,
-          icon: Icon(icon, color: textStyle?.color),
-          style: buttonsStyle ?? defaultButtonStyle,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildKeyboardContent(BuildContext context, StateSetter setState) {
-    final model = context.read<MathKeyboardModel>();
-
-    return Container(
-      color: backgroundColor,
-      height: height,
-      width: width,
-      child: Padding(
-        padding: padding,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Row(
-                spacing: spacing,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildNavigationButton(
-                    onPressed: () => model.selectBackFocus(),
-                    icon: Icons.arrow_back,
-                  ),
-                  _buildNavigationButton(
-                    onPressed: () => model.selectNextFocus(),
-                    icon: Icons.arrow_forward,
-                  ),
-                  _buildNavigationButton(
-                    onPressed: () {
-                      _selectedKeyboardFormat = 0;
-                      setState(() {});
-                    },
-                    icon: Icons.pin_outlined,
-                  ),
-                  _buildNavigationButton(
-                    onPressed: () {
-                      _selectedKeyboardFormat = 1;
-                      setState(() {});
-                    },
-                    icon: Icons.functions_outlined,
-                  ),
-                  _buildNavigationButton(
-                    onPressed: () {
-                      _selectedKeyboardFormat = 2;
-                      setState(() {});
-                    },
-                    icon: Icons.abc_outlined,
-                  ),
-                  _buildNavigationButton(
-                    onPressed: () => model.backspaceButtonTap(),
-                    icon: Icons.backspace_outlined,
-                  ),
-                  _buildNavigationButton(
-                    onPressed: () => model.deleteAllButtonTap(),
-                    icon: Icons.delete_outline,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: spacing),
-            Expanded(
-              child: ScroolGreekSymbolsWidget(
-                buttonStyle: buttonsStyle,
-                textStyle: textStyle,
-                iconSize: iconSize,
-                keyboardSpacing: spacing,
-              ),
-            ),
-            SizedBox(height: spacing),
-            Expanded(
-              flex: 4,
-              child: _keyboardFormat[_selectedKeyboardFormat],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void showKeyboard(BuildContext context) {
-    try{
-      context.read<MathKeyboardModel>();
-    } on ProviderNotFoundException {
-      throw Exception('MathKeyboardModel not found. Please add provide MathKeyboardModel to your widget tree.');
-    } catch (e) {
-      throw Exception('Something went wrong. Tap delete button to clear the input');
-    }
-    Scaffold.of(context).showBottomSheet(
-      (context) => StatefulBuilder(
-        builder: (context, setState) => _buildKeyboardContent(context, setState),
-      ),
     );
   }
 }
