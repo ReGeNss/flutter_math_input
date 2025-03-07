@@ -5,9 +5,13 @@ import 'package:math_keyboard/services/text_field_handle_and_create.dart';
 class FormulaToTexParser {
   String formulaInTeX = '';
   String start(List<Widget> widgetList) {
-    formulaInTeX = '';
-    _formulaParser(widgetList);
+    try{
+      formulaInTeX = '';
+      _formulaParser(widgetList);
     return formulaInTeX;
+    }catch(e){
+      return 'error';
+    }
   }
 
   String? _formulaParser(List<Widget> widgetList) {
