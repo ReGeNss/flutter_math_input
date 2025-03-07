@@ -8,7 +8,7 @@ class FormulaToTexParser {
     try{
       formulaInTeX = '';
       _formulaParser(widgetList);
-    return formulaInTeX;
+      return formulaInTeX;
     }catch(e){
       return 'error';
     }
@@ -20,21 +20,25 @@ class FormulaToTexParser {
         case const (Row):
           {
             element as Row;
-            if (element.key != null &&
-                element.key.runtimeType != LabeledGlobalKey<State<StatefulWidget>>) {
+            if (
+              element.key != null &&
+              element.key.runtimeType != LabeledGlobalKey<State<StatefulWidget>>
+              ) {
               final keyValue = ((element.key as ObjectKey).value as MathConstructionKey);
               switch (keyValue.type) {
                 case (ElementsType.exponentiationElement):
                   {
                     return addToTeXData(
-                        widgets: element.children,
-                        parseFunctionByChildren: expParser);
+                      widgets: element.children,
+                      parseFunctionByChildren: expParser
+                    );
                   }
                 case (ElementsType.indefiniteIntegralElement):
                   {
                     addToTeXData(
-                        widgets: element.children,
-                        parseFunctionByChildren: undefinitIntegralParser);
+                      widgets: element.children,
+                      parseFunctionByChildren: undefinitIntegralParser
+                    );
                   }
                 default:
               }
@@ -55,7 +59,6 @@ class FormulaToTexParser {
               if (key.type == ElementsType.fracElement) {
                 final fracString = fracParser(element.children);
                 formulaInTeX = formulaInTeX + fracString;
-                // return formulaInTeX;
               } 
             }
 
@@ -199,7 +202,6 @@ class FormulaToTexParser {
           {
             element as Positioned;
             _formulaParser([element.child]);
-
             break;
           }
         case const (TextField):
@@ -207,7 +209,6 @@ class FormulaToTexParser {
             element as TextField;
             formulaInTeX = formulaInTeX + element.controller!.text;
             return element.controller?.text;
-            // break;
           }
         case const (BacketsWidget):
           {
@@ -295,54 +296,42 @@ class FormulaToTexParser {
   String backetsParer(List<Widget> widgets) {
     String backetData = '';
     for (final element in widgets) {
-      if (element is SizedBox && element.child != null) {
-        _formulaParser([element.child!]);
-      } else if (element is Row) {
-        _formulaParser(element.children);
-      }
+      _formulaParser([element]); 
       if (formulaInTeX.isNotEmpty) {
         backetData = '$backetData$formulaInTeX';
       }
       formulaInTeX = '';
     }
-    return '($backetData)';
+    return '\\left($backetData\\right)';
   }
 
   String expParser(List<Widget> widgets) {
     String teXExpData = '';
     for (final element in widgets) {
-      if (element.runtimeType == SizedBox) {
-        element as SizedBox;
-        if (element.child != null) {
-          formulaInTeX = '';
-          _formulaParser([element.child!]);
-          if (formulaInTeX.isNotEmpty) {
-            teXExpData = '$teXExpData$formulaInTeX ';
-          }
-        }
-      } else {}
+      formulaInTeX = '';
+      _formulaParser([element]);
+      if (formulaInTeX.isNotEmpty) {
+        teXExpData = '$teXExpData$formulaInTeX ';
+      }
     }
-
     return '^{$teXExpData}';
+  }
+
+  List<String> getFormulasFromWidgets(List<Widget> widgets, List<int> widgetsTocheck){
+    List<String> data = [];
+    for(int i = 0; i < widgetsTocheck.length; i++){
+      _formulaParser([widgets[widgetsTocheck[i]]]);
+      data.add(formulaInTeX);
+      formulaInTeX = '';
+    }
+    return data;
   }
 
   String sqrtParser(List<Widget> widgets) {
     String textData = '';
     for (final element in widgets) {
-      if (element.runtimeType == SizedBox) {
-        element as SizedBox;
-        if (element.child != null) {
-          final data = _formulaParser([element.child!]);
-          textData = '$textData$data';
-        }
-      } else if (element.runtimeType == Stack) {
-        element as Stack;
-        final data = _formulaParser([element]);
-        textData = '$textData$data';
-      }else if(element is MultiChildRenderObjectWidget){
-        _formulaParser(element.children);
-        textData = '$textData$formulaInTeX';
-      }
+      _formulaParser([element]);
+      textData = '$textData$formulaInTeX';
       formulaInTeX = '';
     }
     final teXSqrtData = '\\sqrt{$textData}';
@@ -350,105 +339,36 @@ class FormulaToTexParser {
   }
 
   String fracParser(List<Widget> widgets) {
-    final List<String> fracData = ['', ''];
-    for (final element in widgets) {
-      if (element.runtimeType == SizedBox) {
-        element as SizedBox;
-        if (element.child != null) {
-          final textController = _formulaParser([element.child!]);
-
-          if (fracData.first.isEmpty) {
-            fracData.first = textController ?? '';
-          } else if (fracData[1].isEmpty) {
-            fracData[1] = textController ?? '';
-          }
-          formulaInTeX = '';
-        }
-      } else {}
-    }
+    final fracData = getFormulasFromWidgets(widgets, [0, 2]); 
     final fracStringData = '\\frac{${fracData[0]}}{${fracData[1]}} ';
     return fracStringData;
   }
 
   String derevativeParser(Widget widget) {
-    final List<String> derevativeData = ['', ''];
     final widgets = (widget as Column).children;
-    for (final element in widgets) {
-      if (element.runtimeType == SizedBox) {
-        element as SizedBox;
-        if (element.child != null) {
-          final textController = _formulaParser([element.child!]);
-          if (derevativeData[0].isEmpty) {
-            derevativeData[0] = textController ?? '';
-          } else if (derevativeData[1].isEmpty) {
-            derevativeData[1] = textController ?? '';
-          }
-        }
-        formulaInTeX = '';
-      }
-    }
+    final derevativeData = getFormulasFromWidgets(widgets, [0, 2]);
     final derevativeString =
         '\\frac{d${derevativeData[0]}}{d${derevativeData[1]}} ';
     return derevativeString;
   }
 
   String logParser(Widget widget) {
-    final List<String> logData = ['', ''];
-    if (widget is Stack) {
-        for (final element in widget.children) {
-          if (element is RelayedPositioned) {
-            _formulaParser([element.wrappedWidget!]);
-            if (logData[0].isEmpty) {
-              logData[0] = formulaInTeX;
-            } else if (logData[1].isEmpty) {
-              logData[1] = formulaInTeX;
-            }
-            formulaInTeX = '';
-          }
-        }
-    }
-
+    final widgets = (widget as Stack).children;
+    final logData = getFormulasFromWidgets(widgets, [1, 2]);
     final logStringData = '\\log_{${logData[1]}}${logData[0]} ';
     return logStringData;
   }
 
   String integralParser(Widget widget) {
-    final List<String> integralData = ['', '', '', ''];
     final stack = widget as Stack;
-    for (final child in stack.children) {
-      _formulaParser([child]);
-      if (integralData[0].isEmpty) {
-        integralData[0] = formulaInTeX;
-      } else if (integralData[1].isEmpty) {
-        integralData[1] = formulaInTeX;
-      } else if (integralData[2].isEmpty) {
-        integralData[2] = formulaInTeX;
-      } else if (integralData[3].isEmpty) {
-        integralData[3] = formulaInTeX;
-      }
-      formulaInTeX = '';
-    }
-    formulaInTeX = '';
+    final integralData = getFormulasFromWidgets(stack.children, [1, 2, 3, 5]);
     final integralString =
         '\\int_{${integralData[0]}}^{${integralData[1]}} ${integralData[2]} d${integralData[3]} ';
     return integralString;
   }
 
   String undefinitIntegralParser(List<Widget> widgets) {
-    final List<String> integralData = ['', ''];
-    for (final element in widgets) {
-      if (element.runtimeType == Row && integralData[1].isEmpty) {
-        final arg = element as Row;
-        _formulaParser(arg.children);
-        if(integralData[0].isEmpty){
-          integralData[0] = formulaInTeX;
-        }else {
-          integralData[1] = formulaInTeX;
-        }
-      formulaInTeX = '';
-      }
-    }
-
+    final integralData = getFormulasFromWidgets(widgets, [1, 3]);
     final integral = '\\int ${integralData[0]} d${integralData[1]} ';
     return integral;
   }
@@ -463,19 +383,8 @@ class FormulaToTexParser {
   }
 
   String limitParser(Widget widget) {
-    final List<String> limitData = ['', '', ''];
     final stack = widget as Stack;
-    for (final element in stack.children) {
-      _formulaParser([element]);
-      if (limitData[0].isEmpty) {
-        limitData[0] = formulaInTeX;
-      } else if (limitData[1].isEmpty) {
-        limitData[1] = formulaInTeX;
-      } else if (limitData[2].isEmpty) {
-        limitData[2] = formulaInTeX;
-      }
-      formulaInTeX = '';
-    }
+    final limitData = getFormulasFromWidgets(stack.children, [1, 2, 4]);
     final limitStringData = '\\lim_{${limitData[1]}\\to ${limitData[2]}} ${limitData[0]} ';
     return limitStringData;
   }
