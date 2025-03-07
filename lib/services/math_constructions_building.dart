@@ -60,7 +60,6 @@ class MathConstructionsBuilding {
     final fracWidget = SizedBox(
       child: Row(
         children: [
-          const SizedBox(width: 5,),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             key: getKey(ElementsType.fracElement),
@@ -83,7 +82,6 @@ class MathConstructionsBuilding {
               )
             ],
           ),
-          const SizedBox(width: 5,),
         ],
       ),
     );

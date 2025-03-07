@@ -20,7 +20,7 @@ class FunctionPageWidget extends StatelessWidget {
   final TextStyle? textStyle;
   final double keyboardPaddings;
   final double keyboardSpacing;
-  final MathKontroller keyboardProperties;
+  final MathController keyboardProperties;
 
   @override
   Widget build(BuildContext context) {

@@ -15,7 +15,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => MathKontroller(),
+      create: (_) => MathController(),
       child: const MaterialApp(
         home: MainScreenWidget(),
       ),
@@ -81,7 +81,7 @@ class _FormulaByGetDemoState extends State<FormulaByGetDemo> {
   
   @override
   Widget build(BuildContext context) {
-    final model = context.read<MathKontroller>();
+    final model = context.read<MathController>();
     return Column(
       children: [
         Row(
@@ -89,8 +89,7 @@ class _FormulaByGetDemoState extends State<FormulaByGetDemo> {
           children: [
             Expanded(
               child: Container(
-                height: 60,
-                // width: double.infinity,
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(10),
@@ -139,7 +138,7 @@ class _FormulaByStreamDemoState extends State<FormulaByStreamDemo> {
   @override
   void initState() {
     super.initState();
-    final model = context.read<MathKontroller>();
+    final model = context.read<MathController>();
     model.katexFormulaStream.listen((event) {
       setState(() {
         formula = event;
@@ -150,7 +149,7 @@ class _FormulaByStreamDemoState extends State<FormulaByStreamDemo> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 60,
+      padding: const EdgeInsets.all(8),
       width: double.infinity,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),

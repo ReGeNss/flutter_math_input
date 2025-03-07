@@ -27,7 +27,7 @@ class LatinAlphabetPageWidget extends StatefulWidget {
   final TextStyle? textStyle;
   final double keyboardPaddings;
   final double keyboardSpacing;
-  final MathKontroller keyboardProperties;
+  final MathController keyboardProperties;
 
   @override
   State<LatinAlphabetPageWidget> createState() => _LatinAlphabetPageWidgetState();
