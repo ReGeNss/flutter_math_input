@@ -19,7 +19,7 @@ class ScroolGreekSymbolsWidget extends StatelessWidget {
   final TextStyle? textStyle;
   final ButtonStyle? buttonStyle;
   final double keyboardSpacing;
-  final MathKontroller keyboardProperties;
+  final MathController keyboardProperties;
   final double keyboardPadding;
 
   @override

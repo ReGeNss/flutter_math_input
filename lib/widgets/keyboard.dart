@@ -36,10 +36,10 @@ final defalutButtonWithOverlayStyle = ButtonStyle(
 
 class MathKeyboard {
   final BuildContext context;
-  late final MathKontroller keyboardProperties;
+  late final MathController keyboardProperties;
   MathKeyboard({required this.context}){
     try{
-      keyboardProperties = context.read<MathKontroller>();
+      keyboardProperties = context.read<MathController>();
     } on ProviderNotFoundException {
       throw Exception('MathKeyboardModel not found. Please add provide MathKeyboardModel to your widget tree.');
     }

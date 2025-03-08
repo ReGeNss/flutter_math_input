@@ -24,7 +24,7 @@ class NumbersPageWidget extends StatelessWidget {
   final ButtonStyle? overlayButtonStyle;
   final double keyboardPaddings;
   final double keyboardSpacing;
-  final MathKontroller keyboardProperties;
+  final MathController keyboardProperties;
   final int floatButtonOverlayDuration;
 
   @override

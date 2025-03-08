@@ -60,7 +60,6 @@ class MathConstructionsBuilding {
     final fracWidget = SizedBox(
       child: Row(
         children: [
-          const SizedBox(width: 5,),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             key: getKey(ElementsType.fracElement),
@@ -83,7 +82,6 @@ class MathConstructionsBuilding {
               )
             ],
           ),
-          const SizedBox(width: 5,),
         ],
       ),
     );
@@ -245,6 +243,7 @@ class MathConstructionsBuilding {
     final argWidgetKey = GlobalKey();
     final firstDownFieldKey = GlobalKey();
     final secondDownFieldKey = GlobalKey();
+    textFieldService.markAsGrop(firstDownField, argField); 
     final limitWidget = WidgetDynamicSizeWrapper(
           connectedKeysToHeight: [],
           defaultHeight: 50,
@@ -459,6 +458,10 @@ class MathConstructionsBuilding {
   }
 
   MathConstructionData createIntegralWidget() {
+    final adictionalField = textFieldService.createTextField(
+        isReplaceOperation: false,
+        performAdictionalTextField: false,
+        selectedTextFieldFormat: TextFieldFormat.standart);
     final startPointField = textFieldService.createTextField(
         isReplaceOperation: true,
         isActiveTextField: true,
@@ -466,7 +469,7 @@ class MathConstructionsBuilding {
         selectedTextFieldFormat: TextFieldFormat.small);
     final derevativeField = textFieldService.createTextField(
         isReplaceOperation: false,
-        performAdictionalTextField: true,
+        performAdictionalTextField: false,
         selectedTextFieldFormat: TextFieldFormat.standart);
     final argFieldWidget = textFieldService.createTextField(
         isReplaceOperation: false,
@@ -533,7 +536,7 @@ class MathConstructionsBuilding {
           ],
         ),
     );
-    return MathConstructionData(construction: integralWidget);
+    return MathConstructionData(construction: integralWidget, addictionalWidget: adictionalField);
   }
 
   Widget initialization() {

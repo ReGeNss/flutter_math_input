@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:math_keyboard/parsers/formulas_tree_parsers_and_handler.dart';
+import 'package:math_keyboard/parsers/formulas_tree_parsers.dart';
 import 'package:math_keyboard/services/math_constructions_building.dart';
 import 'package:math_keyboard/services/text_field_handle_and_create.dart';
 
 class FormulasTreeDeletingParser {
-  ReturnData? _parsedData;
-  bool _isReverse = false ; 
+  ParsedWidgetsData? _parsedData;
+  bool _isLoopWindingDown = false ; 
 
-  ReturnData? getElement(
+  ParsedWidgetsData? getElement(
     List<Widget> array, 
     TextEditingController activeTextFieldController
     ) {
     _parsedData = null;
-    _isReverse = false; 
+    _isLoopWindingDown = false; 
     _parseWidgets(array, activeTextFieldController);
     return _parsedData;
   }
@@ -27,7 +27,7 @@ class FormulasTreeDeletingParser {
     return ElementFieldsData(counter, textFieldLocation); 
   }
 
-  ReturnData? _parseWidgets(
+  ParsedWidgetsData? _parseWidgets(
     List<Widget> array, 
     TextEditingController activeTextFieldController
   ) {
@@ -41,13 +41,9 @@ class FormulasTreeDeletingParser {
               row.children,
               activeTextFieldController,
             );
-            if(_isReverse && row.key != null && row.key is ValueKey && (row.key as ValueKey).value != ElementsType.exponentiationElement ){
-              _isReverse = false; 
-              if((row.key as ValueKey).value == ElementsType.indefiniteIntegralElement) {
-                _parsedData = ReturnData(index: index, wigetData: array, isGroop: true);
-                return null;
-              } 
-              _parsedData = ReturnData(index: index, wigetData: array);
+            if(_isLoopWindingDown && row.key != null && row.key is ObjectKey && ((row.key as ObjectKey).value as MathConstructionKey).type != ElementsType.exponentiationElement ){
+              _isLoopWindingDown = false; 
+              _parsedData = ParsedWidgetsData(index: index, wigetData: array);
             }
             break;
           }
@@ -58,14 +54,14 @@ class FormulasTreeDeletingParser {
               list.children,
               activeTextFieldController,
             );
-            if(_isReverse && list.key != null && list.key is ValueKey ){
-              final keyValue = (list.key as ValueKey).value;
-              _isReverse = false;
-              if(keyValue == ElementsType.fracElement) {
-                _parsedData = ReturnData(index: index, wigetData: array, isGroop: true);
+            if(_isLoopWindingDown && list.key != null && list.key is ObjectKey){
+              final keyType = ((list.key as ObjectKey).value as MathConstructionKey).type;
+              _isLoopWindingDown = false;
+              if(keyType == ElementsType.fracElement) {
+                _parsedData = ParsedWidgetsData(index: index, wigetData: array, isGroop: true);
                 return null;
               }
-              _parsedData = ReturnData(index: index, wigetData: array,);
+              _parsedData = ParsedWidgetsData(index: index, wigetData: array,);
             }
             break;
           }
@@ -73,9 +69,8 @@ class FormulasTreeDeletingParser {
           {
             final textFieldWidget = array[index] as TextField;
             if (textFieldWidget.controller == activeTextFieldController) {
-              _isReverse = true;
-              return ReturnData(
-                  wigetData: array, index: index, widget: textFieldWidget);
+              _isLoopWindingDown = true;
+              return ParsedWidgetsData(wigetData: array, index: index);
             }
             break;
           }
@@ -87,17 +82,14 @@ class FormulasTreeDeletingParser {
                 [widget.child!],
                 activeTextFieldController,
               );
-              if(_isReverse && widget.key != null && widget.key is ValueKey){
-                final keyValue = (widget.key as ValueKey).value;
-                _isReverse = false; 
-                if(
-                  keyValue == ElementsType.derevativeElement
-                  || keyValue == ElementsType.logElement
-                ){
-                  _parsedData = ReturnData(index: index, wigetData: array, isGroop: true);
+              if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
+                final keyType = ((widget.key as ObjectKey).value as MathConstructionKey).type;
+                _isLoopWindingDown = false; 
+                if(keyType == ElementsType.derevativeElement){
+                  _parsedData = ParsedWidgetsData(index: index, wigetData: array, isGroop: true);
                   return null;
                 }
-                _parsedData = ReturnData(index: index, wigetData: array);
+                _parsedData = ParsedWidgetsData(index: index, wigetData: array);
               }
             }
             break;
@@ -109,9 +101,9 @@ class FormulasTreeDeletingParser {
               list.children,
               activeTextFieldController,
             );
-            if(_isReverse && list.key != null && list.key is ValueKey){
-               _isReverse = false;
-              _parsedData = ReturnData(index: index, wigetData: array);
+            if(_isLoopWindingDown && list.key != null && list.key is ObjectKey){
+               _isLoopWindingDown = false;
+              _parsedData = ParsedWidgetsData(index: index, wigetData: array);
             }
             break;
           }
@@ -120,9 +112,9 @@ class FormulasTreeDeletingParser {
             final widget = array[index] as Positioned;
             _parseWidgets(
                 [widget.child], activeTextFieldController);
-            if(_isReverse && widget.key != null && widget.key is ValueKey){
-              _isReverse = false;
-              _parsedData = ReturnData(index: index, wigetData: array);
+            if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
+              _isLoopWindingDown = false;
+              _parsedData = ParsedWidgetsData(index: index, wigetData: array);
             }
             break;
           }
@@ -130,9 +122,9 @@ class FormulasTreeDeletingParser {
         {
           final widget = (array[index] as BacketsWidget).child as Row; 
             _parseWidgets(widget.children, activeTextFieldController); 
-          if(_isReverse){ 
-              _isReverse = false;
-              _parsedData = ReturnData(index: index, wigetData: array);
+          if(_isLoopWindingDown){ 
+              _isLoopWindingDown = false;
+              _parsedData = ParsedWidgetsData(index: index, wigetData: array);
             }
           break;
         }
@@ -140,9 +132,9 @@ class FormulasTreeDeletingParser {
         {
           final widget = array[index] as RelayedPositioned;
           _parseWidgets([widget.wrappedWidget!], activeTextFieldController);
-          if(_isReverse && widget.key != null && widget.key is ValueKey){
-            _isReverse = false;
-            _parsedData = ReturnData(index: index, wigetData: array);
+          if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
+            _isLoopWindingDown = false;
+            _parsedData = ParsedWidgetsData(index: index, wigetData: array);
           }
           break;
         }
@@ -150,9 +142,18 @@ class FormulasTreeDeletingParser {
         {
           final widget = array[index] as WidgetDynamicSizeWrapper;
           _parseWidgets([widget.wrappedWidget], activeTextFieldController);
-          if(_isReverse && widget.key != null && widget.key is ValueKey){
-            _isReverse = false;
-            _parsedData = ReturnData(index: index, wigetData: array);
+          if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
+            _isLoopWindingDown = false;
+            final keyType = ((widget.key as ObjectKey).value as MathConstructionKey).type;
+            if(keyType == ElementsType.indefiniteIntegralElement
+              || keyType == ElementsType.integralElement
+              || keyType == ElementsType.limitElement
+              || keyType == ElementsType.logElement
+            ){
+              _parsedData = ParsedWidgetsData(index: index, wigetData: array, isGroop: true);
+              return null;
+            }
+            _parsedData = ParsedWidgetsData(index: index, wigetData: array);
           }
           break; 
         }
@@ -160,9 +161,9 @@ class FormulasTreeDeletingParser {
         {
           final widget = (array[index] as ArgumentWidget).child as Row; 
           _parseWidgets(widget.children, activeTextFieldController); 
-          if(_isReverse && widget.key != null && widget.key is ValueKey){ 
-            _isReverse = false;
-            _parsedData = ReturnData(index: index, wigetData: array);
+          if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){ 
+            _isLoopWindingDown = false;
+            _parsedData = ParsedWidgetsData(index: index, wigetData: array);
           }
           break; 
         }
@@ -171,9 +172,9 @@ class FormulasTreeDeletingParser {
            final widget =
                 (array[index] as TextFieldWidgetHandler).textField as TextField;
           _parseWidgets([widget], activeTextFieldController);
-          if(_isReverse && widget.key != null && widget.key is ValueKey){
-            _isReverse = false;
-            _parsedData = ReturnData(index: index, wigetData: array);
+          if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
+            _isLoopWindingDown = false;
+            _parsedData = ParsedWidgetsData(index: index, wigetData: array);
           } 
           break; 
         }
@@ -185,91 +186,18 @@ class FormulasTreeDeletingParser {
   void _parseCountOfTextFields(List<Widget> array, TextEditingController activeTextFieldController) {
     final length = array.length;
     for (int index = 0; length > index; index += 1) {
-      switch (array[index].runtimeType) {
-        case const (Row):
-          {
-            final row = array[index] as Row;
-            _parseCountOfTextFields(
-              row.children,
-              activeTextFieldController,
-            );
-            break;
-          }
-        case const (Column):
-          {
-            final list = array[index] as Column;
-            _parseCountOfTextFields(
-              list.children,
-              activeTextFieldController,
-            );
-            break;
-          }
-        case const (TextField):
-          {
-            counter +=1;
-            final textField = array[index] as TextField;
-            if(textField.controller == activeTextFieldController) {
-              textFieldLocation = counter;
-            }
-            break;
-          }
-        case const (SizedBox):
-          {
-            final widget = array[index] as SizedBox;
-            if (widget.child != null) {
-              _parseCountOfTextFields(
-                [widget.child!],
-                activeTextFieldController,
-              );
-            }
-            
-            break;
-          }
-        case const (Stack):
-          {
-            final list = array[index] as Stack;
-            _parseCountOfTextFields(
-              list.children,
-              activeTextFieldController
-            );
-            break;
-          }
-        case const (Positioned):
-          {
-            final widget = array[index] as Positioned;
-            _parseCountOfTextFields([widget.child], activeTextFieldController);
-            break;
-          }
-        case const (BacketsWidget):
-        {
-          final widget = (array[index] as BacketsWidget).child as Row; 
-          _parseCountOfTextFields(widget.children, activeTextFieldController); 
-          break;
+      if(array[index] is TextFieldWidgetHandler){
+        counter += 1;
+        final textField = (array[index] as TextFieldWidgetHandler).textField as TextField;
+        if(textField.controller == activeTextFieldController){
+          textFieldLocation = counter;
         }
-        case const (ArgumentWidget): 
-        {
-          final widget = (array[index] as ArgumentWidget).child as Row; 
-          _parseCountOfTextFields(widget.children, activeTextFieldController); 
-          break; 
-        }
-        case const (RelayedPositioned):
-        {
-          final widget = array[index] as RelayedPositioned;
-          _parseCountOfTextFields([widget.wrappedWidget!], activeTextFieldController);
-          break;
-        }
-        case const (WidgetDynamicSizeWrapper): 
-        {
-          final widget = array[index] as WidgetDynamicSizeWrapper;
-          _parseCountOfTextFields([widget.wrappedWidget], activeTextFieldController);
-          break;
-        }
-        case const (TextFieldWidgetHandler):
-        {
-          final widget = (array[index] as TextFieldWidgetHandler).textField as TextField;
-          _parseCountOfTextFields([widget], activeTextFieldController);    
-          break; 
-        }
+      }else if(array[index] is SingleChildRenderObjectWidget){
+        final widget = array[index] as SingleChildRenderObjectWidget;
+        _parseCountOfTextFields([widget.child!], activeTextFieldController);
+      }else if(array[index] is MultiChildRenderObjectWidget){
+        final widget = array[index] as MultiChildRenderObjectWidget;
+        _parseCountOfTextFields(widget.children, activeTextFieldController);
       }
     }
   } 

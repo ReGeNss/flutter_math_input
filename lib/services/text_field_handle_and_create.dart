@@ -328,6 +328,12 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
   void deleteLastChar() {
     final textLength = _activeTextFieldData.controller.text.length;
     _activeTextFieldData.controller.text = _activeTextFieldData.controller.text.substring(0, textLength - 1);
+  }
+
+  @override
+  void dispose() {
+    deleteAllTextFields();
+    super.dispose();
   } 
 }
 
