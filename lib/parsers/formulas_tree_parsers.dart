@@ -9,18 +9,26 @@ class FormulasTreeParsersService {
     List<Widget> array, 
     TextEditingController activeTextFieldController
   ) {
-    _parsedData = null;
-    _parseWidgetLocation(array, activeTextFieldController);
-    return _parsedData;
+    try{
+      _parsedData = null;
+      _parseWidgetLocation(array, activeTextFieldController);
+      return _parsedData;
+    }catch(e){
+      return null;
+    }
   }
 
   ParsedWidgetsData? parseWidgetContainerLocation(
     List<Widget> array, 
     TextEditingController activeTextFieldController
   ){
-    _parsedData = null;
-    _parseWidgetContainerLocation(array, activeTextFieldController); 
-    return _parsedData; 
+    try{
+      _parsedData = null;
+      _parseWidgetContainerLocation(array, activeTextFieldController); 
+      return _parsedData; 
+    }catch(e){
+      return null;
+    }
   }
 
   ParsedWidgetsData? _parseWidgetLocation(

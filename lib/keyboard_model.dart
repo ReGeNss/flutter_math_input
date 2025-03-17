@@ -87,8 +87,8 @@ class MathController extends ChangeNotifier{
 
   void onFracButtonTap(){
     final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    final fracWidget = _mathConstructionsBuildingService.createFracWidget();
     if(parsedWidgets != null){
+      final fracWidget = _mathConstructionsBuildingService.createFracWidget();
       _dataHandler.replaceWidgetInTree(parsedWidgets, fracWidget);
       rebuildSreenState();
     }
@@ -96,26 +96,26 @@ class MathController extends ChangeNotifier{
 
   void namedFunctionButtonTap(String functionName, ElementsType type){
     final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    final fracWidget = _mathConstructionsBuildingService.createNamedFunctionWidget(functionName, type); 
     if(parsedWidgets != null){
-      _dataHandler.replaceWidgetInTree(parsedWidgets, fracWidget); 
+      final namedWidget = _mathConstructionsBuildingService.createNamedFunctionWidget(functionName, type); 
+      _dataHandler.replaceWidgetInTree(parsedWidgets, namedWidget); 
       rebuildSreenState(); 
     }
   }
 
   void onExpButtonTap(){
-    ParsedWidgetsData? parsedWidgets;  
     final activeTextFieldController = _textFieldService.getActiveTextFieldController();
-    late final TextFieldData baseField; 
+    final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, activeTextFieldController); 
+    TextFieldData baseField; 
     if(activeTextFieldController.text.isNotEmpty){
-      parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, activeTextFieldController); 
       baseField = _textFieldService.getActiveTextFieldData();
     }
     else{
-      parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, activeTextFieldController);
       if(parsedWidgets?.index != null && parsedWidgets!.index! >= 1){
         parsedWidgets.index = parsedWidgets.index! - 1;
         baseField = _textFieldService.getPreviousTextFieldDataToActive();
+      }else{
+        baseField = _textFieldService.getActiveTextFieldData();  
       }
     }
     if(parsedWidgets != null && parsedWidgets.index != null){
@@ -128,8 +128,8 @@ class MathController extends ChangeNotifier{
 
   void sqrtButtonTap(){
     final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    final sqrtWidget = _mathConstructionsBuildingService.createSqrtWidget(); 
     if(parsedWidgets != null){
+      final sqrtWidget = _mathConstructionsBuildingService.createSqrtWidget(); 
       _dataHandler.replaceWidgetInTree(parsedWidgets, sqrtWidget);
       rebuildSreenState();
     }
@@ -138,8 +138,8 @@ class MathController extends ChangeNotifier{
   void logButtonTap(){
     final activeTextFieldController = _textFieldService.getActiveTextFieldController();
     final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, activeTextFieldController);
-    final logWidget = _mathConstructionsBuildingService.createLogWidget(); 
     if(parsedWidgets != null){
+      final logWidget = _mathConstructionsBuildingService.createLogWidget(); 
       _dataHandler.replaceWidgetInTree(parsedWidgets, logWidget);
       rebuildSreenState(); 
     }
@@ -147,17 +147,17 @@ class MathController extends ChangeNotifier{
 
   void limButtonTap(){
     final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    final limitWidget = _mathConstructionsBuildingService.createLimitWidget(); 
     if(parsedWidgetData != null){
+      final limitWidget = _mathConstructionsBuildingService.createLimitWidget(); 
       _dataHandler.replaceWidgetInTree(parsedWidgetData, limitWidget);
       rebuildSreenState(); 
     }
-  }
+  } 
 
   void absButtonTap(){
     final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    final absWidet = _mathConstructionsBuildingService.createAbsWidget();
     if(parsedWidgetData != null){
+      final absWidet = _mathConstructionsBuildingService.createAbsWidget();
       _dataHandler.replaceWidgetInTree(parsedWidgetData, absWidet);
       rebuildSreenState(); 
     }
@@ -165,8 +165,8 @@ class MathController extends ChangeNotifier{
 
   void backetsButtonTap(){
     final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    final backetsWidget = _mathConstructionsBuildingService.createBracketsWidget();
     if(parsedWidgetData != null){
+      final backetsWidget = _mathConstructionsBuildingService.createBracketsWidget();
       _dataHandler.replaceWidgetInTree(parsedWidgetData, backetsWidget);
       rebuildSreenState(); 
     }
@@ -174,8 +174,8 @@ class MathController extends ChangeNotifier{
 
   void undefinitintegralButtonTap(){
     final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    final integralWidget = _mathConstructionsBuildingService.createUndefinitIntegralWidget();
     if(parsedWidgetData != null){
+      final integralWidget = _mathConstructionsBuildingService.createUndefinitIntegralWidget();
       _dataHandler.replaceWidgetInTree(parsedWidgetData, integralWidget);
       rebuildSreenState(); 
     }
@@ -183,16 +183,16 @@ class MathController extends ChangeNotifier{
 
   void integralButtonTap(){
     final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController() );
-    final integralWidget = _mathConstructionsBuildingService.createIntegralWidget();
     if(parsedWidgetData!= null){
+      final integralWidget = _mathConstructionsBuildingService.createIntegralWidget();
       _dataHandler.replaceWidgetInTree(parsedWidgetData, integralWidget);
       rebuildSreenState();
     }
   }
   void onDerevativeButtonTap({String? upperField, String? downField}){
     final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController() );
-    final derevativeWidget = _mathConstructionsBuildingService.createDerevativeWidget(upperField,downField);
     if(parsedWidgetData!= null){
+      final derevativeWidget = _mathConstructionsBuildingService.createDerevativeWidget(upperField,downField);
       _dataHandler.replaceWidgetInTree(parsedWidgetData, derevativeWidget);
       rebuildSreenState();
     }
@@ -202,8 +202,8 @@ class MathController extends ChangeNotifier{
     final shouldNotCreateNewField = _textFieldService.trySelectNextFocus();
     if(!shouldNotCreateNewField){
       final parsedWidgetData = _parsersService.parseWidgetContainerLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-      final textFieldConstruction = _mathConstructionsBuildingService.createTextField(replaceOldFocus: true);
         if(parsedWidgetData != null){
+          final textFieldConstruction = _mathConstructionsBuildingService.createTextField(replaceOldFocus: true);
           _dataHandler.addToWidgetTree(parsedWidgetData, [textFieldConstruction.construction]); 
           rebuildSreenState();
         }
@@ -211,23 +211,20 @@ class MathController extends ChangeNotifier{
   }
 
   void createCharWidgets(String char){
-    // один сплошной костыль 
     final activeTextFieldController = _textFieldService.getActiveTextFieldController();
     final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, activeTextFieldController);
-    List<Widget> textField=[];
+    if(parsedWidgetData == null) return;
+    final List<Widget> textFields = [];
     if(_textFieldService.getActiveTextFieldController().text.isEmpty){
       _textFieldService.getActiveTextFieldController().text = char; 
-      textField.add(_mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
     }else{
-      textField.add(_mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
+      textFields.add(_mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
       _textFieldService.getActiveTextFieldController().text = char; 
-      textField.add(_mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
     }
-    if (parsedWidgetData != null) {
-      _dataHandler.addToWidgetTree(parsedWidgetData, textField);
-      rebuildSreenState();
-    }
-    
+    final addictionalField = _mathConstructionsBuildingService.createCharWidget(isActiveTextField: true);
+    textFields.add(addictionalField);
+    _dataHandler.addToWidgetTree(parsedWidgetData, textFields);
+    rebuildSreenState();
   }
 
   void selectBackFocus(){

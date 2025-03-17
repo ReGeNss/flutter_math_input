@@ -6,11 +6,13 @@ import 'package:provider/provider.dart';
 class MathInput extends StatefulWidget {
   const MathInput({
     super.key,
+    required this.keyboard,
     this.decoration,
     this.width = double.infinity,
     this.height = 150,
     this.padding = const EdgeInsets.all(10),
   });
+  final MathKeyboard keyboard;
   final BoxDecoration? decoration;
   final double width;
   final double height;
@@ -46,7 +48,7 @@ class _MathInputState extends State<MathInput> {
           )
         : const Center(child: Text('LOAD'));
     return GestureDetector(
-      onTap: () => BasicMathKeyboard().showKeyboard(),
+      onTap: () => widget.keyboard.show(),
       child: Container(
         width: widget.width,
         height: widget.height,

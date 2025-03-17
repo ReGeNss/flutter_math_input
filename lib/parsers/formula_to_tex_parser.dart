@@ -10,7 +10,7 @@ class FormulaToTexParser {
       _formulaParser(widgetList);
       return formulaInTeX;
     }catch(e){
-      return 'error';
+      return '\text{something went wrong, retry...}';
     }
   }
 

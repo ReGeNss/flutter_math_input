@@ -48,13 +48,13 @@ class MainScreenColumnWidget extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 50,),
-          MathInput(),  
+          MathInput(keyboard: BasicMathKeyboard(context: context),),  
           const SizedBox(height: 10,),
           SizedBox(
             width: double.infinity,
             child: FilledButton(
                 onPressed: () {
-                  BasicMathKeyboard(context: context).showKeyboard();
+                  BasicMathKeyboard().show();
                 },
                 child: const Text('Show keyboard')),
           ),

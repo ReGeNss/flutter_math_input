@@ -100,12 +100,6 @@ class MathConstructionsBuilding {
       isActiveTextField: true,
       selectedTextFieldFormat: TextFieldFormat.small);
     textFieldService.markAsGrop(baseFieldData, textField);
-    // final widget = ExpRowWidget(
-    //   baseWidget: baseWidget,
-    //   expGlobalKey: expGlobalKey,
-    //   textField: textField,
-    //   baseGlobalKey: baseGlobalKey,
-    // );
     final widget = WidgetDynamicSizeWrapper(
       defaultHeight: 50,
       connectedKeysToHeight: [],
@@ -115,7 +109,6 @@ class MathConstructionsBuilding {
         children: [
           Positioned(
             key: baseGlobalKey,
-            // connectedWidgetKeys: [expGlobalKey],
             left: 0,
             bottom: 0,
             child: Row(
