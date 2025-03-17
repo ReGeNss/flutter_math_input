@@ -33,7 +33,7 @@ final defalutButtonWithOverlayStyle = ButtonStyle(
     foregroundColor: WidgetStateProperty.all(Colors.black),
     side: WidgetStateProperty.all(const BorderSide(color: Colors.cyanAccent)));
 
-
+// TODO: extract to separate file
 class MathKeyboard {
   final BuildContext context;
   late final MathController keyboardProperties;
@@ -45,15 +45,15 @@ class MathKeyboard {
     }
   }
 
-  Widget _buildKeyboard(StateSetter setState) {
+  Widget buildKeyboard(StateSetter setState) {
     throw UnimplementedError('The buildKeyboard method must be overridden in the child class');
   }
 
-  void showKeyboard() {
+  void show() {
     try{
       Scaffold.of(context).showBottomSheet(
         (context) => StatefulBuilder(
-          builder: (context, setState) => _buildKeyboard(setState),
+          builder: (context, setState) => buildKeyboard(setState),
         ),
       );
     } catch (e) {
@@ -158,7 +158,7 @@ class BasicMathKeyboard extends MathKeyboard {
   }
 
   @override
-  Widget _buildKeyboard(StateSetter setState) {
+  Widget buildKeyboard(StateSetter setState) {
     
     return Container(
       color: backgroundColor,
@@ -296,3 +296,4 @@ class KeyboardPageWidget extends StatelessWidget {
     );
   }
 }
+

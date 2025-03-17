@@ -100,12 +100,6 @@ class MathConstructionsBuilding {
       isActiveTextField: true,
       selectedTextFieldFormat: TextFieldFormat.small);
     textFieldService.markAsGrop(baseFieldData, textField);
-    // final widget = ExpRowWidget(
-    //   baseWidget: baseWidget,
-    //   expGlobalKey: expGlobalKey,
-    //   textField: textField,
-    //   baseGlobalKey: baseGlobalKey,
-    // );
     final widget = WidgetDynamicSizeWrapper(
       defaultHeight: 50,
       connectedKeysToHeight: [],
@@ -115,7 +109,6 @@ class MathConstructionsBuilding {
         children: [
           Positioned(
             key: baseGlobalKey,
-            // connectedWidgetKeys: [expGlobalKey],
             left: 0,
             bottom: 0,
             child: Row(
@@ -305,10 +298,13 @@ class MathConstructionsBuilding {
   }
 
   MathConstructionData createNamedFunctionWidget(String functionName, ElementsType type) {
+    final addictinalTextFiled = textFieldService.createTextField(
+      isReplaceOperation: false
+    );
     final textFieldWidget = textFieldService.createTextField(
-        isReplaceOperation: true,
-        isActiveTextField: true,
-        performAdictionalTextField: true);
+      isReplaceOperation: true,
+      isActiveTextField: true,
+    );
     final widget = SizedBox(
       key: getKey(type),
       child: Row(
@@ -327,7 +323,7 @@ class MathConstructionsBuilding {
         ],
       ),
     );
-    return MathConstructionData(construction: widget);
+    return MathConstructionData(construction: widget, addictionalWidget: addictinalTextFiled);
   }
 
   MathConstructionData createAbsWidget() {

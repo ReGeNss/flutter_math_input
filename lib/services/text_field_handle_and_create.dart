@@ -204,18 +204,39 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     _selectedFieldIndex = 0;
   }
 
+  /*
+    created to avoid the error when in field we have construction and field,
+    when we delete the construction, new field would be created on the place of construction,
+    but this field in _textFieldsData would be based in after other field,
+    because creating field logic specific would be created in the end of the list
+    to fix this, we need to insert this field at the top of the list
+  */
+  void intertThisFieldToStart(TextFieldData textFieldData) {
+    if(_textFieildsData.length == 2){ 
+      _textFieildsData.remove(textFieldData); 
+      _textFieildsData.insert(0, textFieldData);
+      _selectedFieldIndex = 0;
+      _activeTextFieldData = textFieldData;
+    } 
+  }
+
   bool deleteElementFields(bool? checkGroops) {
-    if (_textFieildsData.isEmpty || _textFieildsData.length < minTextFieldCountToStapBack) {
+    try{
+      if (_textFieildsData.isEmpty || _textFieildsData.length < minTextFieldCountToStapBack) {
+        return false;
+      }
+
+      final firstDeletedIndex = deleteTextFileds(checkGroops);
+      if (_textFieildsData.isEmpty) {
+        return false;
+      }
+
+      _updateSelectedFieldIndex(firstDeletedIndex);
+      return true;
+    }catch(e){
       return false;
     }
-
-    final firstDeletedIndex = deleteTextFileds(checkGroops);
-    if (_textFieildsData.isEmpty) {
-      return false;
-    }
-
-    _updateSelectedFieldIndex(firstDeletedIndex);
-    return true;
+    
   }
 
   void _updateSelectedFieldIndex(int firstDeletedIndex) {
@@ -277,19 +298,24 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
   }
 
   bool deleteCurrentController(bool shouldRemarkGroop) {
-    if (_textFieildsData.length <= 1) {
+    try{
+      if (_textFieildsData.length <= 1) {
+        return false;
+      }
+
+      if (shouldRemarkGroop) {
+        _replaceActiveTextField(_textFieildsData[_selectedFieldIndex + 1]);
+      } else {
+        _replaceActiveTextField(null);
+        _selectedFieldIndex -= 1;
+      }
+      
+      _activeTextFieldData = _textFieildsData[_selectedFieldIndex];
+      return true;
+    }catch(e) {
       return false;
     }
-
-    if (shouldRemarkGroop) {
-      _replaceActiveTextField(_textFieildsData[_selectedFieldIndex + 1]);
-    } else {
-      _replaceActiveTextField(null);
-      _selectedFieldIndex -= 1;
-    }
     
-    _activeTextFieldData = _textFieildsData[_selectedFieldIndex];
-    return true;
   }
 
   void _replaceActiveTextField(TextFieldData? newFieldData) {

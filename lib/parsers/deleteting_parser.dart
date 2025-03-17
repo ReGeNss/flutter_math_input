@@ -194,7 +194,9 @@ class FormulasTreeDeletingParser {
         }
       }else if(array[index] is SingleChildRenderObjectWidget){
         final widget = array[index] as SingleChildRenderObjectWidget;
-        _parseCountOfTextFields([widget.child!], activeTextFieldController);
+        if(widget.child != null){
+          _parseCountOfTextFields([widget.child!], activeTextFieldController);
+        }
       }else if(array[index] is MultiChildRenderObjectWidget){
         final widget = array[index] as MultiChildRenderObjectWidget;
         _parseCountOfTextFields(widget.children, activeTextFieldController);
