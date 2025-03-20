@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:math_keyboard/widgets/keyboard.dart';
+import 'basic_keyboard.dart';
 
 const _floatButtonHeight = 50.0;
 const _buttonOffset = 30.0;

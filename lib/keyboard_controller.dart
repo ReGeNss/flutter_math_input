@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:math_keyboard/parsers/deleteting_parser.dart';
-import 'package:math_keyboard/parsers/formula_to_tex_parser.dart';
-import 'package:math_keyboard/parsers/formulas_tree_parsers.dart';
-import 'package:math_keyboard/services/math_constructions_building.dart';
-import 'package:math_keyboard/services/text_field_handle_and_create.dart';
-import 'package:math_keyboard/services/widgets_data_handler.dart';
+import 'parsers/deleteting_parser.dart';
+import 'parsers/formula_to_tex_parser.dart';
+import 'parsers/formulas_tree_parsers.dart';
+import 'services/math_constructions_building.dart';
+import 'services/text_field_handle_and_create.dart';
+import 'services/widgets_data_handler.dart';
 
 const _timeToUpdateFormula = Duration(seconds: 1);
 const _timeToRebuildScreen = Duration(milliseconds: 50);

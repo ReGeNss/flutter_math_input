@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:math_keyboard/keyboard_model.dart';
-import 'package:math_keyboard/widgets/keyboard.dart';
 import 'package:provider/provider.dart';
+
+import '../keyboard_controller.dart';
+import 'keyboard/keyboard.dart';
 
 class MathInput extends StatefulWidget {
   const MathInput({

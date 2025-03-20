@@ -1,0 +1,24 @@
+name: flutter_math_input_example
+description: "Package for displaying, inputting, and outputting mathematical constructs in KaTeX"
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.4.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_math_fork: ^0.7.3
+  flutter_math_input:
+    path: ../
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: CustomMathIcons
+      fonts:
+       - asset: packages/flutter_math_input/fonts/CustomMathIcons.ttf

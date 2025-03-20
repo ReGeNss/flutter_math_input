@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:math_keyboard/keyboard_model.dart';
-import 'package:math_keyboard/widgets/keyboardPages.dart/function_page.dart';
-import 'package:math_keyboard/widgets/keyboardPages.dart/greek_symbols_scrool.dart';
-import 'package:math_keyboard/widgets/keyboardPages.dart/latin_alphabet_page.dart';
-import 'package:math_keyboard/widgets/keyboardPages.dart/standart_numbers_page.dart';
-import 'package:provider/provider.dart';
+import '../keyboard.dart';
+import './bacis_keyboard_pages/greek_symbols_scrool.dart';
+import './bacis_keyboard_pages/latin_alphabet_page.dart';
+import './bacis_keyboard_pages/standart_numbers_page.dart';
+import 'bacis_keyboard_pages/function_page.dart';
 
 const countOfButtonsInRow = 6;
 
@@ -33,35 +32,6 @@ final defalutButtonWithOverlayStyle = ButtonStyle(
     foregroundColor: WidgetStateProperty.all(Colors.black),
     side: WidgetStateProperty.all(const BorderSide(color: Colors.cyanAccent)));
 
-// TODO: extract to separate file
-class MathKeyboard {
-  final BuildContext context;
-  late final MathController keyboardProperties;
-  MathKeyboard({required this.context}){
-    try{
-      keyboardProperties = context.read<MathController>();
-    } on ProviderNotFoundException {
-      throw Exception('MathKeyboardModel not found. Please add provide MathKeyboardModel to your widget tree.');
-    }
-  }
-
-  Widget buildKeyboard(StateSetter setState) {
-    throw UnimplementedError('The buildKeyboard method must be overridden in the child class');
-  }
-
-  void show() {
-    try{
-      Scaffold.of(context).showBottomSheet(
-        (context) => StatefulBuilder(
-          builder: (context, setState) => buildKeyboard(setState),
-        ),
-      );
-    } catch (e) {
-      throw Exception('Something went wrong. Tap delete button to clear the input');
-    }
-  }
-}
-
 class BasicMathKeyboard extends MathKeyboard {
   static BasicMathKeyboard? _instance;
 
@@ -78,32 +48,32 @@ class BasicMathKeyboard extends MathKeyboard {
   final TextStyle? textStyle;
   late final List<Widget> _keyboardFormat = [
     NumbersPageWidget(
-        buttonStyle: buttonsStyle,
-        buttonWithOverlayStyle: buttonWithOverlayStyle,
-        overlayButtonStyle: overlayButtonStyle,
-        textStyle: textStyle,
-        iconSize: iconSize,
-        keyboardPaddings: keyboardPaddings,
-        keyboardSpacing: spacing,
-        keyboardProperties: keyboardProperties,
-        floatButtonOverlayDuration: floatButtonOverlayDuration,
-      ),
-      FunctionPageWidget(
-        buttonStyle: buttonsStyle,
-        iconSize: iconSize,
-        textStyle: textStyle,
-        keyboardPaddings: keyboardPaddings,
-        keyboardSpacing: spacing,
-        keyboardProperties: keyboardProperties
-      ),
-      LatinAlphabetPageWidget(
-        buttonStyle: buttonsStyle,
-        iconSize: iconSize,
-        textStyle: textStyle,
-        keyboardPaddings: keyboardPaddings,
-        keyboardSpacing: spacing,
-        keyboardProperties: keyboardProperties
-      ),
+      buttonStyle: buttonsStyle,
+      buttonWithOverlayStyle: buttonWithOverlayStyle,
+      overlayButtonStyle: overlayButtonStyle,
+      textStyle: textStyle,
+      iconSize: iconSize,
+      keyboardPaddings: keyboardPaddings,
+      keyboardSpacing: spacing,
+      keyboardProperties: keyboardProperties,
+      floatButtonOverlayDuration: floatButtonOverlayDuration,
+    ),
+    FunctionPageWidget(
+      buttonStyle: buttonsStyle,
+      iconSize: iconSize,
+      textStyle: textStyle,
+      keyboardPaddings: keyboardPaddings,
+      keyboardSpacing: spacing,
+      keyboardProperties: keyboardProperties
+    ),
+    LatinAlphabetPageWidget(
+      buttonStyle: buttonsStyle,
+      iconSize: iconSize,
+      textStyle: textStyle,
+      keyboardPaddings: keyboardPaddings,
+      keyboardSpacing: spacing,
+      keyboardProperties: keyboardProperties
+    ),
   ];
   late final double keyboardPaddings = padding.left + padding.right;
   int _selectedKeyboardFormat = 0;
