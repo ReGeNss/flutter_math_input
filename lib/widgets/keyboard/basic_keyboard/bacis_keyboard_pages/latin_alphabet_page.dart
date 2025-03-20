@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:math_keyboard/custom_math_icons_icons.dart';
-import 'package:math_keyboard/keyboard_model.dart';
-import 'package:math_keyboard/widgets/keyboard.dart';
+import '../../custom_math_icons_icons.dart';
+import '../../../../../keyboard_controller.dart';
+import '../basic_keyboard.dart';
 
 const latinAlphabetRows = [
   ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
@@ -64,7 +64,7 @@ class _LatinAlphabetPageWidgetState extends State<LatinAlphabetPageWidget> {
                 style: widget.buttonStyle ?? defaultButtonStyle,
                 child: Text(char.toUpperCase(), style: widget.textStyle)))
             .toList());
-      };
+      }
     }
     pageRows[lastRow][shiftButtonLocation] = TextButton(
       onPressed: capsButtonTap,

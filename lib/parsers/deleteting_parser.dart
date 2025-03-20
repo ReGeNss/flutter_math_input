@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:math_keyboard/parsers/formulas_tree_parsers.dart';
-import 'package:math_keyboard/services/math_constructions_building.dart';
-import 'package:math_keyboard/services/text_field_handle_and_create.dart';
+import '../services/math_constructions_building.dart';
+import '../services/text_field_handle_and_create.dart';
+import 'formulas_tree_parsers.dart';
 
 class FormulasTreeDeletingParser {
   ParsedWidgetsData? _parsedData;

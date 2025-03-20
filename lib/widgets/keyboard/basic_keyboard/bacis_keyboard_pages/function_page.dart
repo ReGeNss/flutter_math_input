@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:math_keyboard/custom_math_icons_icons.dart';
-import 'package:math_keyboard/keyboard_model.dart';
-import 'package:math_keyboard/services/math_constructions_building.dart';
-import 'package:math_keyboard/widgets/keyboard.dart';
+import '../../../../../keyboard_controller.dart';
+import '../../../../../services/math_constructions_building.dart';
+import '../../custom_math_icons_icons.dart';
+import '../basic_keyboard.dart';
 
 class FunctionPageWidget extends StatelessWidget {
   const FunctionPageWidget({

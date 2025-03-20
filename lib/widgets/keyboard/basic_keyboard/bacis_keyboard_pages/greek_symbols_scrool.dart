@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:math_keyboard/keyboard_model.dart';
-import 'package:math_keyboard/widgets/keyboard.dart';
+import '../../../../keyboard_controller.dart';
+import '../basic_keyboard.dart';
 
 const greekSymbolsList = ['α', 'β', 'γ', 'Δ', 'ε', 'η', 'θ', 'σ', 'τ', 'φ', 'ψ', 'ω'];
 
