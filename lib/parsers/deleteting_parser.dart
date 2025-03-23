@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../services/math_constructions_building.dart';
 import '../services/text_field_handle_and_create.dart';
+import '../widgets/supportive_widges/relayed_positioned.dart';
+import '../widgets/supportive_widges/widget_dynamic_size_wrapper.dart';
 import 'formulas_tree_parsers.dart';
 
 class FormulasTreeDeletingParser {
@@ -118,16 +120,6 @@ class FormulasTreeDeletingParser {
             }
             break;
           }
-        case const (BacketsWidget):
-        {
-          final widget = (array[index] as BacketsWidget).child as Row; 
-            _parseWidgets(widget.children, activeTextFieldController); 
-          if(_isLoopWindingDown){ 
-              _isLoopWindingDown = false;
-              _parsedData = ParsedWidgetsData(index: index, wigetData: array);
-            }
-          break;
-        }
         case const (RelayedPositioned):
         {
           final widget = array[index] as RelayedPositioned;
@@ -157,16 +149,6 @@ class FormulasTreeDeletingParser {
           }
           break; 
         }
-        case const (ArgumentWidget): 
-        {
-          final widget = (array[index] as ArgumentWidget).child as Row; 
-          _parseWidgets(widget.children, activeTextFieldController); 
-          if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){ 
-            _isLoopWindingDown = false;
-            _parsedData = ParsedWidgetsData(index: index, wigetData: array);
-          }
-          break; 
-        }
         case const (TextFieldWidgetHandler):
         {
            final widget =
@@ -177,6 +159,27 @@ class FormulasTreeDeletingParser {
             _parsedData = ParsedWidgetsData(index: index, wigetData: array);
           } 
           break; 
+        }
+        default: 
+        {
+          if(array[index] is SingleChildConstruction){
+            final widget = (array[index] as SingleChildConstruction).child; 
+            _parseWidgets([widget!], activeTextFieldController); 
+            if(_isLoopWindingDown){ 
+                _isLoopWindingDown = false;
+                _parsedData = ParsedWidgetsData(index: index, wigetData: array);
+              }
+            break;
+          }
+          if(array[index] is MultiChildConstruction){
+            final widget = (array[index] as MultiChildConstruction).children; 
+            _parseWidgets(widget, activeTextFieldController); 
+            if(_isLoopWindingDown){ 
+                _isLoopWindingDown = false;
+                _parsedData = ParsedWidgetsData(index: index, wigetData: array);
+              }
+            break;
+          }
         }
       }
     }

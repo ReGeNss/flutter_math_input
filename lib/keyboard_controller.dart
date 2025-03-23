@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'widgets/math_constructions/index.dart';
 import 'parsers/deleteting_parser.dart';
 import 'parsers/formula_to_tex_parser.dart';
 import 'parsers/formulas_tree_parsers.dart';
@@ -315,7 +316,7 @@ class MathController extends ChangeNotifier{
   void _replaceWithNewField(ParsedWidgetsData elementToReplace, bool moveToFirst) {
     final newField = _mathConstructionsBuildingService.createTextField(
       replaceOldFocus: false,
-      standartSize: true
+      format: TextFieldFormat.standart
     );
     if(moveToFirst) {
       final textFieldData = ((newField.construction as SizedBox).child as TextFieldWidgetHandler).textFieldData;
