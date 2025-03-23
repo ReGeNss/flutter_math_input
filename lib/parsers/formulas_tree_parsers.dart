@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../services/math_constructions_building.dart';
 import '../services/text_field_handle_and_create.dart';
+import '../widgets/supportive_widges/relayed_positioned.dart';
+import '../widgets/supportive_widges/widget_dynamic_size_wrapper.dart';
 
 class FormulasTreeParsersService {
   ParsedWidgetsData? _parsedData;
@@ -116,24 +118,6 @@ class FormulasTreeParsersService {
             }
             break;
           }
-        case const (BacketsWidget):
-        {
-          final widget = (array[index] as BacketsWidget).child as Row; 
-          data = _parseWidgetLocation(widget.children, activeTextFieldController); 
-          if (data != null) {
-            return data;
-          }
-          break;
-        }
-        case const (ArgumentWidget): 
-        {
-          final widget = (array[index] as ArgumentWidget).child as Row; 
-          data = _parseWidgetLocation(widget.children, activeTextFieldController); 
-          if (data != null) {
-            return data;
-          }
-          break; 
-        }
         case const (RelayedPositioned):
         {
           final widget = array[index] as RelayedPositioned;
@@ -177,6 +161,25 @@ class FormulasTreeParsersService {
             return data;
           }
           break; 
+        }
+        default: 
+        {
+          if(array[index] is SingleChildConstruction){
+            final widget = array[index] as SingleChildConstruction;
+            data = _parseWidgetLocation([widget.child!], activeTextFieldController);
+            if (data != null) {
+              return data;
+            }
+            break;
+          }
+          if(array[index] is MultiChildConstruction){
+            final widget = array[index] as MultiChildConstruction;
+            data = _parseWidgetLocation(widget.children, activeTextFieldController);
+            if (data != null) {
+              return data;
+            }
+            break;
+          }
         }
       }
     }
@@ -277,20 +280,7 @@ class FormulasTreeParsersService {
             }
             break;
           }
-        case const (ArgumentWidget):
-        {
-          final widget = (array[index] as ArgumentWidget).child as Row; 
-          data = _parseWidgetContainerLocation(
-            widget.children,
-            activeTextFieldController,
-            isFromRowOrColumn: true
-          );
-          if (_parsedData == null && data != null) {
-            _parsedData = ParsedWidgetsData(wigetData: array);
-          }
-          isFromRowOrColumn = false;
-          break;
-        }
+        
         case const (TextFieldWidgetHandler):
         {
           final textFieldWidget = array[index] as TextFieldWidgetHandler;
@@ -331,6 +321,35 @@ class FormulasTreeParsersService {
             return data;
           }
         } 
+        default:
+        {
+          if(array[index] is SingleChildConstruction){
+            final widget = (array[index] as SingleChildConstruction).child as Row; 
+            data = _parseWidgetContainerLocation(
+              widget.children,
+              activeTextFieldController,
+              isFromRowOrColumn: true
+            );
+            if (_parsedData == null && data != null) {
+              _parsedData = ParsedWidgetsData(wigetData: array);
+            }
+            isFromRowOrColumn = false;
+            break;
+          }
+          if(array[index] is MultiChildConstruction){
+            final widget = array[index] as MultiChildConstruction;
+            data = _parseWidgetContainerLocation(
+              widget.children, 
+              activeTextFieldController,
+              isFromRowOrColumn: true
+            );
+            if (_parsedData == null && data != null) {
+              _parsedData = ParsedWidgetsData(wigetData: array);
+            }
+            isFromRowOrColumn = false;
+            break;
+          }
+        }
       }
     }
     return null;
@@ -403,12 +422,6 @@ class FormulasTreeParsersService {
         );
         return data;
       }
-      case const (ArgumentWidget):
-      {
-        final integralArg = widget as ArgumentWidget;
-        data = _parseWidgetInContainer(integralArg.child!, activeTextFieldController);
-        return data;  
-      }
       case const (WidgetDynamicSizeWrapper): 
       {
         final widgetDynamicSizeWrapper = widget as WidgetDynamicSizeWrapper; 
@@ -420,6 +433,14 @@ class FormulasTreeParsersService {
         final textFieldHandler = widget as TextFieldWidgetHandler; 
         data = _parseWidgetInContainer(textFieldHandler.textField!, activeTextFieldController);
         return data; 
+      }
+      default: 
+      {
+        if(widget is SingleChildConstruction){
+          final conctruction = widget as SingleChildConstruction;
+          data = _parseWidgetInContainer(conctruction.child!, activeTextFieldController);
+          return data;
+        }
       }
     }
     return null;

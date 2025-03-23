@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../services/math_constructions_building.dart';
 import '../services/text_field_handle_and_create.dart';
+import '../widgets/supportive_widges/relayed_positioned.dart';
+import '../widgets/supportive_widges/widget_dynamic_size_wrapper.dart';
 
 class FormulaToTexParser {
   String formulaInTeX = '';
@@ -211,19 +213,6 @@ class FormulaToTexParser {
             formulaInTeX = formulaInTeX + element.controller!.text;
             return element.controller?.text;
           }
-        case const (BacketsWidget):
-          {
-            element as BacketsWidget;
-            addToTeXData(
-                widgets: [element.child!], parseFunctionByChildren: backetsParer);
-            break;
-          }
-        case const (ArgumentWidget):
-          {
-            element as ArgumentWidget;
-            _formulaParser([element.child!]);
-            break;
-          }
         case const (TextFieldWidgetHandler):
           {
             element as TextFieldWidgetHandler;
@@ -267,6 +256,29 @@ class FormulaToTexParser {
           }
           break;
         }
+        default: 
+          {
+            if(element is SingleChildConstruction){
+              final widget = element as SingleChildConstruction;             
+              if(element.key != null && element.key is ObjectKey){
+                final key = element.key as ObjectKey;
+                final keyValue = key.value as MathConstructionKey;
+                if(keyValue.type == ElementsType.backetsWidget){
+                  addToTeXData(
+                    widgets: [widget.child!],
+                    parseFunctionByChildren: backetsParer
+                  );
+                }
+              }else{
+                _formulaParser([widget.child!]);
+              }
+              // final widget = element as SingleChildConstruction;
+            }
+            if(element is MultiChildConstruction){
+              final widget = element as MultiChildConstruction;
+              _formulaParser(widget.children);
+            }
+          }
       }
     }
     return null;
