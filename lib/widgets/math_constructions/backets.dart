@@ -12,7 +12,7 @@ extension Backets on MathConstructionsBuilding{
     final adictionalField = textFieldService.createTextField(
       isReplaceOperation: false,
     );
-    final backetsWidget = BacketsWidget(textFieldWidget: textFieldWidget);
+    final backetsWidget = _BacketsWidget(textFieldWidget: textFieldWidget);
     return MathConstructionData(construction: backetsWidget, addictionalWidget: adictionalField);
   }
 }
@@ -27,10 +27,10 @@ class BacketsWidget extends StatefulWidget implements SingleChildConstruction {
   Widget? child;
 
   @override
-  State<BacketsWidget> createState() => _BacketsWidgetState();
+  State<_BacketsWidget> createState() => _BacketsWidgetState();
 }
 
-class _BacketsWidgetState extends State<BacketsWidget> {
+class _BacketsWidgetState extends State<_BacketsWidget> {
   @override
   Widget build(BuildContext context) {
     widget.child ??= Row(

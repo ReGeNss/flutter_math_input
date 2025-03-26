@@ -65,7 +65,7 @@ extension Integral on MathConstructionsBuilding{
                 connectedWidgetKeys: [finishPointKey],
                 offsetByWidth: RelayedPositionedType.fromLeft,
                 left: 10,
-                widgetToWrap: ArgumentWidget(argumentWidget: argFieldWidget)),
+                widgetToWrap: _ArgumentWidget(argumentWidget: argFieldWidget)),
             RelayedPositioned(
               left: 10,
               offsetByWidth: RelayedPositionedType.fromLeft,
@@ -89,17 +89,17 @@ extension Integral on MathConstructionsBuilding{
   }
 }
 
-class ArgumentWidget extends StatefulWidget implements SingleChildConstruction {
-  ArgumentWidget({super.key, required this.argumentWidget});
+class _ArgumentWidget extends StatefulWidget implements SingleChildConstruction {
+  _ArgumentWidget({required this.argumentWidget});
   final Widget argumentWidget;
   @override
   Widget? child;
   
   @override
-  State<ArgumentWidget> createState() => _ArgumentWidgetState();
+  State<_ArgumentWidget> createState() => _ArgumentWidgetState();
 }
 
-class _ArgumentWidgetState extends State<ArgumentWidget> {
+class _ArgumentWidgetState extends State<_ArgumentWidget> {
   @override
   Widget build(BuildContext context) {
     if (widget.child != null) {

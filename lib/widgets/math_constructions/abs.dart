@@ -19,7 +19,7 @@ extension Abs on MathConstructionsBuilding{
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 5),
-            child: AbsLineWidget(
+            child: _AbsLineWidget(
               globalKey: globalKey,
             ),
           ),
@@ -30,7 +30,7 @@ extension Abs on MathConstructionsBuilding{
           ),
           Padding(
             padding: const EdgeInsets.only(left: 5),
-            child: AbsLineWidget(
+            child: _AbsLineWidget(
               globalKey: globalKey,
             ),
           ),
@@ -41,15 +41,15 @@ extension Abs on MathConstructionsBuilding{
   }
 }
 
-class AbsLineWidget extends StatefulWidget {
-  const AbsLineWidget({super.key, required this.globalKey});
+class _AbsLineWidget extends StatefulWidget {
+  const _AbsLineWidget({required this.globalKey});
   final GlobalKey globalKey;
 
   @override
-  State<AbsLineWidget> createState() => _AbsLineWidgetState();
+  State<_AbsLineWidget> createState() => _AbsLineWidgetState();
 }
 
-class _AbsLineWidgetState extends State<AbsLineWidget> {
+class _AbsLineWidgetState extends State<_AbsLineWidget> {
   Size? size;
   getSize() {
     if (widget.globalKey.currentContext != null) {
