@@ -2,77 +2,51 @@ import 'package:flutter/material.dart';
 import '../math_constructions/index.dart';
 import 'text_field_handle_and_create.dart';
 
-enum ElementsType {
-  fracElement,
-  sqrtElement,
-  fieldElement,
-  exponentiationElement,
-  naturalLogElement,
-  decimalLogElement,
-  logBaseTwoElement,
-  logElement,
-  absElement,
-  limitElement,
-  cosElement,
-  sinElement,
-  tanElement,
-  cotElement,
-  arcsinElement,
-  arccosElement,
-  arctanElement,
-  arccotElement,
-  indefiniteIntegralElement,
-  integralElement,
-  derevativeElement,
-  backetsWidget,
-}
-
 class MathConstructionsBuilding {
-  final TextFieldHandleAndCreateService textFieldService;
+  final TextFieldHandleAndCreateService _textFieldService;
 
-  MathConstructionsBuilding({required this.textFieldService});
+  MathConstructionsBuilding({required TextFieldHandleAndCreateService textFieldService}) : _textFieldService = textFieldService;
 
-  MathConstructionData createTextField({bool replaceOldFocus = false, TextFieldFormat? format}) {  
-    final textField = textFieldService.createTextField(
+  Widget createTextField({
+    bool replaceOldFocus = false,
+    bool isActive = false, 
+    TextFieldFormat? format,
+    bool performAddictionalTextField = false
+    }) {  
+    final textField = _textFieldService.createTextField(
       isReplaceOperation: replaceOldFocus, 
-      isActiveTextField: true,
+      isActiveTextField: isActive,
       selectedTextFieldFormat: format,
+      performAdictionalTextField: performAddictionalTextField
     );
-    return MathConstructionData(construction: textField);
+    return textField;
   }
 
   Widget createCharWidget({required bool isActiveTextField}) {
-    final textFieldWidget = textFieldService.createTextField(
+    final textFieldWidget = _textFieldService.createTextField(
         isActiveTextField: isActiveTextField, isReplaceOperation: false);
     return textFieldWidget;
   }
 
+  void markAsGroup(dynamic first, Widget second) {
+    _textFieldService.markAsGrop(first, second);
+  }
+
   Widget initialization() {
-    final textField = textFieldService.createTextField(
+    final textField = _textFieldService.createTextField(
         isReplaceOperation: false,
         isActiveTextField: true,
         performAdictionalTextField: false,
         selectedTextFieldFormat: TextFieldFormat.standart);
     return textField;
   }
+
+  ObjectKey getKey(MathConstructionKey constuction){
+  return ObjectKey(constuction);
+  }
 }
 
-ObjectKey getKey(MathConstruction constuction){
-  return ObjectKey(MathConstructionKey(construction: constuction));
-}
 
-class MathConstructionKey{
-  final MathConstruction construction;
-  
-  MathConstructionKey({required this.construction,});
-}
-
-class MathConstructionData {
-  final Widget? addictionalWidget;
-  final Widget construction;
-
-  MathConstructionData({required this.construction, this.addictionalWidget});
-}
 
 extension ChildExtension on Widget{
   bool get isSingleChild{

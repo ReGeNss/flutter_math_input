@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import '../math_constructions/index.dart';
 import '../parsers/formulas_tree_parsers.dart';
-import 'math_constructions_building.dart';
-
 
 class WidgetsDataHandler{
-  void replaceWidgetInTree(ParsedWidgetsData parsedData, MathConstructionData mathConstructions){
+  void replaceWidgetInTree(ParsedWidgetsData parsedData, MathConstructionWidgetData mathConstructions){
     if(mathConstructions.addictionalWidget != null){
       parsedData.wigetData?.replaceRange(parsedData.index!, parsedData.index!+1,[mathConstructions.construction, mathConstructions.addictionalWidget!]);
     }else{

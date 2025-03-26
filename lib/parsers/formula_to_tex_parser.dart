@@ -11,6 +11,7 @@ class FormulaToTexParser {
       _formulaParser(widgetList);
       return formulaInKatex;
     }catch(e){
+      print("Error: $e");
       return '\\text{something went wrong, retry...}';
     }
   }
@@ -20,12 +21,12 @@ class FormulaToTexParser {
       if(element.singleChild != null) {
         if(element.key != null && element.key is ObjectKey){
           final construction = _getConstruction(element);
-          if(construction is SimpleMathConstuction){
+          if(construction is SimpleMathConstructionKey){
             _addToTeXData(
               () => _parseElement([element.singleChild!], construction.katexExp)
             );
           }else{
-            construction as GroopMathConstruction;
+            construction as GroupMathConstructionKey;
             final widgetsTocheck = element.isMultiChild ? element.multiChild : [element.singleChild!];
             _addToTeXData(
               () => _parseGroop(widgetsTocheck, construction.katexExp, construction.fieldsLocation)
@@ -37,12 +38,12 @@ class FormulaToTexParser {
       }else if(element.isMultiChild){
         if(element.key != null && element.key is ObjectKey){
           final construction = _getConstruction(element);
-          if(construction is SimpleMathConstuction){
+          if(construction is SimpleMathConstructionKey){
             _addToTeXData(
               () => _parseElement(element.multiChild, construction.katexExp)
             );
           }else{
-            construction as GroopMathConstruction;
+            construction as GroupMathConstructionKey;
             final widgetsTocheck = element.isMultiChild ? element.multiChild : [element.singleChild!];
             _addToTeXData(
               () => _parseGroop(widgetsTocheck, construction.katexExp, construction.fieldsLocation)
@@ -60,10 +61,10 @@ class FormulaToTexParser {
     return null;
   }
 
-  MathConstruction _getConstruction(Widget widget){
+  MathConstructionKey _getConstruction(Widget widget){
     final key = widget.key as ObjectKey;
     final keyValue = key.value as MathConstructionKey;
-    return keyValue.construction;
+    return keyValue;
   }
 
   void _addToTeXData(Function parseFunc) {
