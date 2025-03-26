@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../services/math_constructions_building.dart';
+import '../../math_constructions/index.dart';
+
 
 extension Backets on MathConstructionsBuilding{
   MathConstructionData createBracketsWidget() {
@@ -17,8 +19,9 @@ extension Backets on MathConstructionsBuilding{
 
 class BacketsWidget extends StatefulWidget implements SingleChildConstruction {
   BacketsWidget({
+    Key? key,
     required this.textFieldWidget,
-  }) : super(key: getKey(ElementsType.backetsWidget));
+  }) : super(key: getKey(BacketsConstuction()));
   final Widget textFieldWidget;
   @override
   Widget? child;

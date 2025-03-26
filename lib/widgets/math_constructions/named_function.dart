@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../services/math_constructions_building.dart';
+import '../../math_constructions/index.dart';
 
 extension NamedFunction on MathConstructionsBuilding{
-  MathConstructionData createNamedFunctionWidget(String functionName, ElementsType type) {
+  MathConstructionData createNamedFunctionWidget(String functionName, MathConstruction type) {
     final addictinalTextFiled = textFieldService.createTextField(
       isReplaceOperation: false
     );

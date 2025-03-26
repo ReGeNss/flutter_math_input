@@ -3,6 +3,7 @@ import '../../services/math_constructions_building.dart';
 import '../../services/text_field_handle_and_create.dart';
 import '../supportive_widges/relayed_positioned.dart';
 import '../supportive_widges/widget_dynamic_size_wrapper.dart';
+import '../../math_constructions/index.dart';
 
 extension Integral on MathConstructionsBuilding{
   MathConstructionData createIntegralWidget() {
@@ -31,12 +32,12 @@ extension Integral on MathConstructionsBuilding{
     final derevativeKey = GlobalKey();
     textFieldService.markAsGrop(startPointField, derevativeField);
     final integralWidget = WidgetDynamicSizeWrapper(
-      key: getKey(ElementsType.integralElement),
+      key: getKey(IntegralConstruction()),
       connectedKeysToHeight: [],
       connectedKeysToWidth: [finishPointKey, argumentKey, derevativeKey],
       defaultHeight: 60,
       defaultWidth: 25,
-      wrappedWidget: Stack(
+      child: Stack(
           clipBehavior: Clip.none,
           alignment: Alignment.center,
           children: [

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'math_constructions/math_construction.dart';
 import 'widgets/math_constructions/index.dart';
 import 'parsers/deleteting_parser.dart';
 import 'parsers/formula_to_tex_parser.dart';
@@ -95,7 +96,7 @@ class MathController extends ChangeNotifier{
     }
   }
 
-  void namedFunctionButtonTap(String functionName, ElementsType type){
+  void namedFunctionButtonTap(String functionName, MathConstruction type){
     final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
     if(parsedWidgets != null){
       final namedWidget = _mathConstructionsBuildingService.createNamedFunctionWidget(functionName, type); 
@@ -256,16 +257,16 @@ class MathController extends ChangeNotifier{
       return;
     }
 
-    final fieldsCountInElement = _getFieldsCountInElement(parsedWidgets, activeController);
+    final fieldsCountInConstuction = _getFieldsCountInConstuction(parsedWidgets, activeController);
     
-    if (fieldsCountInElement == null) {
+    if (fieldsCountInConstuction == null) {
       _replaceElementByField(activeController);
       rebuildSreenState();
       return;
     }
 
-    if (fieldsCountInElement.fieldsCount > 1) {
-      _deleteFieldOrGroup(parsedWidgets, fieldsCountInElement.ourFieldLocation == 1);
+    if (fieldsCountInConstuction.fieldsCount > 1) {
+      _deleteFieldOrGroup(parsedWidgets, fieldsCountInConstuction.ourFieldLocation == 1);
     } else {
       _replaceElementByField(activeController);
     }
@@ -273,7 +274,7 @@ class MathController extends ChangeNotifier{
     rebuildSreenState();
   }
 
-  ElementFieldsData? _getFieldsCountInElement(ParsedWidgetsData parsedWidgets, TextEditingController activeController) {
+  ElementFieldsData? _getFieldsCountInConstuction(ParsedWidgetsData parsedWidgets, TextEditingController activeController) {
     return _deletingParserService.getCountOfTextFieldsIn(
       parsedWidgets.wigetData!, 
       activeController

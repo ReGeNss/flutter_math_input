@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../services/math_constructions_building.dart';
 import '../../services/text_field_handle_and_create.dart';
+import '../../math_constructions/limit.dart';
 import '../supportive_widges/relayed_positioned.dart';
 import '../supportive_widges/widget_dynamic_size_wrapper.dart';
 
@@ -26,8 +27,8 @@ extension Limit on MathConstructionsBuilding{
           defaultHeight: 50,
           defaultWidth: 50,
           connectedKeysToWidth: [firstDownFieldKey, secondDownFieldKey, argWidgetKey],
-          key: getKey(ElementsType.limitElement),
-          wrappedWidget: Stack(
+          key: getKey(LimitConstruction()),
+          child: Stack(
             clipBehavior: Clip.none,
             children: [
               RelayedPositioned(
@@ -44,13 +45,6 @@ extension Limit on MathConstructionsBuilding{
                     ),
                   ),
                 ),
-              ),
-              RelayedPositioned(
-                key: argWidgetKey,
-                left: 45,
-                offsetByWidth: RelayedPositionedType.fromLeft,
-                connectedWidgetKeys: [firstDownFieldKey, secondDownFieldKey],
-                widgetToWrap: argField,
               ),
               Positioned(
                 key: firstDownFieldKey,
@@ -74,6 +68,13 @@ extension Limit on MathConstructionsBuilding{
                 bottom: -20,
                 left: 40,
                 widgetToWrap: secondDownField,
+              ),
+              RelayedPositioned(
+                key: argWidgetKey,
+                left: 45,
+                offsetByWidth: RelayedPositionedType.fromLeft,
+                connectedWidgetKeys: [firstDownFieldKey, secondDownFieldKey],
+                widgetToWrap: argField,
               ),
             ],
           ),

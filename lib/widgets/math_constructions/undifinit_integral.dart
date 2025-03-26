@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/math_constructions_building.dart';
+import '../../math_constructions/index.dart';
 
 extension UndifinitIntegral on MathConstructionsBuilding{
   MathConstructionData createUndefinitIntegralWidget() {
@@ -12,7 +13,7 @@ extension UndifinitIntegral on MathConstructionsBuilding{
         isReplaceOperation: false, performAdictionalTextField: false);
     textFieldService.markAsGrop(argFieldWidget, derevativeField); 
     final integralWidget = Row(
-      key: getKey(ElementsType.indefiniteIntegralElement),
+      key: getKey(UndefinitIntegralConstruction()),
       children: [
         const Text(
           '∫',

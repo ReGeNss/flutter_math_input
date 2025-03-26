@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_math_input/math_constructions/index.dart';
 import '../services/math_constructions_building.dart';
 import '../services/text_field_handle_and_create.dart';
-import '../widgets/supportive_widges/relayed_positioned.dart';
-import '../widgets/supportive_widges/widget_dynamic_size_wrapper.dart';
 import 'formulas_tree_parsers.dart';
 
 class FormulasTreeDeletingParser {
@@ -35,151 +34,52 @@ class FormulasTreeDeletingParser {
   ) {
     final length = array.length;
     for (int index = 0; length > index; index += 1) {
-      switch (array[index].runtimeType) {
-        case const (Row):
-          {
-            final row = array[index] as Row;
-            _parseWidgets(
-              row.children,
-              activeTextFieldController,
-            );
-            if(_isLoopWindingDown && row.key != null && row.key is ObjectKey && ((row.key as ObjectKey).value as MathConstructionKey).type != ElementsType.exponentiationElement ){
-              _isLoopWindingDown = false; 
-              _parsedData = ParsedWidgetsData(index: index, wigetData: array);
-            }
-            break;
-          }
-        case const (Column):
-          {
-            final list = array[index] as Column;
-             _parseWidgets(
-              list.children,
-              activeTextFieldController,
-            );
-            if(_isLoopWindingDown && list.key != null && list.key is ObjectKey){
-              final keyType = ((list.key as ObjectKey).value as MathConstructionKey).type;
-              _isLoopWindingDown = false;
-              if(keyType == ElementsType.fracElement) {
-                _parsedData = ParsedWidgetsData(index: index, wigetData: array, isGroop: true);
-                return null;
-              }
-              _parsedData = ParsedWidgetsData(index: index, wigetData: array,);
-            }
-            break;
-          }
-        case const (TextField):
-          {
-            final textFieldWidget = array[index] as TextField;
-            if (textFieldWidget.controller == activeTextFieldController) {
-              _isLoopWindingDown = true;
-              return ParsedWidgetsData(wigetData: array, index: index);
-            }
-            break;
-          }
-        case const (SizedBox):
-          {
-            final widget = array[index] as SizedBox;
-            if (widget.child != null) {
-              _parseWidgets(
-                [widget.child!],
-                activeTextFieldController,
-              );
-              if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
-                final keyType = ((widget.key as ObjectKey).value as MathConstructionKey).type;
-                _isLoopWindingDown = false; 
-                if(keyType == ElementsType.derevativeElement){
-                  _parsedData = ParsedWidgetsData(index: index, wigetData: array, isGroop: true);
-                  return null;
-                }
-                _parsedData = ParsedWidgetsData(index: index, wigetData: array);
-              }
-            }
-            break;
-          }
-        case const (Stack):
-          {
-            final list = array[index] as Stack;
-            _parseWidgets(
-              list.children,
-              activeTextFieldController,
-            );
-            if(_isLoopWindingDown && list.key != null && list.key is ObjectKey){
-               _isLoopWindingDown = false;
-              _parsedData = ParsedWidgetsData(index: index, wigetData: array);
-            }
-            break;
-          }
-        case const (Positioned):
-          {
-            final widget = array[index] as Positioned;
-            _parseWidgets(
-                [widget.child], activeTextFieldController);
-            if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
-              _isLoopWindingDown = false;
-              _parsedData = ParsedWidgetsData(index: index, wigetData: array);
-            }
-            break;
-          }
-        case const (RelayedPositioned):
-        {
-          final widget = array[index] as RelayedPositioned;
-          _parseWidgets([widget.wrappedWidget!], activeTextFieldController);
+      if(array[index].isSingleChild){
+        final widget = array[index];
+        if (widget.singleChild != null) {
+          _parseWidgets(
+            [widget.singleChild!],
+            activeTextFieldController,
+          );
           if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
+            final keyType = ((widget.key as ObjectKey).value as MathConstructionKey).construction;
             _isLoopWindingDown = false;
-            _parsedData = ParsedWidgetsData(index: index, wigetData: array);
+            _parsedData = ParsedWidgetsData(
+              index: index, 
+              wigetData: array, 
+              isGroop: keyType is GroopMathConstruction ? true : false,
+            );
           }
-          break;
         }
-        case const (WidgetDynamicSizeWrapper): 
-        {
-          final widget = array[index] as WidgetDynamicSizeWrapper;
-          _parseWidgets([widget.wrappedWidget], activeTextFieldController);
-          if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
-            _isLoopWindingDown = false;
-            final keyType = ((widget.key as ObjectKey).value as MathConstructionKey).type;
-            if(keyType == ElementsType.indefiniteIntegralElement
-              || keyType == ElementsType.integralElement
-              || keyType == ElementsType.limitElement
-              || keyType == ElementsType.logElement
-            ){
-              _parsedData = ParsedWidgetsData(index: index, wigetData: array, isGroop: true);
-              return null;
-            }
-            _parsedData = ParsedWidgetsData(index: index, wigetData: array);
-          }
-          break; 
+      }else if(array[index].isMultiChildWidget){
+        final list = array[index];
+        _parseWidgets(
+          list.multiChild,
+          activeTextFieldController,
+        );
+        
+        if(_isLoopWindingDown && list.key != null && list.key is ObjectKey){
+          final keyType = ((list.key as ObjectKey).value as MathConstructionKey).construction;
+          _isLoopWindingDown = false;
+          _parsedData = ParsedWidgetsData(
+            index: index, 
+            wigetData: array,
+            isGroop: keyType is GroopMathConstruction ? true : false,
+          );
         }
-        case const (TextFieldWidgetHandler):
-        {
-           final widget =
-                (array[index] as TextFieldWidgetHandler).textField as TextField;
-          _parseWidgets([widget], activeTextFieldController);
-          if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
-            _isLoopWindingDown = false;
-            _parsedData = ParsedWidgetsData(index: index, wigetData: array);
-          } 
-          break; 
-        }
-        default: 
-        {
-          if(array[index] is SingleChildConstruction){
-            final widget = (array[index] as SingleChildConstruction).child; 
-            _parseWidgets([widget!], activeTextFieldController); 
-            if(_isLoopWindingDown){ 
-                _isLoopWindingDown = false;
-                _parsedData = ParsedWidgetsData(index: index, wigetData: array);
-              }
-            break;
-          }
-          if(array[index] is MultiChildConstruction){
-            final widget = (array[index] as MultiChildConstruction).children; 
-            _parseWidgets(widget, activeTextFieldController); 
-            if(_isLoopWindingDown){ 
-                _isLoopWindingDown = false;
-                _parsedData = ParsedWidgetsData(index: index, wigetData: array);
-              }
-            break;
-          }
+      }else if(array[index] is TextFieldWidgetHandler){
+        final widget =
+              (array[index] as TextFieldWidgetHandler).textField as TextField;
+        _parseWidgets([widget], activeTextFieldController);
+        if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
+          _isLoopWindingDown = false;
+          _parsedData = ParsedWidgetsData(index: index, wigetData: array);
+        } 
+      }else if(array[index] is TextField){
+        final textFieldWidget = array[index] as TextField;
+        if (textFieldWidget.controller == activeTextFieldController) {
+          _isLoopWindingDown = true;
+          return ParsedWidgetsData(wigetData: array, index: index);
         }
       }
     }

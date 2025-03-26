@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../services/math_constructions_building.dart';
 import '../../services/text_field_handle_and_create.dart';
 import './frac.dart';
+import '../../math_constructions/index.dart';
+
 
 extension Derevative on MathConstructionsBuilding{
   MathConstructionData createDerevativeWidget(String? upperFieldText, String? downFieldText) {
@@ -21,7 +23,7 @@ extension Derevative on MathConstructionsBuilding{
     final downGlobalKey = GlobalKey();
     textFieldService.markAsGrop(upperField, downField);
     final derevativeWidget = SizedBox(
-      key: getKey(ElementsType.derevativeElement),
+      key: getKey(DerevativeConstuction()),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

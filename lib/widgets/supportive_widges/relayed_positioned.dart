@@ -1,6 +1,6 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import '../../services/math_constructions_building.dart';
 
 enum RelayedPositionedType {
   fromRight,
@@ -9,7 +9,7 @@ enum RelayedPositionedType {
   fromBottom,
 }
 
-class RelayedPositioned extends StatefulWidget {
+class RelayedPositioned extends StatefulWidget implements SingleChildConstruction {
   RelayedPositioned({
     super.key,
     required this.widgetToWrap,
@@ -32,7 +32,8 @@ class RelayedPositioned extends StatefulWidget {
   final double? bottom;
   final RelayedPositionedType? offsetByHeight;
   final RelayedPositionedType? offsetByWidth;
-  Widget? wrappedWidget; 
+  @override
+  Widget? child; 
 
   @override
   State<RelayedPositioned> createState() => _RelayedPositionedState();
@@ -141,13 +142,13 @@ class _RelayedPositionedState extends State<RelayedPositioned> {
       }
     }
     widthOffset ??= 0;
-    widget.wrappedWidget = Positioned(
+    widget.child = Positioned(
       top: topOffset,
       left: leftOffset,
       right: rightOffset,
       bottom: bottomOffset,
       child: widget.widgetToWrap,
     );
-    return widget.wrappedWidget!;
+    return widget.child!;
   }
 }

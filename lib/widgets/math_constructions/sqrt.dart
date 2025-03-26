@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../services/math_constructions_building.dart';
+import '../../math_constructions/index.dart';
 
 extension Sqrt on MathConstructionsBuilding{
   MathConstructionData createSqrtWidget() {
@@ -10,7 +11,7 @@ extension Sqrt on MathConstructionsBuilding{
     final adictionalField =
         textFieldService.createTextField(isReplaceOperation: false);
     final sqrtWidget = SizedBox(
-      key: getKey(ElementsType.sqrtElement),
+      key: getKey(SqrtConstruction()),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
