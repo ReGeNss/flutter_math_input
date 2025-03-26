@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../services/math_constructions_building.dart';
+import '../../math_constructions/index.dart';
 
 
 extension Frac on MathConstructionsBuilding {
@@ -17,7 +18,7 @@ extension Frac on MathConstructionsBuilding {
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            key: getKey(ElementsType.fracElement),
+            key: getKey(FracConstuction()),
             children: [
               SizedBox(
                 child: Row(

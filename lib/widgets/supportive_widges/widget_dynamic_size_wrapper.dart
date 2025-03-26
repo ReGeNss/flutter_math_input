@@ -1,12 +1,12 @@
 import 'dart:ui';
-
 import 'package:flutter/widgets.dart';
+import '../../services/math_constructions_building.dart';
 
-class WidgetDynamicSizeWrapper extends StatefulWidget{
+class WidgetDynamicSizeWrapper extends StatefulWidget implements SingleChildConstruction{
   WidgetDynamicSizeWrapper({
     super.key,
     required this.connectedKeysToWidth,
-    required this.wrappedWidget, 
+    required this.child, 
     required this.connectedKeysToHeight,
     this.defaultWidth, 
     this.defaultHeight,
@@ -16,7 +16,8 @@ class WidgetDynamicSizeWrapper extends StatefulWidget{
   final List<GlobalKey> connectedKeysToHeight;
   final double? defaultWidth;
   final double? defaultHeight; 
-  Widget wrappedWidget; 
+  @override
+  Widget? child; 
 
   @override
   State<WidgetDynamicSizeWrapper> createState() => _WidgetDynamicSizeWrapperState();
@@ -60,7 +61,7 @@ class _WidgetDynamicSizeWrapperState extends State<WidgetDynamicSizeWrapper> {
     return SizedBox(
       height: widget.defaultHeight,
       width: width + (widget.defaultWidth ?? 0),
-      child: widget.wrappedWidget,
+      child: widget.child,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../math_constructions/index.dart';
 import '../../services/math_constructions_building.dart';
 import '../../services/text_field_handle_and_create.dart';
 import '../supportive_widges/relayed_positioned.dart';
@@ -19,9 +20,10 @@ extension Exp on MathConstructionsBuilding{
     textFieldService.markAsGrop(baseFieldData, textField);
     final widget = WidgetDynamicSizeWrapper(
       defaultHeight: 50,
+      key: getKey(ExpConstuction()),
       connectedKeysToHeight: [],
       connectedKeysToWidth: [expGlobalKey, baseGlobalKey],
-      wrappedWidget: Stack(
+      child: Stack(
         clipBehavior: Clip.none,
         children: [
           Positioned(
@@ -40,7 +42,7 @@ extension Exp on MathConstructionsBuilding{
             offsetByHeight: RelayedPositionedType.fromBottom,
             connectedWidgetKeys: [baseGlobalKey],
             widgetToWrap: Row(
-              key: getKey(ElementsType.exponentiationElement),
+              // key: getKey(ExpConstuction()),
               children: [
                 textField,
               ],

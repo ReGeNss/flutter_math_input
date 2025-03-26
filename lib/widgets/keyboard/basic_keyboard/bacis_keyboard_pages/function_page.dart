@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../keyboard_controller.dart';
-import '../../../../../services/math_constructions_building.dart';
+import '../../../../math_constructions/index.dart';
 import '../../custom_math_icons_icons.dart';
 import '../basic_keyboard.dart';
 
@@ -26,24 +26,24 @@ class FunctionPageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<List<Widget>> rows = [
       [
-        _buildFunctionButton('cos', ElementsType.cosElement),
-        _buildFunctionButton('arccos', ElementsType.arccosElement),
-        _buildFunctionButton('lg', ElementsType.decimalLogElement),
+        _buildFunctionButton('cos', CosConstruction()),
+        _buildFunctionButton('arccos', ArccosConstruction()),
+        _buildFunctionButton('lg', LogBase10Construction()),
         _buildIconButton(CustomMathIcons.abs, keyboardProperties.absButtonTap),
         _buildTextButton('!'),
         _buildTextButton('e'),
       ],
       [
-        _buildFunctionButton('sin', ElementsType.sinElement),
-        _buildFunctionButton('arcsin', ElementsType.arcsinElement),
-        _buildFunctionButton('log₂', ElementsType.logBaseTwoElement),
+        _buildFunctionButton('sin', SinConstruction()),
+        _buildFunctionButton('arcsin', ArcsinConstruction()),
+        _buildFunctionButton('log₂', LogBase2Construction()),
         _buildIconButton(CustomMathIcons.lim, keyboardProperties.limButtonTap),
         _buildTextButton('f(x)'),
         _buildTextButton('∞'),
       ],
       [
-        _buildFunctionButton('tan', ElementsType.tanElement),
-        _buildFunctionButton('arctan', ElementsType.arctanElement),
+        _buildFunctionButton('tan', TanConstruction()),
+        _buildFunctionButton('arctan', ArctanConstruction()),
         _buildIconButton(CustomMathIcons.log, keyboardProperties.logButtonTap),
         _buildIconButton(CustomMathIcons.integral, keyboardProperties.integralButtonTap),
         _buildIconButton(
@@ -53,9 +53,9 @@ class FunctionPageWidget extends StatelessWidget {
         _buildEmptyButton(),
       ],
       [
-        _buildFunctionButton('cot', ElementsType.cotElement),
-        _buildFunctionButton('arcctg', ElementsType.arccotElement),
-        _buildFunctionButton('ln', ElementsType.naturalLogElement),
+        _buildFunctionButton('cot', CotConstruction()),
+        _buildFunctionButton('arcctg', ArccotConstruction()),
+        _buildFunctionButton('ln', NaturalLogConstruction()),
         _buildIconButton(
           CustomMathIcons.indefinite_integral, 
           keyboardProperties.undefinitintegralButtonTap
@@ -71,7 +71,7 @@ class FunctionPageWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildFunctionButton(String text, ElementsType type) {
+  Widget _buildFunctionButton(String text, MathConstruction type) {
     return TextButton(
       onPressed: () => keyboardProperties.namedFunctionButtonTap(text, type),
       style: buttonStyle ?? defaultButtonStyle,

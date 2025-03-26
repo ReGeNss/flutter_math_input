@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../services/math_constructions_building.dart';
 import '../services/text_field_handle_and_create.dart';
-import '../widgets/supportive_widges/relayed_positioned.dart';
-import '../widgets/supportive_widges/widget_dynamic_size_wrapper.dart';
 
 class FormulasTreeParsersService {
   ParsedWidgetsData? _parsedData;
@@ -41,145 +38,43 @@ class FormulasTreeParsersService {
     final length = array.length;
     ParsedWidgetsData? data;
     for (int index = 0; length > index; index += 1) {
-      switch (array[index].runtimeType) {
-        case const (Row):
-          {
-            final row = array[index] as Row;
-            data = _parseWidgetLocation(
-              row.children,
-              activeTextFieldController,
-            );
-            if (data != null) {
-              return data;
-            }
-            break;
-          }
-        case const (Column):
-          {
-            final list = array[index] as Column;
-            data = _parseWidgetLocation(
-              list.children,
-              activeTextFieldController,
-            );
-            if (data != null) {
-              return data;
-            }
-            break;
-          }
-        case const (TextField):
-          {
-            final textFieldWidget = array[index] as TextField;
-            if (textFieldWidget.controller == activeTextFieldController) {
-              return ParsedWidgetsData(wigetData: array, index: index);
-            }
-            break;
-          }
-        case const (SizedBox):
-          {
-            final widget = array[index] as SizedBox;
-            if (widget.child != null) {
-              data = _parseWidgetLocation(
-                [widget.child!],
-                activeTextFieldController,
-              );
-              if (data != null) {
-                data.index = index;
-                data.wigetData = array;
-                _parsedData ??= data;
-              }
-            }
-            break;
-          }
-        case const (Stack):
-          {
-            final list = array[index] as Stack;
-            data = _parseWidgetLocation(
-              list.children,
-              activeTextFieldController,
-            );
-            break;
-          }
-        case const (Positioned):
-          {
-            final widget = array[index] as Positioned;
-            data = _parseWidgetLocation(
-              [widget.child],
-              activeTextFieldController
-            );
-            if (data != null) {
-              if(data.index == null && data.wigetData == null){
-                data.index = 0; 
-                data.wigetData = [widget.child]; 
-              }
-              if (_parsedData == null) {
-                _parsedData = data;
-                return null;
-              }
-            }
-            break;
-          }
-        case const (RelayedPositioned):
-        {
-          final widget = array[index] as RelayedPositioned;
-          data = _parseWidgetLocation([widget.widgetToWrap], activeTextFieldController);
-          if (data != null) {
-            if(data.index == null && data.wigetData == null){
-              data.index = 0; 
-              data.wigetData = [widget.widgetToWrap]; 
-            }
-            if (_parsedData == null) {
-              _parsedData = data;
-              return null;
-            }
-          }
-          break;
-        }
-        case const (WidgetDynamicSizeWrapper):
-        {
-          final widget = array[index] as WidgetDynamicSizeWrapper;
-          data = _parseWidgetLocation([widget.wrappedWidget], activeTextFieldController);
-          if (data != null) {
-            if(data.index == null && data.wigetData == null){
-              data.index = 0; 
-              data.wigetData = [widget.wrappedWidget]; 
-            }
-            if (_parsedData == null) {
-              _parsedData = data;
-              return null;
-            }
-          }
-          break;
-        }
-        case const (TextFieldWidgetHandler):
-        {
-          final widget =
-                (array[index] as TextFieldWidgetHandler).textField as TextField;
+      if(array[index].isSingleChild){
+        final widget = array[index];
+        if (widget.singleChild != null) {
           data = _parseWidgetLocation(
-            [widget],
-            activeTextFieldController);
+            [widget.singleChild!],
+            activeTextFieldController,
+          );
           if (data != null) {
-            return data;
-          }
-          break; 
+            data.index = index;
+            data.wigetData = array;
+            _parsedData ??= data;
+          }        
         }
-        default: 
-        {
-          if(array[index] is SingleChildConstruction){
-            final widget = array[index] as SingleChildConstruction;
-            data = _parseWidgetLocation([widget.child!], activeTextFieldController);
-            if (data != null) {
-              return data;
-            }
-            break;
-          }
-          if(array[index] is MultiChildConstruction){
-            final widget = array[index] as MultiChildConstruction;
-            data = _parseWidgetLocation(widget.children, activeTextFieldController);
-            if (data != null) {
-              return data;
-            }
-            break;
-          }
+      }
+      else if(array[index].isMultiChild){
+        final widget = array[index];
+        data = _parseWidgetLocation(
+          widget.multiChild,
+          activeTextFieldController
+        );
+        if (data != null) {
+          return data;
+        }
+      }else if(array[index] is TextFieldWidgetHandler){
+        final widget =
+                (array[index] as TextFieldWidgetHandler).textField as TextField;
+        data = _parseWidgetLocation(
+          [widget],
+          activeTextFieldController
+        );
+        if (data != null) {
+          return data;
+        }
+      }else if(array[index] is TextField){
+        final widget = array[index] as TextField;
+        if(widget.controller == activeTextFieldController){
+          return ParsedWidgetsData(wigetData: array, index: index);
         }
       }
     }
@@ -192,163 +87,37 @@ class FormulasTreeParsersService {
     final length = array.length;
     ParsedWidgetsData? data;
     for (int index = 0; length > index; index += 1) {
-      switch (array[index].runtimeType) {
-        case const (Row):
-          {
-            final list = array[index] as Row;
-            data = _parseWidgetContainerLocation(
-              list.children,
-              activeTextFieldController,
-              isFromRowOrColumn: true
-            );
-            if (_parsedData == null && data != null) {
-              _parsedData = ParsedWidgetsData(wigetData: array);
-            }
-            isFromRowOrColumn = false;
-            break;
-          }
-        case const (Column):
-          {
-            final list = array[index] as Column;
-            data = _parseWidgetContainerLocation(
-              list.children, 
-              activeTextFieldController,
-              isFromRowOrColumn: true
-            );
-            if (_parsedData == null && data != null) {
-              _parsedData = ParsedWidgetsData(wigetData: array);
-            }
-            isFromRowOrColumn = false;
-            break;
-          }
-        case const (TextField):
-          {
-            final textFieldWidget = array[index] as TextField;
-            if (textFieldWidget.controller == activeTextFieldController) {
-              return ParsedWidgetsData();
-            }
-            break;
-          }
-        case const (Stack):
-          {
-            final list = array[index] as Stack;
-            data = _parseWidgetContainerLocation(
-              list.children, 
-              activeTextFieldController,
-              isFromRowOrColumn: true
-            );
-            if (_parsedData == null && data != null) {
-              data.index = index; 
-              data.wigetData = array; 
-              _parsedData = data; 
-            }
-            isFromRowOrColumn = false;
-            break;
-          }
-        case const (SizedBox):
-          {
-            final widget = array[index] as SizedBox;
-            if (widget.child != null) {
-              data = _parseWidgetInContainer(
-                widget.child!, 
-                activeTextFieldController
-              );
-            }
-            if (data != null && _parsedData == null) {
-              data.index = index; 
-              if (isFromRowOrColumn == false) {
-                data.wigetData = array;
-                _parsedData = data; 
-              }
-              return data;
-            }
-            break;
-          }
-        case const (Positioned):
-          {
-            final widget = array[index] as Positioned;
-            data = _parseWidgetInContainer(
-              widget.child, 
-              activeTextFieldController
-            ); 
-            if (data != null && _parsedData == null) {
-              if (isFromRowOrColumn == false) {
-                data.wigetData = array;
-                _parsedData = data; 
-              }
-              return data;
-            }
-            break;
-          }
-        
-        case const (TextFieldWidgetHandler):
-        {
-          final textFieldWidget = array[index] as TextFieldWidgetHandler;
-          if (textFieldWidget.textField!.controller == activeTextFieldController) {
-            return ParsedWidgetsData(wigetData: array, index: index);
-          }
-          break;
-        }
-        case const (RelayedPositioned): 
-        {   
-          final widget = array[index] as RelayedPositioned;
+      if(array[index].isSingleChild){
+        final widget = array[index].singleChild;
+        if (widget != null) {
           data = _parseWidgetInContainer(
-            widget.widgetToWrap, 
+            widget, 
             activeTextFieldController
           );
-          if (data != null && _parsedData == null) {
-            data.index = index;
-            if (isFromRowOrColumn == false) {
-              data.wigetData = array;
-              _parsedData = data;
-            }
-            return data;
-          }
         }
-        case const (WidgetDynamicSizeWrapper): 
-        {
-          final widget = array[index] as WidgetDynamicSizeWrapper;
-          data = _parseWidgetInContainer(
-            widget.wrappedWidget, 
-            activeTextFieldController
-          );
-          if (data != null && _parsedData == null) {
-            data.index = index;
-            if (isFromRowOrColumn == false) {
-              data.wigetData = array;
-              _parsedData = data;
-            }
-            return data;
+        if (data != null && _parsedData == null) {
+          data.index = index; 
+          if (isFromRowOrColumn == false) {
+            data.wigetData = array;
+            _parsedData = data; 
           }
-        } 
-        default:
-        {
-          if(array[index] is SingleChildConstruction){
-            final widget = (array[index] as SingleChildConstruction).child as Row; 
-            data = _parseWidgetContainerLocation(
-              widget.children,
-              activeTextFieldController,
-              isFromRowOrColumn: true
-            );
-            if (_parsedData == null && data != null) {
-              _parsedData = ParsedWidgetsData(wigetData: array);
-            }
-            isFromRowOrColumn = false;
-            break;
-          }
-          if(array[index] is MultiChildConstruction){
-            final widget = array[index] as MultiChildConstruction;
-            data = _parseWidgetContainerLocation(
-              widget.children, 
-              activeTextFieldController,
-              isFromRowOrColumn: true
-            );
-            if (_parsedData == null && data != null) {
-              _parsedData = ParsedWidgetsData(wigetData: array);
-            }
-            isFromRowOrColumn = false;
-            break;
-          }
+          return data;
+        }
+      }else if(array[index].isMultiChild){
+        final list = array[index].multiChild;
+        data = _parseWidgetContainerLocation(
+          list,
+          activeTextFieldController,
+          isFromRowOrColumn: true
+        );
+        if (_parsedData == null && data != null) {
+          _parsedData = ParsedWidgetsData(wigetData: array);
+        }
+        isFromRowOrColumn = false;
+      }else if(array[index] is TextFieldWidgetHandler){
+        final textFieldWidget = array[index] as TextFieldWidgetHandler;
+        if (textFieldWidget.textField!.controller == activeTextFieldController) {
+          return ParsedWidgetsData(wigetData: array, index: index);
         }
       }
     }
@@ -358,89 +127,20 @@ class FormulasTreeParsersService {
   ParsedWidgetsData? _parseWidgetInContainer(
       Widget widget, TextEditingController activeTextFieldController) {
     ParsedWidgetsData? data;
-    final widgetRunType = widget.runtimeType;
-    switch (widgetRunType) {
-      case const (RelayedPositioned): 
-        {   
-          final relayedPositioned = widget as RelayedPositioned; 
-          data = _parseWidgetInContainer(relayedPositioned.widgetToWrap, activeTextFieldController);
-          return data;
-        } 
-      case const (TextField):
-        {
-          final textFieldWidget = widget as TextField;
-          if (textFieldWidget.controller == activeTextFieldController) {
-            return ParsedWidgetsData();
-          }
-          break; 
-        }
-      case const (Column):
-      {
-        final column = widget as Column;
-        data = _parseWidgetContainerLocation(
-          column.children, 
-          activeTextFieldController, 
-          isFromRowOrColumn: true
-        );
-        return data;
-      }
-      case  const (Row):
-      {
-        final row = widget as Row;
-        data = _parseWidgetContainerLocation(
-          row.children, 
-          activeTextFieldController,
-          isFromRowOrColumn: true
-        );
+    if(widget.isSingleChild){ 
+      data = _parseWidgetInContainer(widget.singleChild!, activeTextFieldController);
       return data;
-      }
-      case const (Stack):
-      {
-        final stack = widget as Stack;
-        data = _parseWidgetContainerLocation(
-          stack.children, 
-          activeTextFieldController,
-          isFromRowOrColumn: true
-        );
-        return data;
-      }
-      case const (Positioned):
-      {
-        widget as Positioned; 
-        data = _parseWidgetInContainer(
-          widget.child, 
-          activeTextFieldController
-        );
-        return data;
-      }
-      case const (SizedBox):
-      {
-        widget as SizedBox;
-        data = _parseWidgetInContainer(
-          widget.child!, 
-          activeTextFieldController
-        );
-        return data;
-      }
-      case const (WidgetDynamicSizeWrapper): 
-      {
-        final widgetDynamicSizeWrapper = widget as WidgetDynamicSizeWrapper; 
-        data = _parseWidgetInContainer(widgetDynamicSizeWrapper.wrappedWidget, activeTextFieldController);
-        return data;
-      }
-      case const (TextFieldWidgetHandler):
-      {
-        final textFieldHandler = widget as TextFieldWidgetHandler; 
-        data = _parseWidgetInContainer(textFieldHandler.textField!, activeTextFieldController);
-        return data; 
-      }
-      default: 
-      {
-        if(widget is SingleChildConstruction){
-          final conctruction = widget as SingleChildConstruction;
-          data = _parseWidgetInContainer(conctruction.child!, activeTextFieldController);
-          return data;
-        }
+    }else if(widget.isMultiChild){
+      data = _parseWidgetContainerLocation(
+        widget.multiChild, 
+        activeTextFieldController,
+        isFromRowOrColumn: true,
+      );
+      return data;
+    }else if(widget is TextFieldWidgetHandler){
+      final textFieldWidget = widget.textField as TextField;
+      if (textFieldWidget.controller == activeTextFieldController) {
+        return ParsedWidgetsData();
       }
     }
     return null;

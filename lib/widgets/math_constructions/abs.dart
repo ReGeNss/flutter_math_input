@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/math_constructions_building.dart';
+import '../../math_constructions/index.dart';
 
 extension Abs on MathConstructionsBuilding{
   MathConstructionData createAbsWidget() {
@@ -12,7 +13,7 @@ extension Abs on MathConstructionsBuilding{
 
     final globalKey = GlobalKey();
     final absWidget = SizedBox(
-      key: getKey(ElementsType.absElement),
+      key: getKey(AbsConstuction()),
       child: Row(
         key: globalKey,
         children: [
