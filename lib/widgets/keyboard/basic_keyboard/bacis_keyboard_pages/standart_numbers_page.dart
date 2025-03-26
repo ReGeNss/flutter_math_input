@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_math_input/keyboard_controller.dart';
-import 'package:flutter_math_input/widgets/keyboard/basic_keyboard/float_button_overlay.dart';
-import '../basic_keyboard.dart';
-import '../../custom_math_icons_icons.dart';
+import '../../../../flutter_math_input.dart';
+import '../../../../math_constructions/index.dart';
+import '../float_button_overlay.dart';
 
 class NumbersPageWidget extends StatelessWidget {
   const NumbersPageWidget({
@@ -33,9 +32,7 @@ class NumbersPageWidget extends StatelessWidget {
     final List<List<Widget>> rows = [
       [
         TextButton(
-            onPressed: () {
-              keyboardProperties.backetsButtonTap();
-            },
+            onPressed: () => keyboardProperties.createDefaultFunc(Backets.new),
             onLongPress: () {
               FloatButtonOverlay().createOverlay(
                 context, 
@@ -140,15 +137,22 @@ class NumbersPageWidget extends StatelessWidget {
         _createFunctionButtonWithText(() => keyboardProperties.createCharWidgets('÷'), '÷'),
       ],
       [
-        _createFunctionButtonWithIcon(keyboardProperties.onFracButtonTap, CustomMathIcons.frac),
-        _createFunctionButtonWithIcon(keyboardProperties.sqrtButtonTap, CustomMathIcons.sqrt),
+        _createFunctionButtonWithIcon(
+          () => keyboardProperties.createDefaultFunc(Frac.new),
+          CustomMathIcons.frac
+        ),
+        _createFunctionButtonWithIcon(
+          () => keyboardProperties.createDefaultFunc(Sqrt.new),
+          CustomMathIcons.sqrt),
         _buildCharButton('4'),
         _buildCharButton('5'),
         _buildCharButton('6'),
         _createFunctionButtonWithText(() => keyboardProperties.createCharWidgets('×'), '×'),
       ],
       [
-        _createFunctionButtonWithIcon(keyboardProperties.onExpButtonTap, CustomMathIcons.exp),
+        _createFunctionButtonWithIcon(
+          () => keyboardProperties.createComplicatedFunc(Exp.new),
+          CustomMathIcons.exp),
         _buildCharButton('x'),
         _buildCharButton('1'),
         _buildCharButton('2'),

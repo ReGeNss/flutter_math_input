@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_math_input/math_constructions/index.dart';
+import '../math_constructions/index.dart';
 import '../services/math_constructions_building.dart';
 import '../services/text_field_handle_and_create.dart';
 import 'formulas_tree_parsers.dart';
@@ -42,12 +42,12 @@ class FormulasTreeDeletingParser {
             activeTextFieldController,
           );
           if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
-            final keyType = ((widget.key as ObjectKey).value as MathConstructionKey).construction;
+              final keyType = ((widget.key as ObjectKey).value as MathConstructionKey);
             _isLoopWindingDown = false;
             _parsedData = ParsedWidgetsData(
               index: index, 
               wigetData: array, 
-              isGroop: keyType is GroopMathConstruction ? true : false,
+              isGroop: keyType is GroupMathConstructionKey ? true : false,
             );
           }
         }
@@ -59,12 +59,12 @@ class FormulasTreeDeletingParser {
         );
         
         if(_isLoopWindingDown && list.key != null && list.key is ObjectKey){
-          final keyType = ((list.key as ObjectKey).value as MathConstructionKey).construction;
+          final keyType = ((list.key as ObjectKey).value as MathConstructionKey);
           _isLoopWindingDown = false;
           _parsedData = ParsedWidgetsData(
             index: index, 
             wigetData: array,
-            isGroop: keyType is GroopMathConstruction ? true : false,
+            isGroop: keyType is GroupMathConstructionKey ? true : false,
           );
         }
       }else if(array[index] is TextFieldWidgetHandler){

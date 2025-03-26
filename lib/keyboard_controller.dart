@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'math_constructions/math_construction.dart';
-import 'widgets/math_constructions/index.dart';
 import 'parsers/deleteting_parser.dart';
 import 'parsers/formula_to_tex_parser.dart';
 import 'parsers/formulas_tree_parsers.dart';
@@ -87,117 +86,34 @@ class MathController extends ChangeNotifier{
     }
   }
 
-  void onFracButtonTap(){
+  void createDefaultFunc(DefaultMathConstruction Function(MathConstructionsBuilding) constructionFactory){
+    final construction = constructionFactory(_mathConstructionsBuildingService);
     final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    if(parsedWidgets != null){
-      final fracWidget = _mathConstructionsBuildingService.createFracWidget();
-      _dataHandler.replaceWidgetInTree(parsedWidgets, fracWidget);
-      rebuildSreenState();
-    }
+    if(parsedWidgets == null) return;
+    final constructionWidget = construction.createConstruction(); 
+    _dataHandler.replaceWidgetInTree(parsedWidgets, constructionWidget);
+    rebuildSreenState();
   }
 
-  void namedFunctionButtonTap(String functionName, MathConstruction type){
+  void createComplicatedFunc(
+    ComplicatedMathConstruction Function(
+      MathConstructionsBuilding, {
+      required TextFieldHandleAndCreateService textFieldService,
+      required ParsedWidgetsData parsingResults,
+      required List<Widget> widgetTree,
+    }) constructionFactory,
+  ){
     final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    if(parsedWidgets != null){
-      final namedWidget = _mathConstructionsBuildingService.createNamedFunctionWidget(functionName, type); 
-      _dataHandler.replaceWidgetInTree(parsedWidgets, namedWidget); 
-      rebuildSreenState(); 
-    }
-  }
-
-  void onExpButtonTap(){
-    final activeTextFieldController = _textFieldService.getActiveTextFieldController();
-    final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, activeTextFieldController); 
-    TextFieldData baseField; 
-    if(activeTextFieldController.text.isNotEmpty){
-      baseField = _textFieldService.getActiveTextFieldData();
-    }
-    else{
-      if(parsedWidgets?.index != null && parsedWidgets!.index! >= 1){
-        parsedWidgets.index = parsedWidgets.index! - 1;
-        baseField = _textFieldService.getPreviousTextFieldDataToActive();
-      }else{
-        baseField = _textFieldService.getActiveTextFieldData();  
-      }
-    }
-    if(parsedWidgets != null && parsedWidgets.index != null){
-      final baseWidget = parsedWidgets.wigetData![parsedWidgets.index!];
-      final expWidget = _mathConstructionsBuildingService.createExpWidget(baseWidget, baseField);
-      _dataHandler.replaceWidgetInTree(parsedWidgets, expWidget);
-      rebuildSreenState();
-    }
-  }
-
-  void sqrtButtonTap(){
-    final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    if(parsedWidgets != null){
-      final sqrtWidget = _mathConstructionsBuildingService.createSqrtWidget(); 
-      _dataHandler.replaceWidgetInTree(parsedWidgets, sqrtWidget);
-      rebuildSreenState();
-    }
-  }
-
-  void logButtonTap(){
-    final activeTextFieldController = _textFieldService.getActiveTextFieldController();
-    final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, activeTextFieldController);
-    if(parsedWidgets != null){
-      final logWidget = _mathConstructionsBuildingService.createLogWidget(); 
-      _dataHandler.replaceWidgetInTree(parsedWidgets, logWidget);
-      rebuildSreenState(); 
-    }
-  }
-
-  void limButtonTap(){
-    final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    if(parsedWidgetData != null){
-      final limitWidget = _mathConstructionsBuildingService.createLimitWidget(); 
-      _dataHandler.replaceWidgetInTree(parsedWidgetData, limitWidget);
-      rebuildSreenState(); 
-    }
-  } 
-
-  void absButtonTap(){
-    final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    if(parsedWidgetData != null){
-      final absWidet = _mathConstructionsBuildingService.createAbsWidget();
-      _dataHandler.replaceWidgetInTree(parsedWidgetData, absWidet);
-      rebuildSreenState(); 
-    }
-  }
-
-  void backetsButtonTap(){
-    final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    if(parsedWidgetData != null){
-      final backetsWidget = _mathConstructionsBuildingService.createBracketsWidget();
-      _dataHandler.replaceWidgetInTree(parsedWidgetData, backetsWidget);
-      rebuildSreenState(); 
-    }
-  }
-
-  void undefinitintegralButtonTap(){
-    final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-    if(parsedWidgetData != null){
-      final integralWidget = _mathConstructionsBuildingService.createUndefinitIntegralWidget();
-      _dataHandler.replaceWidgetInTree(parsedWidgetData, integralWidget);
-      rebuildSreenState(); 
-    }
-  }
-
-  void integralButtonTap(){
-    final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController() );
-    if(parsedWidgetData!= null){
-      final integralWidget = _mathConstructionsBuildingService.createIntegralWidget();
-      _dataHandler.replaceWidgetInTree(parsedWidgetData, integralWidget);
-      rebuildSreenState();
-    }
-  }
-  void onDerevativeButtonTap({String? upperField, String? downField}){
-    final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController() );
-    if(parsedWidgetData!= null){
-      final derevativeWidget = _mathConstructionsBuildingService.createDerevativeWidget(upperField,downField);
-      _dataHandler.replaceWidgetInTree(parsedWidgetData, derevativeWidget);
-      rebuildSreenState();
-    }
+    if(parsedWidgets == null || parsedWidgets.index == null) return;
+    final construction = constructionFactory(
+      _mathConstructionsBuildingService,
+      textFieldService: _textFieldService,
+      parsingResults: parsedWidgets,
+      widgetTree: _formulaGroopWidgets,
+    );
+    final constructionWidget = construction.createConstruction(); 
+    _dataHandler.replaceWidgetInTree(parsedWidgets, constructionWidget);
+    rebuildSreenState();
   }
 
   void selectNextFocus(){
@@ -205,8 +121,8 @@ class MathController extends ChangeNotifier{
     if(!shouldNotCreateNewField){
       final parsedWidgetData = _parsersService.parseWidgetContainerLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
         if(parsedWidgetData != null){
-          final textFieldConstruction = _mathConstructionsBuildingService.createTextField(replaceOldFocus: true);
-          _dataHandler.addToWidgetTree(parsedWidgetData, [textFieldConstruction.construction]); 
+          final textField = _mathConstructionsBuildingService.createTextField(replaceOldFocus: true, isActive: true);
+          _dataHandler.addToWidgetTree(parsedWidgetData, [textField]); 
           rebuildSreenState();
         }
     } 
@@ -316,14 +232,18 @@ class MathController extends ChangeNotifier{
 
   void _replaceWithNewField(ParsedWidgetsData elementToReplace, bool moveToFirst) {
     final newField = _mathConstructionsBuildingService.createTextField(
+      isActive: true,
       replaceOldFocus: false,
       format: TextFieldFormat.standart
     );
     if(moveToFirst) {
-      final textFieldData = ((newField.construction as SizedBox).child as TextFieldWidgetHandler).textFieldData;
+      final textFieldData = ((newField as SizedBox).child as TextFieldWidgetHandler).textFieldData;
       _textFieldService.intertThisFieldToStart(textFieldData);
     }
-    _dataHandler.replaceWidgetInTree(elementToReplace, newField);
+    _dataHandler.replaceWidgetInTree(
+      elementToReplace,
+      MathConstructionWidgetData(construction: newField)
+    );
   }
 
   void _removeCurrentField(TextEditingController activeController) {

@@ -5,7 +5,7 @@ Package for displaying, inputting, and outputting mathematical constructs in KaT
 ## Features
 
 - Most of the most popular math constructs
-- Flexible keyboard, with the ability to create your own
+- Flexible keyboard and math constructions, with the ability to create your own
 - The ability to enter almost any basic formula
 - KaTeX output by stream or getter
 
@@ -71,6 +71,8 @@ Definite and indefinite integrals.
 
 <summary>Greek and English Alphabet</summary>
 
+*<summary>Any your custom construction</summary>*
+
 ## Custom keyboard
 You can create your custom keyboard: 
 ````dart
@@ -83,4 +85,42 @@ class CustomKeyboard extends MathKeyboard {
   }
 
 }
+````
+
+## Custom math constructions
+1. Create your construction
+````dart
+clas MyCustomConstructions extends DefaultMathConstruction{
+  MyCustomConstructions(super.builder);
+
+  @override
+  MathConstructionWidgetData createConstruction() {
+    final field = builder.createTextField(
+      replaceOldFocus: true, 
+      isActive: true
+    );
+    final contruction = ColoredBox(
+      key: builder.getKey(MyCustomConstructionKey()),
+      color: Colors.red, 
+      child: field
+    );
+    return MathConstructionWidgetData(construction: contruction);
+  }
+
+  @override
+  MathConstructionKey get key => MyCustomConstructionKey();
+}
+
+class MyCustomConstructionKey extends SimpleMathConstructionKey{
+  @override
+  List<String> get katexExp => ['\\text{my custom construction:','}'];
+}
+````
+
+2. Add to your keyboard
+````dart
+TextButton(
+  onPressed: () => keyboardProperties.createDefaultFunc(MyCustomConstructions.new), 
+  child: child
+)
 ````
