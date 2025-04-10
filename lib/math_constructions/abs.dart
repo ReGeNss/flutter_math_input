@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'math_construction.dart';
 
 class Abs extends DefaultMathConstruction{
-  Abs(super.builder);
-
   @override
   MathConstructionKey get key => AbsKey();
   
+  Abs(super.builder);
+
   @override
   MathConstructionWidgetData createConstruction() {
     final textFieldWidget = builder.createTextField(
       replaceOldFocus: true,
       isActive: true,
     );
-    final adictionalField = builder.createTextField();
+    final additionalField = builder.createTextField();
     final globalKey = GlobalKey();
     final absWidget = SizedBox(
-      key: builder.getKey(AbsKey()),
+      key: MathConstructionKey.setKey(AbsKey()),
       child: Row(
         key: globalKey,
         children: [
@@ -40,14 +40,18 @@ class Abs extends DefaultMathConstruction{
         ],
       ),
     );
-    return MathConstructionWidgetData(construction: absWidget, addictionalWidget: adictionalField);
+    
+    return MathConstructionWidgetData(
+      construction: absWidget, 
+      additionalWidget: additionalField,
+    );
   }
   
 }
 
 class AbsKey extends SimpleMathConstructionKey{
   @override
-  List<String> get katexExp => ['\\left|','\\right|'];
+  List<String> get katexExp => [r'\left|',r'\right|'];
 }
 
 class _AbsLineWidget extends StatefulWidget {
@@ -60,18 +64,12 @@ class _AbsLineWidget extends StatefulWidget {
 
 class _AbsLineWidgetState extends State<_AbsLineWidget> {
   Size? size;
-  getSize() {
-    if (widget.globalKey.currentContext != null) {
-      final rendexBox =
-          widget.globalKey.currentContext!.findRenderObject() as RenderBox;
-      size = rendexBox.size;
-    }
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    WidgetsBinding.instance.addPersistentFrameCallback((_) => getSize());
+  
+  void getSize() {
+    if (widget.globalKey.currentContext == null) return;  
+    final renderBox =
+        widget.globalKey.currentContext!.findRenderObject()! as RenderBox;
+    size = renderBox.size;
   }
 
   @override
@@ -81,5 +79,11 @@ class _AbsLineWidgetState extends State<_AbsLineWidget> {
       width: 2,
       height: size?.height ?? 50,
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPersistentFrameCallback((_) => getSize());
   }
 }

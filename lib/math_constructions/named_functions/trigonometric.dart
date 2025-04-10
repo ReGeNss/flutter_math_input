@@ -3,97 +3,96 @@ import '../index.dart';
 class Cos extends NamedFunction{
   Cos(super.builder) : super(
     constructionKey: CosKey(),
-    functionName: 'cos'
+    functionName: 'cos',
   );
 }
 
 class CosKey extends SimpleMathConstructionKey {
   @override
-  List<String> get katexExp => ['\\cos{', '}'];
+  List<String> get katexExp => [r'\cos{', '}'];
 }
 
 
 class Sin extends NamedFunction{
   Sin(super.builder) : super(
     constructionKey: SinKey(),
-    functionName: 'sin'
+    functionName: 'sin',
   );
 }
 
 class SinKey extends SimpleMathConstructionKey {
   @override
-  List<String> get katexExp => ['\\sin{', '}'];
+  List<String> get katexExp => [r'\sin{', '}'];
 }
 
 class Tan extends NamedFunction{
   Tan(super.builder) : super(
     constructionKey: TanKey(),
-    functionName: 'tan'
+    functionName: 'tan',
   );
 }
 
 class TanKey extends SimpleMathConstructionKey {
   @override
-  List<String> get katexExp => ['\\tan{', '}'];
+  List<String> get katexExp => [r'\tan{', '}'];
 }
 
 class Cot extends NamedFunction{
   Cot(super.builder) : super(
     constructionKey: CotKey(),
-    functionName: 'cot'
+    functionName: 'cot',
   );
 }
 
 class CotKey extends SimpleMathConstructionKey {
   @override
-  List<String> get katexExp => ['\\cot{', '}'];
+  List<String> get katexExp => [r'\cot{', '}'];
 }
 
 class Arccos extends NamedFunction{
   Arccos(super.builder) : super(
     constructionKey: ArccosKey(),
-    functionName: 'arccos'
+    functionName: 'arccos',
   );
 }
 
 class ArccosKey extends SimpleMathConstructionKey {
   @override
-  List<String> get katexExp => ['\\arccos{', '}'];
+  List<String> get katexExp => [r'\arccos{', '}'];
 }
 
 class Arcsin extends NamedFunction{
   Arcsin(super.builder) : super(
     constructionKey: ArcsinKey(),
-    functionName: 'arcsin'
+    functionName: 'arcsin',
   );
 }
 
 class ArcsinKey extends SimpleMathConstructionKey {
   @override
-  List<String> get katexExp => ['\\arcsin{', '}'];
+  List<String> get katexExp => [r'\arcsin{', '}'];
 }
 
 class Arctan extends NamedFunction{
   Arctan(super.builder) : super(
     constructionKey: ArctanKey(),
-    functionName: 'arctan'
+    functionName: 'arctan',
   );
 }
 
 class ArctanKey extends SimpleMathConstructionKey {
   @override
-  List<String> get katexExp => ['\\arctan{', '}'];
+  List<String> get katexExp => [r'\arctan{', '}'];
 }
 
 class Arccot extends NamedFunction{
   Arccot(super.builder) : super(
     constructionKey: ArccotKey(),
-    functionName: 'arcctg'
+    functionName: 'arcctg',
   );
 }
 
 class ArccotKey extends SimpleMathConstructionKey {
   @override
-  List<String> get katexExp => ['\\arccot{', '}'];
+  List<String> get katexExp => [r'\arccot{', '}'];
 }
-

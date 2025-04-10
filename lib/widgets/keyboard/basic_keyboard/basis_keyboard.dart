@@ -1,39 +1,50 @@
 import 'package:flutter/material.dart';
 import '../keyboard.dart';
-import './bacis_keyboard_pages/greek_symbols_scrool.dart';
-import './bacis_keyboard_pages/latin_alphabet_page.dart';
-import './bacis_keyboard_pages/standart_numbers_page.dart';
-import 'bacis_keyboard_pages/function_page.dart';
+import 'basic_keyboard_pages/function_page.dart';
+import 'basic_keyboard_pages/greek_symbols_scroll.dart';
+import 'basic_keyboard_pages/latin_alphabet_page.dart';
+import 'basic_keyboard_pages/standard_numbers_page.dart';
 
 const countOfButtonsInRow = 6;
+const borderRadius = 15.0;
 
 final defaultButtonStyle = ButtonStyle(
-    backgroundColor: WidgetStateProperty.all(
-      const Color.fromRGBO(211, 211, 211, 0.3),
-    ),
-    shape: WidgetStateProperty.all(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-    foregroundColor: WidgetStateProperty.all(Colors.black),
-    side: WidgetStateProperty.all(const BorderSide(color: Colors.greenAccent)));
+  backgroundColor: WidgetStateProperty.all(
+    const Color.fromRGBO(211, 211, 211, 0.3),
+  ),
+  shape: WidgetStateProperty.all(
+    RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius)),
+  ),
+  foregroundColor: WidgetStateProperty.all(Colors.black),
+  side: WidgetStateProperty.all(
+    const BorderSide(color: Colors.greenAccent),
+  ),
+);
 
-final defalultOverlayButtonStyle = ButtonStyle(
+final defaultOverlayButtonStyle = ButtonStyle(
     backgroundColor: WidgetStateProperty.all(Colors.cyan[100]),
     shape: WidgetStateProperty.all(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+      ),
+    ),
     foregroundColor: WidgetStateProperty.all(Colors.black),
-    side: WidgetStateProperty.all(const BorderSide(color: Colors.cyanAccent)));
+    side: WidgetStateProperty.all(const BorderSide(color: Colors.cyanAccent)),);
 
-final defalutButtonWithOverlayStyle = ButtonStyle(
+final defaultButtonWithOverlayStyle = ButtonStyle(
     backgroundColor: WidgetStateProperty.all(
       const Color.fromRGBO(211, 211, 211, 0.3),
     ),
     shape: WidgetStateProperty.all(
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+    ),
     foregroundColor: WidgetStateProperty.all(Colors.black),
-    side: WidgetStateProperty.all(const BorderSide(color: Colors.cyanAccent)));
+    side: WidgetStateProperty.all(const BorderSide(color: Colors.cyanAccent)),);
 
-class BasicMathKeyboard extends MathKeyboard {
-  static BasicMathKeyboard? _instance;
+class BasisMathKeyboard extends MathKeyboard {
+  static BasisMathKeyboard? _instance;
 
   final double height;
   final double width;
@@ -64,7 +75,7 @@ class BasicMathKeyboard extends MathKeyboard {
       textStyle: textStyle,
       keyboardPaddings: keyboardPaddings,
       keyboardSpacing: spacing,
-      keyboardProperties: keyboardProperties
+      keyboardProperties: keyboardProperties,
     ),
     LatinAlphabetPageWidget(
       buttonStyle: buttonsStyle,
@@ -72,28 +83,13 @@ class BasicMathKeyboard extends MathKeyboard {
       textStyle: textStyle,
       keyboardPaddings: keyboardPaddings,
       keyboardSpacing: spacing,
-      keyboardProperties: keyboardProperties
+      keyboardProperties: keyboardProperties,
     ),
   ];
   late final double keyboardPaddings = padding.left + padding.right;
   int _selectedKeyboardFormat = 0;
 
-  BasicMathKeyboard._({
-    required this.height,
-    required this.width,
-    required this.padding,
-    required this.spacing,
-    required this.backgroundColor,
-    this.buttonsStyle,
-    this.buttonWithOverlayStyle,
-    this.overlayButtonStyle,
-    required this.iconSize,
-    this.textStyle,
-    required super.context,
-    required this.floatButtonOverlayDuration,
-  }); 
-
-  factory BasicMathKeyboard({
+  factory BasisMathKeyboard({
     double height = 350,
     double width = double.infinity,
     EdgeInsets padding = const EdgeInsets.all(10),
@@ -108,9 +104,11 @@ class BasicMathKeyboard extends MathKeyboard {
     int floatButtonOverlayDuration = 2,
   }) {
     if(_instance == null && context == null ) {
-      throw Exception('In first call of BasicMathKeyboard you must provide context');
+      throw Exception(
+        'In first call of BasicMathKeyboard you must provide context',
+      );
     }
-    _instance ??= BasicMathKeyboard._(
+    _instance ??= BasisMathKeyboard._(
       context: context!,
       height: height,
       width: width,
@@ -124,8 +122,25 @@ class BasicMathKeyboard extends MathKeyboard {
       textStyle: textStyle,
       floatButtonOverlayDuration: floatButtonOverlayDuration,
     );
+
     return _instance!;
   }
+
+  BasisMathKeyboard._({
+    required this.height,
+    required this.width,
+    required this.padding,
+    required this.spacing,
+    required this.backgroundColor,
+    required this.iconSize,
+    required super.context,
+    required this.floatButtonOverlayDuration,
+    this.buttonsStyle,
+    this.buttonWithOverlayStyle,
+    this.overlayButtonStyle,
+    this.textStyle,
+  }); 
+
 
   @override
   Widget buildKeyboard(StateSetter setState) {
@@ -186,7 +201,7 @@ class BasicMathKeyboard extends MathKeyboard {
             ),
             SizedBox(height: spacing),
             Expanded(
-              child: ScroolGreekSymbolsWidget(
+              child: ScrollGreekSymbolsWidget(
                 keyboardProperties: keyboardProperties,
                 buttonStyle: buttonsStyle,
                 textStyle: textStyle,
@@ -211,6 +226,7 @@ class BasicMathKeyboard extends MathKeyboard {
     required VoidCallback onPressed,
     required IconData icon,
   }) {
+
     return Expanded(
       child: SizedBox(
         height: double.infinity,
@@ -227,10 +243,10 @@ class BasicMathKeyboard extends MathKeyboard {
 
 class KeyboardPageWidget extends StatelessWidget {
   const KeyboardPageWidget({
-    super.key,
     required this.pageRows,
     required this.keyboardPaddings,
     required this.keyboardSpacing,
+    super.key,
   });
 
   final List<List<Widget>> pageRows;
@@ -253,7 +269,7 @@ class KeyboardPageWidget extends StatelessWidget {
                     height: double.infinity,
                     width: buttonWidth,
                     child: button,
-                  ))
+                  ),)
               .toList(),
         ),
       );
@@ -266,4 +282,3 @@ class KeyboardPageWidget extends StatelessWidget {
     );
   }
 }
-

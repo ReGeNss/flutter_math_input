@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import '../services/text_field_handle_and_create.dart';
-import '../widgets/supportive_widges/relayed_positioned.dart';
-import '../widgets/supportive_widges/widget_dynamic_size_wrapper.dart';
+import '../widgets/supportive_widgets/relayed_positioned.dart';
+import '../widgets/supportive_widgets/widget_dynamic_size_wrapper.dart';
 import 'math_construction.dart';
 
 class Exp extends ComplicatedMathConstruction{
-  Exp(super.builder, {required super.textFieldService, required super.parsingResults, required super.widgetTree});
-
   @override
   MathConstructionKey get key => ExpKey();
+
+  Exp(
+    super.builder, {
+    required super.textFieldService, 
+    required super.parsingResults, 
+    required super.widgetTree,
+  });
+
   
   @override
   MathConstructionWidgetData createConstruction() {
-    final activeTextFieldController = textFieldService.getActiveTextFieldController();
+    final activeTextFieldController = 
+      textFieldService.getActiveTextFieldController();
     TextFieldData baseField; 
     if(activeTextFieldController.text.isNotEmpty){
       baseField = textFieldService.getActiveTextFieldData();
@@ -28,19 +35,19 @@ class Exp extends ComplicatedMathConstruction{
 
     final expGlobalKey = GlobalKey();
     final baseGlobalKey = GlobalKey();
-    final addictionalTextField = builder.createTextField(
-      format: TextFieldFormat.standart
+    final additionalTextField = builder.createTextField(
+      format: TextFieldFormat.standard,
     );
     final textField = builder.createTextField(
       isActive: true,
-      format: TextFieldFormat.small
+      format: TextFieldFormat.small,
     );
-    textFieldService.markAsGrop(baseField, textField);
-    final baseWidget = parsingResults.wigetData![parsingResults.index!];
+    textFieldService.markAsGroup(baseField, textField);
+    final baseWidget = parsingResults.widgetData![parsingResults.index!];
     final widget = WidgetDynamicSizeWrapper(
       defaultHeight: 50,
-      key: builder.getKey(ExpKey()),
-      connectedKeysToHeight: [],
+      key: MathConstructionKey.setKey(ExpKey()),
+      connectedKeysToHeight: const [],
       connectedKeysToWidth: [expGlobalKey, baseGlobalKey],
       child: Stack(
         clipBehavior: Clip.none,
@@ -61,17 +68,19 @@ class Exp extends ComplicatedMathConstruction{
             offsetByHeight: RelayedPositionedType.fromBottom,
             connectedWidgetKeys: [baseGlobalKey],
             widgetToWrap: Row(
-              // key: getKey(ExpConstuction()),
               children: [
                 textField,
               ],
             ),
-          )
+          ),
         ],
       ),
     );
     
-    return MathConstructionWidgetData(construction: widget, addictionalWidget: addictionalTextField);
+    return MathConstructionWidgetData(
+      construction: widget, 
+      additionalWidget: additionalTextField,
+    );
   }
 }
 

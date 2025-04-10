@@ -6,12 +6,12 @@ import '../services/text_field_handle_and_create.dart';
 abstract interface class MathConstruction{
   final MathConstructionsBuilding builder;
 
+  MathConstructionKey get key; 
+
   MathConstruction(this.builder);
   
   MathConstructionWidgetData createConstruction();
-
-  MathConstructionKey get key; 
-} 
+}
 
 abstract class DefaultMathConstruction extends MathConstruction{
   DefaultMathConstruction(super.builder);
@@ -34,6 +34,14 @@ abstract class ComplicatedMathConstruction extends MathConstruction{
 }
 
 abstract class MathConstructionKey {
+  static MathConstructionKey getKey(ObjectKey key) {
+    return key.value as MathConstructionKey;
+  } 
+  
+  static ObjectKey setKey(MathConstructionKey construction){
+    return ObjectKey(construction);
+  }
+
   List<String> get katexExp;
 }
 
@@ -44,8 +52,11 @@ abstract class GroupMathConstructionKey extends MathConstructionKey{
 } 
 
 class MathConstructionWidgetData {
-  final Widget? addictionalWidget;
+  final Widget? additionalWidget;
   final Widget construction;
 
-  MathConstructionWidgetData({required this.construction, this.addictionalWidget});
+  MathConstructionWidgetData({
+    required this.construction, 
+    this.additionalWidget,
+  });
 }

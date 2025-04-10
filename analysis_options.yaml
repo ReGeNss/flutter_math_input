@@ -1,7 +1,15 @@
-include: package:flutter_lints/flutter.yaml
+include: package:solid_lints/analysis_options.yaml
+
 analyzer:
   errors:
+    always_use_package_imports: ignore
+    cast_nullable_to_non_nullable: ignore
     must_be_immutable: ignore
+    public_member_api_docs: ignore
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+custom_lint:
+  rules: 
+    no_empty_block: false
+    cyclomatic_complexity: false
+    avoid_returning_widgets: false
+    avoid_non_null_assertion: false

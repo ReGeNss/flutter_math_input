@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'basic_keyboard.dart';
+import 'basis_keyboard.dart';
 
 const _floatButtonHeight = 50.0;
 const _buttonOffset = 30.0;
@@ -23,34 +23,37 @@ class FloatButtonOverlay{
         width: buttonWidth,
         height: _floatButtonHeight,
         child: TextButton(
-            style: defalultOverlayButtonStyle,
+            style: defaultOverlayButtonStyle,
             onPressed: () {
-              buttonsData[index].buttonFuction();
+              buttonsData[index].buttonFunction();
               _deleteOverlay(); 
             },
-            child: buttonsData[index].buttonWidget),
+            child: buttonsData[index].buttonWidget,),
       ),);
       buttonsWidgets.add(SizedBox(width: keyboardSpacing));
     } 
-    late final double offestDx;
+    double offsetDx;
     if(offset.dx - (buttonsData.length - 1) * _buttonOffset > 0){
-      offestDx = offset.dx - (buttonsData.length - 1) * _buttonOffset;
+      offsetDx = offset.dx - (buttonsData.length - 1) * _buttonOffset;
     } 
     else{ 
-      offestDx = keyboardPaddings / 2;
+      offsetDx = keyboardPaddings / 2;
     }
 
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-          left: offestDx,
+          left: offsetDx,
           top: offset.dy - _floatButtonHeight - keyboardSpacing,
           child: Row(
-            children: buttonsWidgets
-          )
-        )
+            children: buttonsWidgets,
+          ),
+        ),
     );
     overlay.insert(_overlayEntry!); 
-    Future.delayed(Duration(seconds: floatButtonOverlayDuration)).then((_)=> _deleteOverlay()); 
+    Future.delayed(
+      Duration(seconds: floatButtonOverlayDuration),
+      ).then((_)=> _deleteOverlay(),
+    ); 
   }
 
   void _deleteOverlay(){
@@ -60,9 +63,13 @@ class FloatButtonOverlay{
 }
 
 class FloatButtonData{ 
-  final Function buttonFuction; 
+  final Function() buttonFunction; 
   final Widget buttonWidget;
   final ButtonStyle? buttonStyle;
 
-  FloatButtonData({required this.buttonFuction, required this.buttonWidget, this.buttonStyle}); 
+  FloatButtonData({
+    required this.buttonFunction, 
+    required this.buttonWidget, 
+    this.buttonStyle,
+  }); 
 }

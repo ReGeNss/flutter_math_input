@@ -2,27 +2,26 @@ import 'package:flutter/material.dart';
 import '../index.dart';
 
 class NamedFunction extends DefaultMathConstruction{
+  MathConstructionKey constructionKey;
+  String functionName; 
+  
+  @override
+  MathConstructionKey get key => constructionKey;
+
   NamedFunction(super.builder, {
     required this.constructionKey,
     required this.functionName,
   });
-  MathConstructionKey constructionKey;
-  String functionName; 
-
-  @override
-  MathConstructionKey get key => constructionKey;
 
   @override
   MathConstructionWidgetData createConstruction() {
-    final addictinalTextFiled = builder.createTextField(
-      replaceOldFocus: false
-    );
+    final additionalTextFiled = builder.createTextField();
     final textFieldWidget = builder.createTextField(
       replaceOldFocus: true,
       isActive: true,
     );
     final widget = SizedBox(
-      key: builder.getKey(key),
+      key: MathConstructionKey.setKey(key),
       child: Row(
         children: [
           Text(
@@ -35,10 +34,14 @@ class NamedFunction extends DefaultMathConstruction{
           textFieldWidget,
           const SizedBox(
             width: 10,
-          )
+          ),
         ],
       ),
     );
-    return MathConstructionWidgetData(construction: widget, addictionalWidget: addictinalTextFiled);
+
+    return MathConstructionWidgetData(
+      construction: widget, 
+      additionalWidget: additionalTextFiled,
+    );
   }
 }

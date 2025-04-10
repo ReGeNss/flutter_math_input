@@ -1,48 +1,48 @@
 import 'package:flutter/material.dart';
-import '../math_constructions/index.dart';
 import 'text_field_handle_and_create.dart';
 
 class MathConstructionsBuilding {
   final TextFieldHandleAndCreateService _textFieldService;
 
-  MathConstructionsBuilding({required TextFieldHandleAndCreateService textFieldService}) : _textFieldService = textFieldService;
+  MathConstructionsBuilding({
+    required TextFieldHandleAndCreateService textFieldService,
+  }) : _textFieldService = textFieldService;
 
   Widget createTextField({
     bool replaceOldFocus = false,
     bool isActive = false, 
     TextFieldFormat? format,
-    bool performAddictionalTextField = false
+    bool performAdditionalTextField = false,
     }) {  
     final textField = _textFieldService.createTextField(
       isReplaceOperation: replaceOldFocus, 
       isActiveTextField: isActive,
       selectedTextFieldFormat: format,
-      performAdictionalTextField: performAddictionalTextField
+      performAdditionalTextField: performAdditionalTextField,
     );
+
     return textField;
   }
 
   Widget createCharWidget({required bool isActiveTextField}) {
     final textFieldWidget = _textFieldService.createTextField(
-        isActiveTextField: isActiveTextField, isReplaceOperation: false);
+        isActiveTextField: isActiveTextField, isReplaceOperation: false,);
+
     return textFieldWidget;
   }
 
   void markAsGroup(dynamic first, Widget second) {
-    _textFieldService.markAsGrop(first, second);
+    _textFieldService.markAsGroup(first, second);
   }
 
   Widget initialization() {
     final textField = _textFieldService.createTextField(
-        isReplaceOperation: false,
-        isActiveTextField: true,
-        performAdictionalTextField: false,
-        selectedTextFieldFormat: TextFieldFormat.standart);
-    return textField;
-  }
+      isReplaceOperation: false,
+      isActiveTextField: true,
+      selectedTextFieldFormat: TextFieldFormat.standard,
+      );
 
-  ObjectKey getKey(MathConstructionKey constuction){
-  return ObjectKey(constuction);
+    return textField;
   }
 }
 
@@ -50,7 +50,11 @@ class MathConstructionsBuilding {
 
 extension ChildExtension on Widget{
   bool get isSingleChild{
-    if(this is SingleChildRenderObjectWidget || this is SingleChildConstruction || this is ParentDataWidget){
+    if(
+      this is SingleChildRenderObjectWidget || 
+      this is SingleChildConstruction || 
+      this is ParentDataWidget
+    ){
       return true; 
     }
     return false;
@@ -60,6 +64,7 @@ extension ChildExtension on Widget{
     if(this is MultiChildRenderObjectWidget || this is MultiChildConstruction){
       return true;
     } 
+
     return false;
   }
 
@@ -73,6 +78,7 @@ extension ChildExtension on Widget{
     if(this is ParentDataWidget){
       return (this as ParentDataWidget).child;
     }
+
     return null;
   }
 

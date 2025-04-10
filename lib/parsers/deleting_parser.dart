@@ -8,29 +8,35 @@ class FormulasTreeDeletingParser {
   ParsedWidgetsData? _parsedData;
   bool _isLoopWindingDown = false ; 
 
+  int counter = 0;
+  int textFieldLocation = 0;
+
   ParsedWidgetsData? getElement(
     List<Widget> array, 
-    TextEditingController activeTextFieldController
+    TextEditingController activeTextFieldController,
     ) {
     _parsedData = null;
     _isLoopWindingDown = false; 
     _parseWidgets(array, activeTextFieldController);
+    
     return _parsedData;
   }
 
-  int counter = 0;
-  int textFieldLocation = 0;
 
-  ElementFieldsData getCountOfTextFieldsIn(List<Widget> array, TextEditingController activeTextFieldController) {
+  ElementFieldsData getCountOfTextFieldsIn(
+    List<Widget> array, 
+    TextEditingController activeTextFieldController,
+  ) {
     counter = 0; 
     textFieldLocation = 0;
     _parseCountOfTextFields(array, activeTextFieldController);
+
     return ElementFieldsData(counter, textFieldLocation); 
   }
 
   ParsedWidgetsData? _parseWidgets(
     List<Widget> array, 
-    TextEditingController activeTextFieldController
+    TextEditingController activeTextFieldController,
   ) {
     final length = array.length;
     for (int index = 0; length > index; index += 1) {
@@ -42,12 +48,12 @@ class FormulasTreeDeletingParser {
             activeTextFieldController,
           );
           if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
-              final keyType = ((widget.key as ObjectKey).value as MathConstructionKey);
+            final keyType = MathConstructionKey.getKey(widget.key as ObjectKey);
             _isLoopWindingDown = false;
             _parsedData = ParsedWidgetsData(
               index: index, 
-              wigetData: array, 
-              isGroop: keyType is GroupMathConstructionKey ? true : false,
+              widgetData: array, 
+              isGroup: keyType is GroupMathConstructionKey,
             );
           }
         }
@@ -59,12 +65,12 @@ class FormulasTreeDeletingParser {
         );
         
         if(_isLoopWindingDown && list.key != null && list.key is ObjectKey){
-          final keyType = ((list.key as ObjectKey).value as MathConstructionKey);
+          final keyType = MathConstructionKey.getKey(list.key as ObjectKey);
           _isLoopWindingDown = false;
           _parsedData = ParsedWidgetsData(
             index: index, 
-            wigetData: array,
-            isGroop: keyType is GroupMathConstructionKey ? true : false,
+            widgetData: array,
+            isGroup: keyType is GroupMathConstructionKey,
           );
         }
       }else if(array[index] is TextFieldWidgetHandler){
@@ -73,25 +79,31 @@ class FormulasTreeDeletingParser {
         _parseWidgets([widget], activeTextFieldController);
         if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
           _isLoopWindingDown = false;
-          _parsedData = ParsedWidgetsData(index: index, wigetData: array);
+          _parsedData = ParsedWidgetsData(index: index, widgetData: array);
         } 
       }else if(array[index] is TextField){
         final textFieldWidget = array[index] as TextField;
         if (textFieldWidget.controller == activeTextFieldController) {
           _isLoopWindingDown = true;
-          return ParsedWidgetsData(wigetData: array, index: index);
+
+          return ParsedWidgetsData(widgetData: array, index: index);
         }
       }
     }
+    
     return null;
   }
 
-  void _parseCountOfTextFields(List<Widget> array, TextEditingController activeTextFieldController) {
+  void _parseCountOfTextFields(
+    List<Widget> array, 
+    TextEditingController activeTextFieldController,
+    ) {
     final length = array.length;
     for (int index = 0; length > index; index += 1) {
       if(array[index] is TextFieldWidgetHandler){
         counter += 1;
-        final textField = (array[index] as TextFieldWidgetHandler).textField as TextField;
+        final textField = 
+          (array[index] as TextFieldWidgetHandler).textField as TextField;
         if(textField.controller == activeTextFieldController){
           textFieldLocation = counter;
         }
@@ -109,8 +121,8 @@ class FormulasTreeDeletingParser {
 }
 
 class ElementFieldsData{
-  ElementFieldsData(this.fieldsCount, this.ourFieldLocation);
-
   final int fieldsCount; 
-  final int ourFieldLocation; 
+  final int ourFieldLocation;
+
+  ElementFieldsData(this.fieldsCount, this.ourFieldLocation);
 }

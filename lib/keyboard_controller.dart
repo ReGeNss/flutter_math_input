@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'math_constructions/math_construction.dart';
-import 'parsers/deleteting_parser.dart';
+import 'parsers/deleting_parser.dart';
 import 'parsers/formula_to_tex_parser.dart';
 import 'parsers/formulas_tree_parsers.dart';
 import 'services/math_constructions_building.dart';
@@ -12,50 +12,44 @@ const _timeToUpdateFormula = Duration(seconds: 1);
 const _timeToRebuildScreen = Duration(milliseconds: 50);
 
 class MathController extends ChangeNotifier{
-  late final TextFieldHandleAndCreateService _textFieldService; 
-  late final MathConstructionsBuilding _mathConstructionsBuildingService; 
-  late final FormulasTreeParsersService _parsersService; 
-  late final WidgetsDataHandler _dataHandler; 
-  late final FormulaToTexParser _texParsingService; 
-  late final FormulasTreeDeletingParser _deletingParserService;
+  final _textFieldService  = TextFieldHandleAndCreateService(); 
+  late final _mathConstructionsBuildingService = MathConstructionsBuilding(
+    textFieldService: _textFieldService,
+  );  
+  final _parsersService = FormulasTreeParsersService(); 
+  final _dataHandler = WidgetsDataHandler(); 
+  final _texParsingService = FormulaToTexParser();  
+  final _deletingParserService = FormulasTreeDeletingParser();
   
-  final _streamController = StreamController<String>.broadcast();
-  Stream<String> get katexFormulaStream => _streamController.stream;
+  final List<Widget> _formulaGroupWidgets = [];
 
+  final _streamController = StreamController<String>.broadcast();
   final _renderController = StreamController<void>.broadcast();
 
   bool isFormulaUpdated = true; 
-  bool _isFormulaRendred = true; 
-  bool get isFormulaRendred => _isFormulaRendred;
+  bool _isFormulaRendered = true; 
+
+  Stream<String> get katexFormulaStream => _streamController.stream;
+  bool get isFormulaRendered => _isFormulaRendered;
 
   MathController(){
-    _textFieldService = TextFieldHandleAndCreateService();
-    _mathConstructionsBuildingService = MathConstructionsBuilding(textFieldService: _textFieldService);
-    _parsersService = FormulasTreeParsersService();
-    _dataHandler = WidgetsDataHandler(); 
-    _texParsingService = FormulaToTexParser();
-    _deletingParserService = FormulasTreeDeletingParser(); 
     _initialization();
   }
-  final List<Widget> _formulaGroopWidgets = [];
 
-  List<Widget> getFormulaWidgets(){
-    return _formulaGroopWidgets.toList(); 
-  }
+  List<Widget> getFormulaWidgets() => _formulaGroupWidgets.toList(); 
 
   void _initialization(){
-    final defaultTextField = _mathConstructionsBuildingService.initialization(); 
-    _formulaGroopWidgets.add(defaultTextField); 
+    final defaultTextField = _mathConstructionsBuildingService.initialization();
+    _formulaGroupWidgets.add(defaultTextField); 
     _setupStreams();
   }
   
   void _setupStreams() { 
     Timer? timer;
     _streamController.onListen = () { 
-      timer = Timer.periodic(_timeToUpdateFormula, (timer) {
-        if (_isFormulaRendred) {
-          _streamController.add(_requestFormulaToKaTeXParse());
-        }
+      timer = Timer.periodic(_timeToUpdateFormula, (_) {
+        if (!_isFormulaRendered) return;
+        _streamController.add(_requestFormulaToKaTeXParse());
       });
     };
     _streamController.onCancel = () {
@@ -63,8 +57,8 @@ class MathController extends ChangeNotifier{
     };
 
     _renderController.stream.listen(
-      (isRendred) {
-        _isFormulaRendred = !_isFormulaRendred;
+      (_) {
+        _isFormulaRendered = !_isFormulaRendered;
       }
     );
   }
@@ -74,25 +68,28 @@ class MathController extends ChangeNotifier{
   }
 
   String _requestFormulaToKaTeXParse() {
-      return _texParsingService.start(_formulaGroopWidgets);
+      return _texParsingService.start(_formulaGroupWidgets);
   }
 
   FutureOr<String> getFormulaKaTeX() {
-    if(_isFormulaRendred){
-      return _texParsingService.start(_formulaGroopWidgets);
-    }else{
-      return Future.value(_renderController.stream.first)
-        .then((_) => _texParsingService.start(_formulaGroopWidgets));
-    }
+    return _isFormulaRendered 
+    ? _texParsingService.start(_formulaGroupWidgets) 
+    : Future.value(_renderController.stream.first).
+      then((_) => _texParsingService.start(_formulaGroupWidgets));
   }
 
-  void createDefaultFunc(DefaultMathConstruction Function(MathConstructionsBuilding) constructionFactory){
+  void createDefaultFunc(
+    DefaultMathConstruction Function(MathConstructionsBuilding) constructionFactory,
+  ){
     final construction = constructionFactory(_mathConstructionsBuildingService);
-    final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
+    final parsedWidgets = _parsersService.parseWidgetLocation(
+      _formulaGroupWidgets, 
+      _textFieldService.getActiveTextFieldController(),
+    );
     if(parsedWidgets == null) return;
     final constructionWidget = construction.createConstruction(); 
     _dataHandler.replaceWidgetInTree(parsedWidgets, constructionWidget);
-    rebuildSreenState();
+    rebuildScreenState();
   }
 
   void createComplicatedFunc(
@@ -103,46 +100,64 @@ class MathController extends ChangeNotifier{
       required List<Widget> widgetTree,
     }) constructionFactory,
   ){
-    final parsedWidgets = _parsersService.parseWidgetLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
+    final parsedWidgets = _parsersService.parseWidgetLocation(
+      _formulaGroupWidgets, 
+      _textFieldService.getActiveTextFieldController(),
+    );
     if(parsedWidgets == null || parsedWidgets.index == null) return;
     final construction = constructionFactory(
       _mathConstructionsBuildingService,
       textFieldService: _textFieldService,
       parsingResults: parsedWidgets,
-      widgetTree: _formulaGroopWidgets,
+      widgetTree: _formulaGroupWidgets,
     );
     final constructionWidget = construction.createConstruction(); 
     _dataHandler.replaceWidgetInTree(parsedWidgets, constructionWidget);
-    rebuildSreenState();
+    rebuildScreenState();
   }
 
   void selectNextFocus(){
     final shouldNotCreateNewField = _textFieldService.trySelectNextFocus();
     if(!shouldNotCreateNewField){
-      final parsedWidgetData = _parsersService.parseWidgetContainerLocation(_formulaGroopWidgets, _textFieldService.getActiveTextFieldController());
-        if(parsedWidgetData != null){
-          final textField = _mathConstructionsBuildingService.createTextField(replaceOldFocus: true, isActive: true);
-          _dataHandler.addToWidgetTree(parsedWidgetData, [textField]); 
-          rebuildSreenState();
-        }
+      final parsedWidgetData = _parsersService.parseWidgetContainerLocation(
+        _formulaGroupWidgets, 
+        _textFieldService.getActiveTextFieldController(),
+      );
+      if(parsedWidgetData == null) return; 
+
+      final textField = _mathConstructionsBuildingService.createTextField(
+        replaceOldFocus: true, 
+        isActive: true,
+      );
+      _dataHandler.addToWidgetTree(parsedWidgetData, [textField]); 
+      rebuildScreenState();
     } 
   }
 
   void createCharWidgets(String char){
-    final activeTextFieldController = _textFieldService.getActiveTextFieldController();
-    final parsedWidgetData = _parsersService.parseWidgetLocation(_formulaGroopWidgets, activeTextFieldController);
+    final activeTextFieldController = 
+      _textFieldService.getActiveTextFieldController();
+    final parsedWidgetData = _parsersService.parseWidgetLocation(
+      _formulaGroupWidgets, 
+      activeTextFieldController,
+    );
     if(parsedWidgetData == null) return;
     final List<Widget> textFields = [];
     if(_textFieldService.getActiveTextFieldController().text.isEmpty){
       _textFieldService.getActiveTextFieldController().text = char; 
     }else{
-      textFields.add(_mathConstructionsBuildingService.createCharWidget(isActiveTextField: true));
+      textFields.add(_mathConstructionsBuildingService.createCharWidget(
+        isActiveTextField: true,
+        ),
+      );
       _textFieldService.getActiveTextFieldController().text = char; 
     }
-    final addictionalField = _mathConstructionsBuildingService.createCharWidget(isActiveTextField: true);
-    textFields.add(addictionalField);
+    final additionalField = _mathConstructionsBuildingService.createCharWidget(
+      isActiveTextField: true,
+    );
+    textFields.add(additionalField);
     _dataHandler.addToWidgetTree(parsedWidgetData, textFields);
-    rebuildSreenState();
+    rebuildScreenState();
   }
 
   void selectBackFocus(){
@@ -165,40 +180,55 @@ class MathController extends ChangeNotifier{
 
   void _handleEmptyFieldDeletion(TextEditingController activeController) {
     final parsedWidgets = _parsersService.parseWidgetLocation(
-      _formulaGroopWidgets, 
-      activeController
+      _formulaGroupWidgets, 
+      activeController,
     );
     
     if (parsedWidgets == null) {
       return;
     }
 
-    final fieldsCountInConstuction = _getFieldsCountInConstuction(parsedWidgets, activeController);
+    final fieldsCountInConstruction = _getFieldsCountInConstruction(
+      parsedWidgets, 
+      activeController,
+    );
     
-    if (fieldsCountInConstuction == null) {
+    if(fieldsCountInConstruction == null) {
       _replaceElementByField(activeController);
-      rebuildSreenState();
+      rebuildScreenState();
+
       return;
     }
 
-    if (fieldsCountInConstuction.fieldsCount > 1) {
-      _deleteFieldOrGroup(parsedWidgets, fieldsCountInConstuction.ourFieldLocation == 1);
+    if (fieldsCountInConstruction.fieldsCount > 1) {
+      _deleteFieldOrGroup(
+        parsedWidgets, 
+        fieldsCountInConstruction.ourFieldLocation == 1,
+      );
     } else {
       _replaceElementByField(activeController);
     }
 
-    rebuildSreenState();
+    rebuildScreenState();
   }
 
-  ElementFieldsData? _getFieldsCountInConstuction(ParsedWidgetsData parsedWidgets, TextEditingController activeController) {
+  ElementFieldsData? _getFieldsCountInConstruction(
+    ParsedWidgetsData parsedWidgets, 
+    TextEditingController activeController,
+  ) {
     return _deletingParserService.getCountOfTextFieldsIn(
-      parsedWidgets.wigetData!, 
-      activeController
+      parsedWidgets.widgetData!, 
+      activeController,
     );
   }
 
-  void _deleteFieldOrGroup(ParsedWidgetsData parsedWidgets, bool shouldRemarkGroup) {
-    final isSuccess = _textFieldService.deleteCurrentController(shouldRemarkGroup);
+  void _deleteFieldOrGroup(
+    ParsedWidgetsData parsedWidgets, 
+    bool shouldRemarkGroup,
+  ) {
+    final isSuccess = _textFieldService.deleteCurrentController(
+      shouldRemarkGroup:  shouldRemarkGroup,
+    );
     
     if (isSuccess) {
       _dataHandler.deleteFromWidgetTree(parsedWidgets);
@@ -209,12 +239,13 @@ class MathController extends ChangeNotifier{
 
   void _replaceElementByField(TextEditingController activeController) {
     final elementToReplace = _deletingParserService.getElement(
-      _formulaGroopWidgets, 
-      activeController
+      _formulaGroupWidgets, 
+      activeController,
     );
 
-    if (!_tryDeleteControllers(elementToReplace?.isGroop)) {
+    if (!_tryDeleteControllers(elementToReplace?.isGroup)) {
       deleteAllButtonTap();
+
       return;
     }
 
@@ -227,29 +258,33 @@ class MathController extends ChangeNotifier{
   }
 
   bool _tryDeleteControllers(bool? isGroup) {
-    return _textFieldService.deleteElementFields(isGroup);
+    return _textFieldService.deleteElementFields(checkGroups: isGroup);
   }
 
-  void _replaceWithNewField(ParsedWidgetsData elementToReplace, bool moveToFirst) {
+  void _replaceWithNewField(
+    ParsedWidgetsData elementToReplace, 
+    bool moveToFirst,
+  ) {
     final newField = _mathConstructionsBuildingService.createTextField(
       isActive: true,
-      replaceOldFocus: false,
-      format: TextFieldFormat.standart
+      format: TextFieldFormat.standard,
     );
     if(moveToFirst) {
-      final textFieldData = ((newField as SizedBox).child as TextFieldWidgetHandler).textFieldData;
-      _textFieldService.intertThisFieldToStart(textFieldData);
+      final textFieldData = (
+        (newField as SizedBox).child! as TextFieldWidgetHandler
+      ).textFieldData;
+      _textFieldService.insertThisFieldToStart(textFieldData);
     }
     _dataHandler.replaceWidgetInTree(
       elementToReplace,
-      MathConstructionWidgetData(construction: newField)
+      MathConstructionWidgetData(construction: newField),
     );
   }
 
   void _removeCurrentField(TextEditingController activeController) {
     final dataToReplaceField = _parsersService.parseWidgetLocation(
-      _formulaGroopWidgets,
-      activeController
+      _formulaGroupWidgets,
+      activeController,
     );
     
     if (dataToReplaceField != null) {
@@ -258,13 +293,13 @@ class MathController extends ChangeNotifier{
   }
 
   void deleteAllButtonTap() {
-    _formulaGroopWidgets.clear();
+    _formulaGroupWidgets.clear();
     _textFieldService.deleteAllTextFields();
     _initialization();
     notifyListeners();
   }
 
-  void rebuildSreenState() {
+  void rebuildScreenState() {
     isFormulaUpdated = false;
     changeFormulaRenderingState();
     notifyListeners();

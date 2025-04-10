@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import '../../../../keyboard_controller.dart';
-import '../basic_keyboard.dart';
+import '../basis_keyboard.dart';
 
-const greekSymbolsList = ['α', 'β', 'γ', 'Δ', 'ε', 'η', 'θ', 'σ', 'τ', 'φ', 'ψ', 'ω'];
+const greekSymbolsList = [
+    'α', 'β', 'γ', 'Δ', 'ε', 'η', 'θ', 'σ', 'τ', 'φ', 'ψ', 'ω',
+  ];
 
-class ScroolGreekSymbolsWidget extends StatelessWidget {
-  const ScroolGreekSymbolsWidget({
+class ScrollGreekSymbolsWidget extends StatelessWidget {
+  const ScrollGreekSymbolsWidget({
+    required this.keyboardSpacing,
+    required this.keyboardProperties,
+    required this.keyboardPadding,
     super.key,
     this.iconSize = 30,
     this.buttonStyle,
     this.textStyle,
-    required this.keyboardSpacing,
-    required this.keyboardProperties,
-    required this.keyboardPadding,
   });
   
   final double iconSize;
@@ -24,7 +26,11 @@ class ScroolGreekSymbolsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttonWidth = (MediaQuery.of(context).size.width - keyboardPadding - keyboardSpacing * (countOfButtonsInRow - 1)) / countOfButtonsInRow;
+    final buttonWidth = (
+      MediaQuery.of(context).size.width 
+      - keyboardPadding - keyboardSpacing 
+      * (countOfButtonsInRow - 1)) 
+      / countOfButtonsInRow;
     return SizedBox(
         child: SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -40,8 +46,8 @@ class ScroolGreekSymbolsWidget extends StatelessWidget {
             style: buttonStyle ?? defaultButtonStyle,
             child: Text(symbol, style: textStyle),
           ),
-        )).toList(),
+        ),).toList(),
       ),
-    ));
+    ),);
   }
 }

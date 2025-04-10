@@ -1,17 +1,11 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import '../../services/math_constructions_building.dart';
 
-enum RelayedPositionedType {
-  fromRight,
-  fromLeft,
-  fromTop,
-  fromBottom,
-}
-
-class RelayedPositioned extends StatefulWidget implements SingleChildConstruction {
+class RelayedPositioned 
+  extends StatefulWidget implements SingleChildConstruction{
   RelayedPositioned({
-    super.key,
     required this.widgetToWrap,
     required this.connectedWidgetKeys,
     this.offsetByHeight,
@@ -21,6 +15,7 @@ class RelayedPositioned extends StatefulWidget implements SingleChildConstructio
     this.top,
     this.bottom,
     this.divideOffset = false,
+    super.key,
   });
 
   Widget widgetToWrap;
@@ -43,7 +38,7 @@ class _RelayedPositionedState extends State<RelayedPositioned> {
   double? widthOffset; 
   double? heightOffset;
 
-  void getSize(List<FrameTiming> frameTiming) {
+  void getSize(List<FrameTiming> timings) {
     widthOffset = 0;
     heightOffset = 0;
     for (final key in widget.connectedWidgetKeys) {
@@ -63,13 +58,8 @@ class _RelayedPositionedState extends State<RelayedPositioned> {
   }
 
   @override
-  void dispose() {
-    WidgetsBinding.instance.removeTimingsCallback(getSize);
-    super.dispose();
-  }
-
-  @override
   void initState() {
+    super.initState();
     if(widget.widgetToWrap is! Row){
       widget.widgetToWrap = Row(
         children: [
@@ -78,7 +68,6 @@ class _RelayedPositionedState extends State<RelayedPositioned> {
       );
     }
     WidgetsBinding.instance.addTimingsCallback(getSize);
-    super.initState();
   }
 
   @override
@@ -99,7 +88,6 @@ class _RelayedPositionedState extends State<RelayedPositioned> {
           if(widget.divideOffset == true){
             bottomOffset = bottomOffset / 2;
           }
-          break;
         case RelayedPositionedType.fromTop:
           if(topOffset != null){
             topOffset += heightOffset ?? 0;
@@ -109,7 +97,6 @@ class _RelayedPositionedState extends State<RelayedPositioned> {
           if(widget.divideOffset == true){
             topOffset = topOffset / 2;
           }
-          break;
         default:
           break;
       }
@@ -126,7 +113,6 @@ class _RelayedPositionedState extends State<RelayedPositioned> {
           if(widget.divideOffset == true){
             leftOffset = leftOffset / 2;
           }
-          break;
         case RelayedPositionedType.fromRight:
           if(rightOffset != null){
             rightOffset += widthOffset ?? 0;
@@ -136,7 +122,6 @@ class _RelayedPositionedState extends State<RelayedPositioned> {
           if(widget.divideOffset == true){
             rightOffset = rightOffset / 2;
           }
-          break;
         default:
           break;
       }
@@ -149,6 +134,20 @@ class _RelayedPositionedState extends State<RelayedPositioned> {
       bottom: bottomOffset,
       child: widget.widgetToWrap,
     );
+
     return widget.child!;
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeTimingsCallback(getSize);
+    super.dispose();
+  }
+}
+
+enum RelayedPositionedType {
+  fromRight,
+  fromLeft,
+  fromTop,
+  fromBottom,
 }

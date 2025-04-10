@@ -3,33 +3,34 @@ import '../services/text_field_handle_and_create.dart';
 import 'index.dart';
 
 class Derivative extends DefaultMathConstruction{
-  Derivative(super.builder);
-
   @override
   MathConstructionKey get key => DerivativeKey();
   
+  Derivative(super.builder);
+
   @override
   MathConstructionWidgetData createConstruction() {
     final upperField = builder.createTextField(
-        replaceOldFocus: true, isActive: true);
-    final downField = builder.createTextField(performAddictionalTextField: true);
+        replaceOldFocus: true, isActive: true,);
+    final downField = builder.createTextField(performAdditionalTextField: true);
       upperField as SizedBox;
-      (upperField.child as TextFieldWidgetHandler).initTextInField =
+      (upperField.child! as TextFieldWidgetHandler).initTextInField =
           'y';
       downField as SizedBox;
-      (downField.child as TextFieldWidgetHandler).initTextInField =
+      (downField.child! as TextFieldWidgetHandler).initTextInField =
           'x';
     final upperGlobalKey = GlobalKey();
     final downGlobalKey = GlobalKey();
     builder.markAsGroup(upperField, downField);
-    final derevativeWidget = _createDerivativeWidget(
+    final derivativeWidget = _createDerivativeWidget(
       upperGlobalKey, 
       downGlobalKey, 
       upperField, 
       downField,
-      builder.getKey(DerivativeKey()),
+      MathConstructionKey.setKey(DerivativeKey()),
     );
-    return MathConstructionWidgetData(construction: derevativeWidget);
+
+    return MathConstructionWidgetData(construction: derivativeWidget);
   }
 }
 
@@ -38,32 +39,34 @@ class DerivativeKey extends GroupMathConstructionKey {
   List<int> get fieldsLocation => [0, 2];
 
   @override
-  List<String> get katexExp => ['\\frac{d','}{d','}'];
+  List<String> get katexExp => [r'\frac{d','}{d','}'];
 }
 
-class EmptyDerevative extends DefaultMathConstruction{
-  EmptyDerevative(super.builder);
-
+class EmptyDerivative extends DefaultMathConstruction{
   @override
   MathConstructionKey get key => DerivativeKey();
-  
+
+  EmptyDerivative(super.builder);
+
   @override
   MathConstructionWidgetData createConstruction() {
     final upperField = builder.createTextField(
-        replaceOldFocus: true, isActive: true);
+        replaceOldFocus: true, isActive: true,);
     final downField = builder.createTextField(
-        replaceOldFocus: false, performAddictionalTextField: true);
+      performAdditionalTextField: true,
+    );
     final upperGlobalKey = GlobalKey();
     final downGlobalKey = GlobalKey();
     builder.markAsGroup(upperField, downField);
-    final derevativeWidget = _createDerivativeWidget(
+    final derivativeWidget = _createDerivativeWidget(
       upperGlobalKey, 
       downGlobalKey, 
       upperField, 
       downField,
-      builder.getKey(DerivativeKey()),
+      MathConstructionKey.setKey(DerivativeKey()),
     );
-    return MathConstructionWidgetData(construction: derevativeWidget);
+
+    return MathConstructionWidgetData(construction: derivativeWidget);
   }
 }
 
@@ -84,11 +87,14 @@ Widget _createDerivativeWidget(
             key: upperGlobalKey,
             children: [
               const Text('d', style: TextStyle(fontSize: 20)),
-              upperField
+              upperField,
             ],
           ),
         ),
-        FracDividerWidget(upperGlobalKey: upperGlobalKey, downGlobalKey: downGlobalKey),
+        FracDividerWidget(
+          upperGlobalKey: upperGlobalKey, 
+          downGlobalKey: downGlobalKey,
+        ),
         SizedBox(
           child: Row(
             key: downGlobalKey,
