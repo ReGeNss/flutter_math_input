@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'math_construction.dart';
 
 class Frac extends DefaultMathConstruction{
+  @override
+  MathConstructionKey get key => FracKey();
+
   Frac(super.builder);
 
   @override
   MathConstructionWidgetData createConstruction() {
     final upperField = builder.createTextField(
-        replaceOldFocus: true, isActive: true);
-    final downField = builder.createTextField(performAddictionalTextField: true);
+        replaceOldFocus: true, isActive: true,);
+    final downField = builder.createTextField(performAdditionalTextField: true);
     builder.markAsGroup(upperField, downField);
     final upperGlobalKey = GlobalKey();
     final downGlobalKey = GlobalKey();
@@ -18,7 +21,7 @@ class Frac extends DefaultMathConstruction{
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            key: builder.getKey(FracKey()),
+            key: MathConstructionKey.setKey(FracKey()),
             children: [
               SizedBox(
                 child: Row(
@@ -35,17 +38,15 @@ class Frac extends DefaultMathConstruction{
                   key: downGlobalKey,
                   children: [downField],
                 ),
-              )
+              ),
             ],
           ),
         ],
       ),
     );
+
     return MathConstructionWidgetData(construction: fracWidget);
   }
-
-  @override
-  MathConstructionKey get key => FracKey();
 }
 
 class FracKey extends GroupMathConstructionKey{
@@ -53,14 +54,14 @@ class FracKey extends GroupMathConstructionKey{
   List<int> get fieldsLocation => [0, 2];
   
   @override
-  List<String> get katexExp => ['\\frac{', '}{', '}'];
+  List<String> get katexExp => [r'\frac{', '}{', '}'];
 }
 
 class FracDividerWidget extends StatefulWidget {
   const FracDividerWidget({
-    super.key,
     required this.upperGlobalKey,
     required this.downGlobalKey,
+    super.key,
   });
   final GlobalKey upperGlobalKey;
   final GlobalKey downGlobalKey;
@@ -76,24 +77,16 @@ class _FracDividerWidgetState extends State<FracDividerWidget> {
         widget.upperGlobalKey.currentContext?.findRenderObject() as RenderBox;
     final downRenderBox =
         widget.downGlobalKey.currentContext?.findRenderObject() as RenderBox;
-    if (upperRenderBox.size.width > downRenderBox.size.width) {
-      size = upperRenderBox.size;
-    } else {
-      size = downRenderBox.size;
-    }
+    size = upperRenderBox.size.width > downRenderBox.size.width 
+      ? upperRenderBox.size 
+      : downRenderBox.size;
     setState(() {});
   }
 
   @override
-  void dispose() {
-    WidgetsBinding.instance.removeTimingsCallback(getSize);
-    super.dispose();
-  }
-
-  @override
   void initState() {
-    WidgetsBinding.instance.addTimingsCallback(getSize);
     super.initState();
+    WidgetsBinding.instance.addTimingsCallback(getSize);
   }
 
   @override
@@ -104,5 +97,11 @@ class _FracDividerWidgetState extends State<FracDividerWidget> {
         color: Colors.black,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeTimingsCallback(getSize);
+    super.dispose();
   }
 }

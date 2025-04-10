@@ -2,14 +2,16 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import '../../services/math_constructions_building.dart';
 
-class WidgetDynamicSizeWrapper extends StatefulWidget implements SingleChildConstruction{
+class WidgetDynamicSizeWrapper 
+    extends StatefulWidget 
+    implements SingleChildConstruction{
   WidgetDynamicSizeWrapper({
-    super.key,
     required this.connectedKeysToWidth,
     required this.child, 
     required this.connectedKeysToHeight,
     this.defaultWidth, 
     this.defaultHeight,
+    super.key,
   });
 
   final List<GlobalKey> connectedKeysToWidth;
@@ -20,7 +22,8 @@ class WidgetDynamicSizeWrapper extends StatefulWidget implements SingleChildCons
   Widget? child; 
 
   @override
-  State<WidgetDynamicSizeWrapper> createState() => _WidgetDynamicSizeWrapperState();
+  State<WidgetDynamicSizeWrapper> createState() => 
+    _WidgetDynamicSizeWrapperState();
 }
 
 class _WidgetDynamicSizeWrapperState extends State<WidgetDynamicSizeWrapper> {
@@ -32,7 +35,7 @@ class _WidgetDynamicSizeWrapperState extends State<WidgetDynamicSizeWrapper> {
     width = 0;
     for(final key in widget.connectedKeysToWidth) { 
       if(key.currentContext != null){
-        final renderBox = key.currentContext?.findRenderObject() as RenderBox;
+        final renderBox = key.currentContext!.findRenderObject()! as RenderBox;
         if(width != renderBox.size.width || height != renderBox.size.height){
           width += renderBox.size.width;
           if(height < renderBox.size.height){
@@ -44,16 +47,11 @@ class _WidgetDynamicSizeWrapperState extends State<WidgetDynamicSizeWrapper> {
     setState(() {});
   }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeTimingsCallback(getSize);
-    super.dispose();
-  }
 
   @override
   void initState() {
-    WidgetsBinding.instance.addTimingsCallback(getSize);
     super.initState();
+    WidgetsBinding.instance.addTimingsCallback(getSize);
   }
   
   @override
@@ -63,5 +61,11 @@ class _WidgetDynamicSizeWrapperState extends State<WidgetDynamicSizeWrapper> {
       width: width + (widget.defaultWidth ?? 0),
       child: widget.child,
     );
+  
+  }
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeTimingsCallback(getSize);
+    super.dispose();
   }
 }

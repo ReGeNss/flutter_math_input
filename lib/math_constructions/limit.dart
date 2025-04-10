@@ -1,32 +1,41 @@
 import 'package:flutter/material.dart';
 import '../services/text_field_handle_and_create.dart';
-import '../widgets/supportive_widges/relayed_positioned.dart';
-import '../widgets/supportive_widges/widget_dynamic_size_wrapper.dart';
+import '../widgets/supportive_widgets/relayed_positioned.dart';
+import '../widgets/supportive_widgets/widget_dynamic_size_wrapper.dart';
 import 'math_construction.dart';
 
 class Limit extends DefaultMathConstruction{
+  @override
+  MathConstructionKey get key => LimitKey();
+
   Limit(super.builder);
 
   @override
   MathConstructionWidgetData createConstruction() {
-     final addictionalField = builder.createTextField();
+    final additionalField = builder.createTextField();
     final argField = builder.createTextField();
     final firstDownField = builder.createTextField(
       replaceOldFocus: true,
       isActive: true,
-      format: TextFieldFormat.small
+      format: TextFieldFormat.small,
     );
-    final secondDownField = builder.createTextField(format: TextFieldFormat.small);
+    final secondDownField = builder.createTextField(
+      format: TextFieldFormat.small,
+    );
     final argWidgetKey = GlobalKey();
     final firstDownFieldKey = GlobalKey();
     final secondDownFieldKey = GlobalKey();
     builder.markAsGroup(firstDownField, argField); 
     final limitWidget = WidgetDynamicSizeWrapper(
-          connectedKeysToHeight: [],
+          connectedKeysToHeight: const [],
           defaultHeight: 50,
           defaultWidth: 50,
-          connectedKeysToWidth: [firstDownFieldKey, secondDownFieldKey, argWidgetKey],
-          key: builder.getKey(LimitKey()),
+          connectedKeysToWidth: [
+            firstDownFieldKey, 
+            secondDownFieldKey, 
+            argWidgetKey,
+          ],
+          key: MathConstructionKey.setKey(LimitKey()),
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -35,12 +44,15 @@ class Limit extends DefaultMathConstruction{
                 divideOffset: true,
                 offsetByWidth: RelayedPositionedType.fromLeft,
                 connectedWidgetKeys: [firstDownFieldKey,secondDownFieldKey],
-                widgetToWrap: SizedBox(
+                widgetToWrap: const SizedBox(
                   height: 50,
                   child: Center(
                     child: Text(
                       'lim',
-                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ),
@@ -58,7 +70,7 @@ class Limit extends DefaultMathConstruction{
                 left: 5,
                 offsetByWidth: RelayedPositionedType.fromLeft,
                 connectedWidgetKeys: [firstDownFieldKey],
-                widgetToWrap: Icon(Icons.arrow_forward_outlined)
+                widgetToWrap: const Icon(Icons.arrow_forward_outlined),
               ),
               RelayedPositioned(
                 key: secondDownFieldKey,
@@ -78,16 +90,17 @@ class Limit extends DefaultMathConstruction{
             ],
           ),
         );
-    return MathConstructionWidgetData(construction: limitWidget, addictionalWidget: addictionalField);
+
+    return MathConstructionWidgetData(
+      construction: limitWidget, 
+      additionalWidget: additionalField,
+    );
   }
-  
-  @override
-  MathConstructionKey get key => LimitKey();
 }
 
 class LimitKey extends GroupMathConstructionKey{
   @override
-  List<String> get katexExp => ['\\lim_{','\\to ','} ',''];
+  List<String> get katexExp => [r'\lim_{',r'\to ','} ',''];
   @override
   List<int> get fieldsLocation => [1, 3, 4];
 }

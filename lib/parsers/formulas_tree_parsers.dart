@@ -7,11 +7,12 @@ class FormulasTreeParsersService {
 
   ParsedWidgetsData? parseWidgetLocation(
     List<Widget> array, 
-    TextEditingController activeTextFieldController
+    TextEditingController activeTextFieldController,
   ) {
     try{
       _parsedData = null;
       _parseWidgetLocation(array, activeTextFieldController);
+
       return _parsedData;
     }catch(e){
       return null;
@@ -20,11 +21,12 @@ class FormulasTreeParsersService {
 
   ParsedWidgetsData? parseWidgetContainerLocation(
     List<Widget> array, 
-    TextEditingController activeTextFieldController
+    TextEditingController activeTextFieldController,
   ){
     try{
       _parsedData = null;
       _parseWidgetContainerLocation(array, activeTextFieldController); 
+
       return _parsedData; 
     }catch(e){
       return null;
@@ -33,7 +35,7 @@ class FormulasTreeParsersService {
 
   ParsedWidgetsData? _parseWidgetLocation(
       List<Widget> array, 
-      TextEditingController activeTextFieldController
+      TextEditingController activeTextFieldController,
   ) {
     final length = array.length;
     ParsedWidgetsData? data;
@@ -47,7 +49,7 @@ class FormulasTreeParsersService {
           );
           if (data != null) {
             data.index = index;
-            data.wigetData = array;
+            data.widgetData = array;
             _parsedData ??= data;
           }        
         }
@@ -56,7 +58,7 @@ class FormulasTreeParsersService {
         final widget = array[index];
         data = _parseWidgetLocation(
           widget.multiChild,
-          activeTextFieldController
+          activeTextFieldController,
         );
         if (data != null) {
           return data;
@@ -66,7 +68,7 @@ class FormulasTreeParsersService {
                 (array[index] as TextFieldWidgetHandler).textField as TextField;
         data = _parseWidgetLocation(
           [widget],
-          activeTextFieldController
+          activeTextFieldController,
         );
         if (data != null) {
           return data;
@@ -74,7 +76,7 @@ class FormulasTreeParsersService {
       }else if(array[index] is TextField){
         final widget = array[index] as TextField;
         if(widget.controller == activeTextFieldController){
-          return ParsedWidgetsData(wigetData: array, index: index);
+          return ParsedWidgetsData(widgetData: array, index: index);
         }
       }
     }
@@ -83,7 +85,7 @@ class FormulasTreeParsersService {
 
   ParsedWidgetsData? _parseWidgetContainerLocation(List<Widget> array,
       TextEditingController activeTextFieldController,
-      {bool isFromRowOrColumn = false}) {
+      {bool isFromRowOrColumn = false,}) {
     final length = array.length;
     ParsedWidgetsData? data;
     for (int index = 0; length > index; index += 1) {
@@ -92,13 +94,13 @@ class FormulasTreeParsersService {
         if (widget != null) {
           data = _parseWidgetInContainer(
             widget, 
-            activeTextFieldController
+            activeTextFieldController,
           );
         }
         if (data != null && _parsedData == null) {
           data.index = index; 
           if (isFromRowOrColumn == false) {
-            data.wigetData = array;
+            data.widgetData = array;
             _parsedData = data; 
           }
           return data;
@@ -108,16 +110,17 @@ class FormulasTreeParsersService {
         data = _parseWidgetContainerLocation(
           list,
           activeTextFieldController,
-          isFromRowOrColumn: true
+          isFromRowOrColumn: true,
         );
         if (_parsedData == null && data != null) {
-          _parsedData = ParsedWidgetsData(wigetData: array);
+          _parsedData = ParsedWidgetsData(widgetData: array);
         }
+        // ignore: parameter_assignments
         isFromRowOrColumn = false;
       }else if(array[index] is TextFieldWidgetHandler){
         final textFieldWidget = array[index] as TextFieldWidgetHandler;
-        if (textFieldWidget.textField!.controller == activeTextFieldController) {
-          return ParsedWidgetsData(wigetData: array, index: index);
+        if (textFieldWidget.textField!.controller == activeTextFieldController){
+          return ParsedWidgetsData(widgetData: array, index: index);
         }
       }
     }
@@ -125,21 +128,24 @@ class FormulasTreeParsersService {
   }
 
   ParsedWidgetsData? _parseWidgetInContainer(
-      Widget widget, TextEditingController activeTextFieldController) {
-    ParsedWidgetsData? data;
+      Widget widget, 
+      TextEditingController activeTextFieldController,
+    ) {
     if(widget.isSingleChild){ 
-      data = _parseWidgetInContainer(widget.singleChild!, activeTextFieldController);
-      return data;
+      return _parseWidgetInContainer(
+        widget.singleChild!, 
+        activeTextFieldController,
+      );
     }else if(widget.isMultiChild){
-      data = _parseWidgetContainerLocation(
+      return _parseWidgetContainerLocation(
         widget.multiChild, 
         activeTextFieldController,
         isFromRowOrColumn: true,
       );
-      return data;
     }else if(widget is TextFieldWidgetHandler){
-      final textFieldWidget = widget.textField as TextField;
+      final textFieldWidget = widget.textField!;
       if (textFieldWidget.controller == activeTextFieldController) {
+        
         return ParsedWidgetsData();
       }
     }
@@ -148,8 +154,8 @@ class FormulasTreeParsersService {
 }
 
 class ParsedWidgetsData {
-  List<Widget>? wigetData;
-  bool? isGroop;
+  List<Widget>? widgetData;
+  bool? isGroup;
   int? index;
-  ParsedWidgetsData({this.wigetData, this.index, this.isGroop});
+  ParsedWidgetsData({this.widgetData, this.index, this.isGroup});
 }

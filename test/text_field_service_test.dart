@@ -67,55 +67,62 @@ void main() {
       textFieldService.selectBackFocus();
       await tester.pumpWidget(MaterialApp(home: Scaffold(body: testWidget)));
 
-      textFieldService.deleteCurrentController(false);
+      textFieldService.deleteCurrentController(shouldRemarkGroup: false);
       textFieldService.requestFocusToActiveTextField();
       await tester.pumpAndSettle();
       expect(testWidget.textFieldData.focusNode.hasFocus, isTrue);
     });
 
-    testWidgets('Delete fields groop', (WidgetTester tester) async {
+    testWidgets('Delete fields group', (WidgetTester tester) async {
       final textFieldService = TextFieldHandleAndCreateService();
       final widgets = generateActiveTextFields(5, textFieldService);
 
       final testWidget = widgets[2];
-      textFieldService.markAsGrop(SizedBox(child: widgets[3]), SizedBox(child: widgets[4])); 
+      textFieldService.markAsGroup(
+        SizedBox(child: widgets[3]), 
+        SizedBox(child: widgets[4]),
+      ); 
       await tester.pumpWidget(MaterialApp(home: Scaffold(body: testWidget)));
 
-      textFieldService.deleteElementFields(true);
+      textFieldService.deleteElementFields(checkGroups: true);
       textFieldService.requestFocusToActiveTextField();
       await tester.pumpAndSettle();
       expect(testWidget.textFieldData.focusNode.hasFocus, isTrue);
     });
 
-    testWidgets('Delete fields groop', (WidgetTester tester) async {
+    testWidgets('Delete fields group', (WidgetTester tester) async {
       final textFieldService = TextFieldHandleAndCreateService();
       final widgets = generateActiveTextFields(5, textFieldService);
 
       final testWidget = widgets[1];
-      textFieldService.markAsGrop(SizedBox(child: widgets[2]), SizedBox(child: widgets[4])); 
+      textFieldService.markAsGroup(SizedBox(
+        child: widgets[2],), 
+        SizedBox(child: widgets[4]),
+      ); 
       await tester.pumpWidget(MaterialApp(home: Scaffold(body: testWidget)));
       
       textFieldService.selectBackFocus();
       textFieldService.selectBackFocus();
-      textFieldService.deleteCurrentController(true); 
-      textFieldService.deleteElementFields(true);
+      textFieldService.deleteCurrentController(shouldRemarkGroup: true); 
+      textFieldService.deleteElementFields(checkGroups: true);
       textFieldService.requestFocusToActiveTextField();
       await tester.pumpAndSettle();
       expect(testWidget.textFieldData.focusNode.hasFocus, isTrue);
     });
-
   });
 }
 
-
-List<TextFieldWidgetHandler> generateActiveTextFields(int count, TextFieldHandleAndCreateService textFieldService,) { 
+List<TextFieldWidgetHandler> generateActiveTextFields(
+  int count, 
+  TextFieldHandleAndCreateService textFieldService,
+) { 
   final List<TextFieldWidgetHandler> textFields = []; 
   for (var i = 0; i < count; i++) {
     textFields.add((textFieldService.createTextField(
       isReplaceOperation: false,
       isActiveTextField: true,
-      selectedTextFieldFormat: TextFieldFormat.standart,
-    ) as SizedBox).child as TextFieldWidgetHandler);
+      selectedTextFieldFormat: TextFieldFormat.standard,
+    ) as SizedBox).child! as TextFieldWidgetHandler,);
   }
   return textFields;
 }

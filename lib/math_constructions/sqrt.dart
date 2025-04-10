@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 import 'math_construction.dart';
 
 class Sqrt extends DefaultMathConstruction{
-  Sqrt(super.builder);
   @override
   MathConstructionKey get key => SqrtKey();
+  
+  Sqrt(super.builder);
 
   @override
   MathConstructionWidgetData createConstruction() {
-     final globalKey = GlobalKey();
+    final globalKey = GlobalKey();
     final textFieldWidget = builder.createTextField(
-        replaceOldFocus: true, isActive: true);
-    final adictionalField = builder.createTextField();
+      replaceOldFocus: true, isActive: true,
+    );
+    final additionalField = builder.createTextField();
     final sqrtWidget = SizedBox(
-      key: builder.getKey(SqrtKey()),
+      key: MathConstructionKey.setKey(SqrtKey()),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -36,13 +38,17 @@ class Sqrt extends DefaultMathConstruction{
         ],
       ),
     );
-    return MathConstructionWidgetData(construction: sqrtWidget, addictionalWidget: adictionalField);
+
+    return MathConstructionWidgetData(
+      construction: sqrtWidget, 
+      additionalWidget: additionalField,
+    );
   }
 }
 
 class SqrtKey extends SimpleMathConstructionKey{
   @override
-  List<String> get katexExp => ['\\sqrt{', '}'];
+  List<String> get katexExp => [r'\sqrt{', '}'];
 }
 
 class _SqrtCustomPaint extends StatefulWidget {
@@ -67,22 +73,24 @@ class _SqrtCustomPaintState extends State<_SqrtCustomPaint> {
     }
   }
 
+  // ignore: proper_super_calls
   @override
   void initState() {
     WidgetsBinding.instance.addTimingsCallback(getSize);
     super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size((size?.width ?? 80) + 30, (size?.height ?? 50) + 5),
+      painter: _SqrtPainter(),
+    );
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeTimingsCallback(getSize);
     super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-        size: Size((size?.width ?? 80) + 30, (size?.height ?? 50) + 5), painter: _SqrtPainter());
   }
 }
 
