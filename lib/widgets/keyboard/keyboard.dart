@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../keyboard_controller.dart';
+import '../../math_controller.dart';
 
 abstract class MathKeyboard {
   final BuildContext context;
