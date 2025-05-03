@@ -160,11 +160,11 @@ class BasisMathKeyboard extends MathKeyboard {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildNavigationButton(
-                    onPressed: () => keyboardProperties.selectBackFocus(),
+                    onPressed: () => keyboardProperties.selectCursorBack(),
                     icon: Icons.arrow_back,
                   ),
                   _buildNavigationButton(
-                    onPressed: () => keyboardProperties.selectNextFocus(),
+                    onPressed: () => keyboardProperties.selectCursorForward(),
                     icon: Icons.arrow_forward,
                   ),
                   _buildNavigationButton(

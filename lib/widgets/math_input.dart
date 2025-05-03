@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../keyboard_controller.dart';
+import '../math_controller.dart';
 import 'keyboard/keyboard.dart';
 
 const mathConstructionNotFoundError = 'MathConstruction not found. '
@@ -30,7 +30,7 @@ class MathInput extends StatefulWidget {
 
 class _MathInputState extends State<MathInput> {
   final GlobalKey _formulasRowKey = GlobalKey();
-  late final MathController keyboardController;
+  late final IMathController keyboardController;
   
   @override
   Widget build(BuildContext context) {

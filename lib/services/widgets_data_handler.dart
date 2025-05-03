@@ -3,7 +3,9 @@ import '../math_constructions/index.dart';
 import '../parsers/formulas_tree_parsers.dart';
 
 class WidgetsDataHandler{
-  void replaceWidgetInTree(
+  WidgetsDataHandler._();
+  
+  static void replaceWidgetInTree(
     ParsedWidgetsData parsedData, 
     MathConstructionWidgetData mathConstructions,
   ){
@@ -17,10 +19,12 @@ class WidgetsDataHandler{
         mathConstructions.construction;
     }
   }
-  void addToWidgetTree(ParsedWidgetsData parsedData, List<Widget> widget){
+
+  static void addToWidgetTree(ParsedWidgetsData parsedData, List<Widget> widget){
     parsedData.widgetData!.addAll(widget); 
-  } 
-  void deleteFromWidgetTree(ParsedWidgetsData parsedData){
+  }
+
+  static void deleteFromWidgetTree(ParsedWidgetsData parsedData){
     parsedData.widgetData?.removeAt(parsedData.index!); 
   }
 }

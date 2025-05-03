@@ -82,14 +82,6 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
         _selectedFieldIndex, _selectedFieldIndex + 1, [textFieldData],);
   }
 
-  void _insertToList<T>(List<T> list, T element, int index) {
-    if (list.isNotEmpty) {
-      list.insert(index + 1, element);
-    } else {
-      list.add(element);
-    }
-  }
-
   void _addFocusNodeAfterThis(TextFieldData textFieldData) {
     final additionalTextFieldData =
         _createTextFieldData(TextFieldFormat.standard);
@@ -415,6 +407,14 @@ class _TextFieldWidgetHandlerState extends State<TextFieldWidgetHandler> {
     );
     
     return fieldWidget;
+  }
+}
+
+void _insertToList<T>(List<T> list, T element, int index) {
+  if (list.isNotEmpty) {
+    list.insert(index + 1, element);
+  } else {
+    list.add(element);
   }
 }
 
