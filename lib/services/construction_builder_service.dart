@@ -1,35 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_math_input/math_constructions/math_construction.dart';
-import 'package:flutter_math_input/parsers/formulas_tree_parsers.dart';
-import 'package:flutter_math_input/services/math_constructions_building.dart';
-import 'package:flutter_math_input/services/text_field_handle_and_create.dart';
-import 'package:flutter_math_input/services/widgets_data_handler.dart';
+import '../interfaces/index.dart';
+import '../parsers/index.dart';
+import 'index.dart';
 
-abstract class IConstructionBuilderService {
-  void createComplicatedConstruction(
-    ComplicatedMathConstruction Function(
-      MathConstructionsBuilding, {
-      required TextFieldHandleAndCreateService textFieldService,
-      required ParsedWidgetsData parsingResults,
-      required List<Widget> widgetTree,
-    }) constructionFactory,
-  );
-
-  void createSimpleConstruction(
-    DefaultMathConstruction Function(MathConstructionsBuilding) constructionFactory,
-  );
-
-  void createCharWidgets(String char);
-}
-
-class ConstructionBuilderService implements IConstructionBuilderService {
-  final MathConstructionsBuilding _mathConstructionsBuildingService;
+class ConstructionBuilderServiceImp implements ConstructionBuilderService {
+  final MathConstructionsBuilder _mathConstructionsBuildingService;
   final TextFieldHandleAndCreateService _textFieldService;
   final FormulasTreeParsersService _parsersService;
   final List<Widget> _formulaGroupWidgets;
 
-  ConstructionBuilderService(
-    MathConstructionsBuilding mathConstructionsBuildingService,
+  ConstructionBuilderServiceImp(
+    MathConstructionsBuilder mathConstructionsBuildingService,
     TextFieldHandleAndCreateService textFieldService,
     FormulasTreeParsersService parsersService,
     List<Widget> formulaGroupWidgets,
@@ -40,7 +21,7 @@ class ConstructionBuilderService implements IConstructionBuilderService {
         
 
   @override
-  void createComplicatedConstruction(ComplicatedMathConstruction Function(MathConstructionsBuilding p1, {required ParsedWidgetsData parsingResults, required TextFieldHandleAndCreateService textFieldService, required List<Widget> widgetTree}) constructionFactory) {
+  void createComplicatedConstruction(ComplicatedMathConstruction Function(MathConstructionsBuilder p1, {required ParsedWidgetsData parsingResults, required TextFieldHandleAndCreateService textFieldService, required List<Widget> widgetTree}) constructionFactory) {
      final parsedWidgets = _parsersService.parseWidgetLocation(
       _formulaGroupWidgets, 
       _textFieldService.getActiveTextFieldController(),
@@ -57,7 +38,7 @@ class ConstructionBuilderService implements IConstructionBuilderService {
   }
 
   @override
-  void createSimpleConstruction(DefaultMathConstruction Function(MathConstructionsBuilding p1) constructionFactory) {
+  void createSimpleConstruction(DefaultMathConstruction Function(MathConstructionsBuilder p1) constructionFactory) {
     final construction = constructionFactory(_mathConstructionsBuildingService);
     final parsedWidgets = _parsersService.parseWidgetLocation(
       _formulaGroupWidgets, 

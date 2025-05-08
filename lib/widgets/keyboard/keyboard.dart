@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../math_controller.dart';
+import '../../interfaces/index.dart';
 
 abstract class MathKeyboard {
   final BuildContext context;
@@ -11,8 +11,8 @@ abstract class MathKeyboard {
       keyboardProperties = context.read<MathController>();
     } on ProviderNotFoundException {
       throw Exception(
-        'MathKeyboardModel not found.'
-        'Please add provide MathKeyboardModel to your widget tree.'
+        'MathController not found.'
+        'Please add provide MathController to your widget tree.'
       );
     }
   }

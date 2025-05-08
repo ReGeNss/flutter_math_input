@@ -1,3 +1,4 @@
+import '../../interfaces/index.dart';
 import '../index.dart';
 
 class Cos extends NamedFunction{

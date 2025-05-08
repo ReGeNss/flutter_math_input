@@ -7,6 +7,6 @@ export 'indefinite_integral.dart';
 export 'integral.dart';
 export 'limit.dart';
 export 'log.dart';
-export 'math_construction.dart';
+export '../interfaces/math_construction.dart';
 export 'named_functions/index.dart';
 export 'sqrt.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/text_field_handle_and_create.dart';
+import '../interfaces/index.dart';
+import '../widgets/supportive_widgets/index.dart';
 import 'index.dart';
 
 class Derivative extends DefaultMathConstruction{
@@ -14,10 +15,10 @@ class Derivative extends DefaultMathConstruction{
         replaceOldFocus: true, isActive: true,);
     final downField = builder.createTextField(performAdditionalTextField: true);
       upperField as SizedBox;
-      (upperField.child! as TextFieldWidgetHandler).initTextInField =
+      (upperField.child! as TextFieldWrapper).initTextInField =
           'y';
       downField as SizedBox;
-      (downField.child! as TextFieldWidgetHandler).initTextInField =
+      (downField.child! as TextFieldWrapper).initTextInField =
           'x';
     final upperGlobalKey = GlobalKey();
     final downGlobalKey = GlobalKey();

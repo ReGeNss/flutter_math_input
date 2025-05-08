@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/widgets.dart';
-import '../../services/math_constructions_building.dart';
+import '../../interfaces/index.dart';
 
 class WidgetDynamicSizeWrapper 
     extends StatefulWidget 
-    implements SingleChildConstruction{
+    implements SingleChildConstruction {
   WidgetDynamicSizeWrapper({
     required this.connectedKeysToWidth,
     required this.child, 

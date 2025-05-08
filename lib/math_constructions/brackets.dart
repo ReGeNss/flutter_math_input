@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/math_constructions_building.dart';
-import 'math_construction.dart';
+import '../interfaces/index.dart';
 
 class Brackets extends DefaultMathConstruction{
   @override

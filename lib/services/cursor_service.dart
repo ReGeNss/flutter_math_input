@@ -1,27 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_math_input/math_controller.dart';
 import 'package:flutter_math_input/parsers/formulas_tree_parsers.dart';
 import 'package:flutter_math_input/services/math_constructions_building.dart';
 import 'package:flutter_math_input/services/text_field_handle_and_create.dart';
 import 'package:flutter_math_input/services/widgets_data_handler.dart';
 
-abstract class ICursorService extends FormulaStateManager {
-  ICursorService(super.updateStream);
+import '../interfaces/index.dart';
 
-  void selectNextFocus();
-  void selectBackFocus();
-  void requestFocusToActiveTextField();
-}
-
-class CursorService extends ICursorService {
+class CursorImp extends CursorService {
   final TextFieldHandleAndCreateService _textFieldService;
-  final MathConstructionsBuilding _mathConstructionsBuildingService;
+  final MathConstructionsBuilder _mathConstructionsBuildingService;
   final FormulasTreeParsersService _parsersService = FormulasTreeParsersService();
   final List<Widget> _formulaGroupWidgets;
 
-  CursorService(
+  CursorImp(
     TextFieldHandleAndCreateService textFieldService, 
-    MathConstructionsBuilding mathConstructionsBuildingService,
+    MathConstructionsBuilder mathConstructionsBuildingService,
     List<Widget> formulaGroupWidgets,
     super.updateStream,
     )

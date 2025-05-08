@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'math_construction.dart';
+import '../interfaces/index.dart';
 
 class IndefiniteIntegral extends DefaultMathConstruction{
   @override

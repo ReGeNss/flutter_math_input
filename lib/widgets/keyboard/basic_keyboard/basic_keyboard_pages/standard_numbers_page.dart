@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_input/widgets/keyboard/basic_keyboard/basic_keyboard_pages/function_page.dart';
 import '../../../../flutter_math_input.dart';
+import '../../../../interfaces/index.dart';
 import '../../../../math_constructions/index.dart';
 import '../float_button_overlay.dart';
 

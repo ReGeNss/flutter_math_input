@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_math_input/flutter_math_input.dart';
+import 'package:flutter_math_input/interfaces/index.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,8 +12,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => MathController(),
+    return ChangeNotifierProvider<MathController>(
+      create: (_) => MathControllerImpl(),
       child: const MaterialApp(
         home: MainScreenWidget(),
       ),
