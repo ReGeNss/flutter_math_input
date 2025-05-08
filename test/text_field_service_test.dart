@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_input/services/text_field_handle_and_create.dart';
+import 'package:flutter_math_input/widgets/supportive_widgets/index.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -38,8 +39,8 @@ void main() {
       textFieldService.selectBackFocus();
       textFieldService.selectBackFocus();
 
-      textFieldService.trySelectNextFocus();
-      textFieldService.trySelectNextFocus();
+      textFieldService.selectNextFocus();
+      textFieldService.selectNextFocus();
       await tester.pumpAndSettle();
       expect(testWidget.textFieldData.focusNode.hasFocus, isTrue);
     });
@@ -51,10 +52,10 @@ void main() {
       final testWidget = widgets[4];
       await tester.pumpWidget(MaterialApp(home: Scaffold(body: testWidget)));
 
-      textFieldService.trySelectNextFocus();
-      textFieldService.trySelectNextFocus();
-      textFieldService.trySelectNextFocus();
-      textFieldService.trySelectNextFocus();
+      textFieldService.selectNextFocus();
+      textFieldService.selectNextFocus();
+      textFieldService.selectNextFocus();
+      textFieldService.selectNextFocus();
       await tester.pumpAndSettle();
       expect(testWidget.textFieldData.focusNode.hasFocus, isTrue);
     });
@@ -112,17 +113,17 @@ void main() {
   });
 }
 
-List<TextFieldWidgetHandler> generateActiveTextFields(
+List<TextFieldWrapper> generateActiveTextFields(
   int count, 
   TextFieldHandleAndCreateService textFieldService,
 ) { 
-  final List<TextFieldWidgetHandler> textFields = []; 
+  final List<TextFieldWrapper> textFields = []; 
   for (var i = 0; i < count; i++) {
     textFields.add((textFieldService.createTextField(
       isReplaceOperation: false,
       isActiveTextField: true,
       selectedTextFieldFormat: TextFieldFormat.standard,
-    ) as SizedBox).child! as TextFieldWidgetHandler,);
+    ) as SizedBox).child! as TextFieldWrapper,);
   }
   return textFields;
 }

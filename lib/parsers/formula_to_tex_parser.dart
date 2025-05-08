@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_math_input/math_constructions/index.dart';
-import '../services/math_constructions_building.dart';
-import '../services/text_field_handle_and_create.dart';
+import '../interfaces/index.dart';
+import '../extension/index.dart';
+import '../widgets/supportive_widgets/index.dart';
 
 class FormulaToTexParser {
   String formulaInKatex = '';
@@ -69,7 +69,7 @@ class FormulaToTexParser {
         }else{
           _formulaParser(element.multiChild);
         }
-      }else if(element is TextFieldWidgetHandler){
+      }else if(element is TextFieldWrapper){
         final text = element.textFieldData.controller.text;
         formulaInKatex = formulaInKatex + text;
         return text;

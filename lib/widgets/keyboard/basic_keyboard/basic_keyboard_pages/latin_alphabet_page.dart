@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../math_controller.dart';
+import '../../../../interfaces/index.dart';
 import '../../custom_math_icons.dart';
 import '../basis_keyboard.dart';
 

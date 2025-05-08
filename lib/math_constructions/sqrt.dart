@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'math_construction.dart';
+import '../interfaces/index.dart';
 
 class Sqrt extends DefaultMathConstruction{
   @override
