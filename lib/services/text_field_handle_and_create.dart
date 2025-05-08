@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import '../widgets/supportive_widgets/index.dart';
 
 const minTextFieldCountToStepBack = 2;
 
@@ -25,11 +26,12 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     _activeTextFieldData.focusNode.requestFocus();
   }
 
-  Widget createTextField(
-      {required bool isReplaceOperation,
-      TextFieldFormat? selectedTextFieldFormat,
-      bool isActiveTextField = false,
-      bool performAdditionalTextField = false,}) {
+  Widget createTextField({
+    required bool isReplaceOperation,
+    TextFieldFormat? selectedTextFieldFormat,
+    bool isActiveTextField = false,
+    bool performAdditionalTextField = false,
+  }) {
     late final TextFieldFormat textFieldFormat;
 
     if (selectedTextFieldFormat != null) {
@@ -57,7 +59,7 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
 
     final Widget textFiledWidget = SizedBox(
         height: size.height,
-        child: TextFieldWidgetHandler(
+        child: TextFieldWrapper(
           textFieldData: textFieldData,
           onTextFieldTap: onTextFieldTap,
         ),);
@@ -116,12 +118,12 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
   void markAsGroup(dynamic startFieldData, Widget endFieldBox) {
     late final int startIndex;
     if (startFieldData is SizedBox) {
-      final startField = startFieldData.child! as TextFieldWidgetHandler;
+      final startField = startFieldData.child! as TextFieldWrapper;
       startIndex = _textFieldsData.indexOf(startField.textFieldData);
     } else if (startFieldData is TextFieldData) {
       startIndex = _textFieldsData.indexOf(startFieldData);
     }
-    final endField = (endFieldBox as SizedBox).child! as TextFieldWidgetHandler;
+    final endField = (endFieldBox as SizedBox).child! as TextFieldWrapper;
     final endIndex = _textFieldsData.indexOf(endField.textFieldData);
     _textFieldGroups.add(
       TextFieldGroup(
@@ -214,26 +216,19 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     } 
   }
 
-  bool deleteElementFields({bool? checkGroups}) {
-    try{
-      if (_textFieldsData.isEmpty || 
-        _textFieldsData.length < minTextFieldCountToStepBack
-      ) {
-        return false;
-      }
-
-      final firstDeletedIndex = deleteTextFields(checkGroups: checkGroups);
-      if (_textFieldsData.isEmpty) {
-        return false;
-      }
-
-      _updateSelectedFieldIndex(firstDeletedIndex);
-      
-      return true;
-    }catch(e){
-      return false;
+  void deleteElementFields({bool? checkGroups}) {
+    if (_textFieldsData.isEmpty || 
+      _textFieldsData.length < minTextFieldCountToStepBack
+    ) {
+      throw Exception();
     }
-    
+
+    final firstDeletedIndex = deleteTextFields(checkGroups: checkGroups);
+    if (_textFieldsData.isEmpty) {
+      Exception();
+    }
+
+    _updateSelectedFieldIndex(firstDeletedIndex);
   }
 
   void _updateSelectedFieldIndex(int firstDeletedIndex) {
@@ -296,26 +291,19 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     return _selectedFieldIndex >= startIndex && _selectedFieldIndex <= endIndex;
   }
 
-  bool deleteCurrentController({required bool shouldRemarkGroup}) {
-    try{
-      if (_textFieldsData.length <= 1) {
-        return false;
-      }
+  void deleteCurrentController({required bool shouldRemarkGroup}) {
+    if (_textFieldsData.length <= 1) {
+      throw Exception();
+    }
 
-      if (shouldRemarkGroup) {
-        _replaceActiveTextField(_textFieldsData[_selectedFieldIndex + 1]);
-      } else {
-        _replaceActiveTextField(null);
-        _selectedFieldIndex -= 1;
-      }
-      
-      _activeTextFieldData = _textFieldsData[_selectedFieldIndex];
-
-      return true;
-    }catch(e) {
-      return false;
+    if (shouldRemarkGroup) {
+      _replaceActiveTextField(_textFieldsData[_selectedFieldIndex + 1]);
+    } else {
+      _replaceActiveTextField(null);
+      _selectedFieldIndex -= 1;
     }
     
+    _activeTextFieldData = _textFieldsData[_selectedFieldIndex];
   }
 
   void _replaceActiveTextField(TextFieldData? newFieldData) {
@@ -362,52 +350,6 @@ class TextFieldHandleAndCreateService extends ChangeNotifier {
     deleteAllTextFields();
     super.dispose();
   } 
-}
-
-class TextFieldWidgetHandler extends StatefulWidget {
-  TextFieldWidgetHandler({
-    required this.textFieldData,
-    required this.onTextFieldTap,
-    super.key,
-  });
-
-  final TextFieldData textFieldData;
-  final Function(TextFieldData textFieldControllerData) onTextFieldTap;
-  TextField? textField;
-  String? initTextInField;
-
-  @override
-  State<TextFieldWidgetHandler> createState() => _TextFieldWidgetHandlerState();
-}
-
-class _TextFieldWidgetHandlerState extends State<TextFieldWidgetHandler> {
-  @override
-  Widget build(BuildContext context) {
-    if (widget.textField == null) {
-      widget.textField = TextField(
-        textAlign: TextAlign.left,
-        focusNode: widget.textFieldData.focusNode,
-        style: const TextStyle(fontSize: 20),
-        keyboardType: TextInputType.none,
-        decoration: textFieldDecoration,
-        controller: widget.textFieldData.controller,
-        onChanged: (_) {
-          setState(() {});
-        },
-        onTap: () {
-          widget.onTextFieldTap(widget.textFieldData);
-        },
-      );
-      if (widget.initTextInField != null) {
-        widget.textFieldData.controller.text = widget.initTextInField!;
-      }
-    }
-    final fieldWidget = IntrinsicWidth(
-      child: widget.textField,
-    );
-    
-    return fieldWidget;
-  }
 }
 
 void _insertToList<T>(List<T> list, T element, int index) {

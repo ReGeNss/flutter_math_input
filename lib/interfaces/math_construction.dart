@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../parsers/formulas_tree_parsers.dart';
+import 'index.dart';
 import '../services/math_constructions_building.dart';
 import '../services/text_field_handle_and_create.dart';
 
@@ -33,30 +33,3 @@ abstract class ComplicatedMathConstruction extends MathConstruction{
   });
 }
 
-abstract class MathConstructionKey {
-  static MathConstructionKey getKey(ObjectKey key) {
-    return key.value as MathConstructionKey;
-  } 
-  
-  static ObjectKey setKey(MathConstructionKey construction){
-    return ObjectKey(construction);
-  }
-
-  List<String> get katexExp;
-}
-
-abstract class SimpleMathConstructionKey extends MathConstructionKey{}
-
-abstract class GroupMathConstructionKey extends MathConstructionKey{
-  List<int> get fieldsLocation;
-} 
-
-class MathConstructionWidgetData {
-  final Widget? additionalWidget;
-  final Widget construction;
-
-  MathConstructionWidgetData({
-    required this.construction, 
-    this.additionalWidget,
-  });
-}

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../math_constructions/index.dart';
-import '../parsers/formulas_tree_parsers.dart';
+import '../interfaces/index.dart';
 
 class WidgetsDataHandler{
   WidgetsDataHandler._();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '../interfaces/index.dart';
 import '../services/math_constructions_building.dart';
-import '../services/text_field_handle_and_create.dart';
+import '../widgets/supportive_widgets/index.dart';
 
 class FormulasTreeParsersService {
   ParsedWidgetsData? _parsedData;
@@ -63,9 +64,9 @@ class FormulasTreeParsersService {
         if (data != null) {
           return data;
         }
-      }else if(array[index] is TextFieldWidgetHandler){
+      }else if(array[index] is TextFieldWrapper){
         final widget =
-                (array[index] as TextFieldWidgetHandler).textField as TextField;
+                (array[index] as TextFieldWrapper).textField as TextField;
         data = _parseWidgetLocation(
           [widget],
           activeTextFieldController,
@@ -117,8 +118,8 @@ class FormulasTreeParsersService {
         }
         // ignore: parameter_assignments
         isFromRowOrColumn = false;
-      }else if(array[index] is TextFieldWidgetHandler){
-        final textFieldWidget = array[index] as TextFieldWidgetHandler;
+      }else if(array[index] is TextFieldWrapper){
+        final textFieldWidget = array[index] as TextFieldWrapper;
         if (textFieldWidget.textField!.controller == activeTextFieldController){
           return ParsedWidgetsData(widgetData: array, index: index);
         }
@@ -142,7 +143,7 @@ class FormulasTreeParsersService {
         activeTextFieldController,
         isFromRowOrColumn: true,
       );
-    }else if(widget is TextFieldWidgetHandler){
+    }else if(widget is TextFieldWrapper){
       final textFieldWidget = widget.textField!;
       if (textFieldWidget.controller == activeTextFieldController) {
         
@@ -151,11 +152,4 @@ class FormulasTreeParsersService {
     }
     return null;
   }  
-}
-
-class ParsedWidgetsData {
-  List<Widget>? widgetData;
-  bool? isGroup;
-  int? index;
-  ParsedWidgetsData({this.widgetData, this.index, this.isGroup});
 }

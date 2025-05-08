@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_math_input/math_controller.dart';
-import 'package:flutter_math_input/math_constructions/math_construction.dart';
-import 'package:flutter_math_input/parsers/deleting_parser.dart';
-import 'package:flutter_math_input/services/math_constructions_building.dart';
-import 'package:flutter_math_input/services/text_field_handle_and_create.dart';
-import 'package:flutter_math_input/services/widgets_data_handler.dart';
-
-import '../parsers/formulas_tree_parsers.dart';
+import '../flutter_math_input.dart';
+import '../interfaces/index.dart';
+import '../parsers/index.dart';
+import '../widgets/supportive_widgets/index.dart';
+import 'index.dart';
 
 abstract class IDeleteService extends FormulaStateManager {
   IDeleteService(super.updateStream);
@@ -93,15 +90,10 @@ class DeleteService extends IDeleteService {
     ParsedWidgetsData parsedWidgets, 
     bool shouldRemarkGroup,
   ) {
-    final isSuccess = _textFieldService.deleteCurrentController(
+    _textFieldService.deleteCurrentController(
       shouldRemarkGroup:  shouldRemarkGroup,
     );
-    
-    if (isSuccess) {
-      WidgetsDataHandler.deleteFromWidgetTree(parsedWidgets);
-    } else {
-      throw Exception(); 
-    }
+    WidgetsDataHandler.deleteFromWidgetTree(parsedWidgets);
   }
 
   void _replaceElementByField(TextEditingController activeController) {
@@ -110,9 +102,7 @@ class DeleteService extends IDeleteService {
       activeController,
     );
 
-    if (!_tryDeleteControllers(elementToReplace?.isGroup)) {
-      throw Exception();
-    }
+    _textFieldService.deleteElementFields(checkGroups: elementToReplace?.isGroup);
 
     if (elementToReplace != null) {
       final shouldMoveToFirst = elementToReplace.index == 0;
@@ -120,10 +110,6 @@ class DeleteService extends IDeleteService {
     } else {
       _removeCurrentField(activeController);
     }
-  }
-
-  bool _tryDeleteControllers(bool? isGroup) {
-    return _textFieldService.deleteElementFields(checkGroups: isGroup);
   }
 
   void _replaceWithNewField(
@@ -136,7 +122,7 @@ class DeleteService extends IDeleteService {
     );
     if(moveToFirst) {
       final textFieldData = (
-        (newField as SizedBox).child! as TextFieldWidgetHandler
+        (newField as SizedBox).child! as TextFieldWrapper
       ).textFieldData;
       _textFieldService.insertThisFieldToStart(textFieldData);
     }

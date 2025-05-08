@@ -1,41 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_math_input/services/construction_builder_service.dart';
-import 'package:flutter_math_input/services/delete_service.dart';
-import 'package:flutter_math_input/services/cursor_service.dart';
-import 'math_constructions/math_construction.dart';
-import 'parsers/formula_to_tex_parser.dart';
-import 'parsers/formulas_tree_parsers.dart';
-import 'services/math_constructions_building.dart';
-import 'services/text_field_handle_and_create.dart';
+import 'parsers/index.dart';
+import 'services/index.dart';
+import 'interfaces/index.dart';
 
 const _timeToUpdateFormula = Duration(seconds: 1);
 const _timeToRebuildScreen = Duration(milliseconds: 50);
 
-abstract class IMathController extends ChangeNotifier{
-  Stream<String> get katexFormulaStream;
-  bool get isFormulaRendered;
-  bool get isFormulaUpdated;
-  void addCharToTextField(String char);
-  void createDefaultFunc(
-    DefaultMathConstruction Function(MathConstructionsBuilding) constructionFactory,
-  );
-  void createComplicatedFunc(
-    ComplicatedMathConstruction Function(
-      MathConstructionsBuilding, {
-      required TextFieldHandleAndCreateService textFieldService,
-      required ParsedWidgetsData parsingResults,
-      required List<Widget> widgetTree,
-    }) constructionFactory,
-  );
-  void createCharWidgets(String char);
-  void selectCursorForward();
-  void selectCursorBack();
-  void backspaceButtonTap();
-  void deleteAllButtonTap();
-}
 
-class MathController extends IMathController{
+class MathControllerImpl extends MathController {
   final _textFieldService  = TextFieldHandleAndCreateService(); 
   late final _mathConstructionsBuildingService = MathConstructionsBuilding(
     textFieldService: _textFieldService,
@@ -77,7 +50,7 @@ class MathController extends IMathController{
   bool get isFormulaUpdated => _isFormulaUpdated;
   final _rebuildController = StreamController<void>();
 
-  MathController(){
+  MathControllerImpl(){
     _setupStreams();
     _initialization();
   }

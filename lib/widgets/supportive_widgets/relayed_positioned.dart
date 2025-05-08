@@ -1,7 +1,6 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import '../../services/math_constructions_building.dart';
+import '../../services/index.dart';
 
 class RelayedPositioned 
   extends StatefulWidget implements SingleChildConstruction{

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../interfaces/index.dart';
 import '../index.dart';
 
 class NamedFunction extends DefaultMathConstruction{

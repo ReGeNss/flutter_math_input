@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import '../interfaces/index.dart';
 import '../services/math_constructions_building.dart';
 import '../services/text_field_handle_and_create.dart';
 import '../widgets/supportive_widgets/relayed_positioned.dart';
 import '../widgets/supportive_widgets/widget_dynamic_size_wrapper.dart';
-import 'math_construction.dart';
+import '../interfaces/math_construction.dart';
 
 class Integral extends DefaultMathConstruction{
   @override

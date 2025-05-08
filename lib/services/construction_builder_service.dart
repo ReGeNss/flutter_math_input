@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_math_input/math_constructions/math_construction.dart';
-import 'package:flutter_math_input/parsers/formulas_tree_parsers.dart';
-import 'package:flutter_math_input/services/math_constructions_building.dart';
-import 'package:flutter_math_input/services/text_field_handle_and_create.dart';
-import 'package:flutter_math_input/services/widgets_data_handler.dart';
+import '../interfaces/index.dart';
+import '../math_constructions/index.dart';
+import '../parsers/index.dart';
+import 'index.dart';
 
 abstract class IConstructionBuilderService {
   void createComplicatedConstruction(

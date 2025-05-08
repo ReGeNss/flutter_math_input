@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'math_construction.dart';
+import '../interfaces/index.dart';
+import '../interfaces/math_construction.dart';
 
 class Abs extends DefaultMathConstruction{
   @override

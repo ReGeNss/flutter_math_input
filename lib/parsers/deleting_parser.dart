@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../math_constructions/index.dart';
+import '../interfaces/index.dart';
 import '../services/math_constructions_building.dart';
-import '../services/text_field_handle_and_create.dart';
-import 'formulas_tree_parsers.dart';
+import '../widgets/supportive_widgets/index.dart';
 
 class FormulasTreeDeletingParser {
   ParsedWidgetsData? _parsedData;
@@ -73,9 +72,9 @@ class FormulasTreeDeletingParser {
             isGroup: keyType is GroupMathConstructionKey,
           );
         }
-      }else if(array[index] is TextFieldWidgetHandler){
+      }else if(array[index] is TextFieldWrapper){
         final widget =
-              (array[index] as TextFieldWidgetHandler).textField as TextField;
+              (array[index] as TextFieldWrapper).textField as TextField;
         _parseWidgets([widget], activeTextFieldController);
         if(_isLoopWindingDown && widget.key != null && widget.key is ObjectKey){
           _isLoopWindingDown = false;
@@ -100,10 +99,10 @@ class FormulasTreeDeletingParser {
     ) {
     final length = array.length;
     for (int index = 0; length > index; index += 1) {
-      if(array[index] is TextFieldWidgetHandler){
+      if(array[index] is TextFieldWrapper){
         counter += 1;
         final textField = 
-          (array[index] as TextFieldWidgetHandler).textField as TextField;
+          (array[index] as TextFieldWrapper).textField as TextField;
         if(textField.controller == activeTextFieldController){
           textFieldLocation = counter;
         }
